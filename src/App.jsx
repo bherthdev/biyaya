@@ -15,7 +15,7 @@ import RequireAuth from "./features/auth/RequireAuth";
 import { ROLES } from './config/roles'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { Analytics } from "@vercel/analytics/react"
 
 function App() {
   return (
@@ -43,7 +43,7 @@ function App() {
 
                       <Route path="new" element={<> <ToastContainer /><NewUserForm /> </>} />
 
-
+                   
 
                     </Route>
                   </Route>
@@ -57,6 +57,7 @@ function App() {
           <Route path='*' element={<Navigate replace to="/" />} />
         </Route>
       </Routes>
+      <Analytics/>
     </div>
   );
 }
