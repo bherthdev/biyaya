@@ -17,6 +17,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Analytics } from "@vercel/analytics/react"
 
+
 function App() {
   return (
     <div className="min-h-screen transition duration-200 bg-gray-50 dark:bg-slate-900">
@@ -43,11 +44,16 @@ function App() {
 
                       <Route path="new" element={<> <ToastContainer /><NewUserForm /> </>} />
 
-                   
+
 
                     </Route>
                   </Route>
 
+                  <Route path="notes">
+                    <Route index element={<NotesList />} />
+                    <Route path=":id" element={<EditNote />} />
+                    <Route path="new" element={<NewNote />} />
+                  </Route>
 
                 </Route>{/* End Dash */}
               </Route>
@@ -57,9 +63,10 @@ function App() {
           <Route path='*' element={<Navigate replace to="/" />} />
         </Route>
       </Routes>
-      <Analytics/>
+      <Analytics />
     </div>
   );
 }
 
 export default App;
+
