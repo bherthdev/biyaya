@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.bg-biyaya {
+  background-image: url("../src/assets/biyaya_shop.jpg"); /* Update the path to your image */
+}

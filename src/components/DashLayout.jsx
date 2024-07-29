@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import DashHeader from "./DashHeader";
+import { SideMenu } from "./SideMenu";
 
 
 const DashLayout = () => {
@@ -7,10 +8,11 @@ const DashLayout = () => {
 
   return (
     <>
-      <DashHeader />
-      <div>
-        <Outlet />
-      </div>
+      
+        <div className="flex">
+          <SideMenu />
+          <DashHeader />
+        </div>
     </>
   )
 };

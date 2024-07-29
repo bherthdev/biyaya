@@ -15,7 +15,6 @@ const Navbar = () => {
   const navigate = useNavigate();
 
 
-
   useEffect(() => {
     let handle = (e) => {
       if (!menuRef.current.contains(e.target)) {
@@ -55,13 +54,16 @@ const Navbar = () => {
 
   const content = (
     <>
+    
     <div className={`flex flex-1 items-center justify-end `}>
+
+    
       <nav
         aria-label="Site Nav"
         className="hidden lg:flex lg:gap-4 lg:text-xs lg:font-bold lg:uppercase lg:tracking-wide lg:text-gray-300"
       >
 
-        <Link to="/dash">
+        {/* <Link to="/dash">
           <span
             // onClick={() => navigate("/dash")}
             className={
@@ -89,7 +91,7 @@ const Navbar = () => {
               Employees
             </span>
           </Link>
-        }
+        } */}
 
         {/* <Link to="/dash/notes">
           <span
@@ -144,7 +146,7 @@ const Navbar = () => {
                     />
                   </svg>
                 </button>
-              </div>
+              </div> */}
               <span
                 type="button"
                 className="block shrink-0 rounded-lg bg-white p-2.5 text-gray-600 shadow-sm hover:text-gray-700 sm:hidden"
@@ -164,14 +166,14 @@ const Navbar = () => {
                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                   />
                 </svg>
-              </span> */}
-
-              <span className="block shrink-0  rounded-lg bg-white dark:bg-slate-800 p-2.5 shadow-sm">
-                <span className="sr-only">Darkmode Switcher</span>
-                <Switcher />
               </span>
 
-              <a
+              {/* <span className="block shrink-0  rounded-lg bg-white dark:bg-slate-800 p-2.5 shadow-sm">
+                <span className="sr-only">Darkmode Switcher</span>
+                <Switcher />
+              </span> */}
+
+              {/* <a
                 href="#"
                 className="block shrink-0 rounded-lg bg-white dark:bg-slate-800 p-2.5 text-gray-800 dark:text-gray-300 shadow-sm hover:text-gray-700"
               >
@@ -190,7 +192,7 @@ const Navbar = () => {
                     d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
                   />
                 </svg>
-              </a>
+              </a> */}
 
               <div
                 className="inline-flex bg-white dark:bg-slate-900 rounded-full "
@@ -203,20 +205,22 @@ const Navbar = () => {
                     className="group flex shrink-0 items-center rounded-lg transition"
                   >
                     <span className="sr-only">Menu</span>
+                    
+
+                    <div className="mr-2 hidden   sm:flex flex-col tracking-wide gap-0 text-right">
+                      <h1 className="font-medium text-md text-gray-800 dark:text-gray-200 capitalize">
+                        {name}
+                      </h1>
+
+                      <p className="text-gray-500 font-normal text-sm"> {status} </p>
+                    </div>
+
+                  
                     <img
                       alt="Profile"
                       src={avatar}
-                      className="h-10 w-10 rounded-full object-cover border border-slate-300  dark:border-slate-600"
+                      className="h-16 w-16 rounded-full object-cover border border-slate-300  dark:border-slate-600"
                     />
-
-                    <p className="ml-2 hidden text-left text-xs sm:block">
-                      <strong className="block font-medium text-gray-800 dark:text-gray-200 capitalize">
-                        {name}
-                      </strong>
-
-                      <span className="text-gray-500"> {status} </span>
-                    </p>
-
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className={`mx-2 hidden h-5 w-5 text-gray-500 transition group-hover:text-gray-700 sm:block ${userNav && "rotate-180"
@@ -253,6 +257,8 @@ const Navbar = () => {
                       </div>
                     </div>
                   )}
+
+                  
                 </div>
               </div>
             </div>
