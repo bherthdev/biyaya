@@ -72,7 +72,7 @@ const DashHeader = () => {
     
       </header>
 
-      <ul className={nav ? 'fixed z-40 left-0 top-0 w-full h-full bg-white dark:bg-slate-900 ease-in-out duration-300 text-md font-medium' : 'z-20 top-0 w-full h-full ease-in-out duration-300 fixed left-[-100%]'}>
+      {/* <ul className={nav ? 'fixed z-40 left-0 top-0 w-full h-full bg-white dark:bg-slate-900 ease-in-out duration-300 text-md font-medium' : 'z-20 top-0 w-full h-full ease-in-out duration-300 fixed left-[-100%]'}>
           <div className='flex w-full  p-4  text-gray-700 dark:text-gray-300 font-bold justify-between border-b border-b-gray-300 dark:border-b-gray-800'>
 
             <p onClick={handleNav} className='cursor-pointer  flex items-center'>
@@ -104,7 +104,7 @@ const DashHeader = () => {
             </li>
           </Link>
 
-        </ul>
+        </ul> */}
 
      
     </>
