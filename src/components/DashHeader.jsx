@@ -6,7 +6,7 @@ import { Link, Outlet } from 'react-router-dom'
 import Navbar from './Navbar'
 import { SideMenu } from './SideMenu';
 
-const DashHeader = () => {
+const DashHeader = ({toggleSideMenu, headerName}) => {
 
   const [nav, setNav] = useState(false);
 
@@ -29,12 +29,13 @@ const DashHeader = () => {
 
   const classNav = colorChange ? 'z-0 border-b sticky top-0 w-full border-b-slate-300 dark:border-b-slate-800 shadow-gray-300 dark:shadow-gray-900 shadow-md dark:shadow-xl ease-in-out duration-300' : 'ease-in-out duration-300'
 
-  console.log(location.pathname)
+
+  const classToggleSideMenu = toggleSideMenu ? `ml-52 ease-in-out duration-300` : `ml-16 ease-in-out duration-300`
 
   const content = (
     <>
 
-      <header aria-label="Site Header" className="border-b dark:border-gray-800 w-full ml-52">
+      <header aria-label="Site Header" className={`${classToggleSideMenu} border-b dark:border-gray-800 w-full`}>
         <div
         className={`bg-white dark:bg-slate-900 sm:px-8 border flex ${classNav} h-32  items-center justify-between px-4 right-0`}
       >
@@ -47,12 +48,12 @@ const DashHeader = () => {
       
           
           <p className="flex">
-            <Link to={'/dash'} >
+            <Link to={'/dashboard'} >
               <span className="sr-only">Logo</span>
               <span className="inline-block text-gray-700 dark:text-gray-200  text-2xl font-semibold">
-              { location.pathname === '/dash'
-              ? 'Dashboard'
-              :  'Settings'
+              {headerName === `/dashboard`
+              ?`Dashboard`
+              :`Settings`
               }
               </span>
             </Link>

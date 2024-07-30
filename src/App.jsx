@@ -31,7 +31,7 @@ function App() {
           <Route element={<PersistLogin />}>
             <Route element={<RequireAuth allowedRoles={[...Object.values(ROLES)]} />}>
               <Route element={<Prefetch />}>
-                <Route path="dash" element={<DashLayout />}>
+                <Route path="dashboard" element={<DashLayout />}>
 
                   <Route index element={<Welcome />} />
 

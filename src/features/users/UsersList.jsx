@@ -106,7 +106,7 @@ const UsersList = () => {
 
               <div className="flex">
                 <span
-                  onClick={() => navigate("/dash/users/new")}
+                  onClick={() => navigate("/dashboard/users/new")}
                   title='Add Employee'
                   className="hidden sm:flex cursor-pointer text-sm px-3 py-2 text-white border dark:text-gray-300 font-normal border-gray-200 dark:border-slate-600 bg-gray-600 dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md duration-150"
                 >

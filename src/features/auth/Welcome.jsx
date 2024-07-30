@@ -116,7 +116,7 @@ const Welcome = () => {
               <div className="mt-4 sm:mt-4">
                 <dl className="font-normal grid grid-cols-1 gap-4 sm:grid-cols-3">
 
-                  <Link to="/dash/users">
+                  <Link to="/dashboard/users">
                     <div className="flex flex-col bg-white dark:bg-slate-800 rounded-md shadow-sm border-gray-200 dark:border-gray-800 px-4 py-8 text-center text-gray-800 dark:text-gray-200 hover:text-gray-500 dark:hover:text-gray-400">
                       <dt className="order-last text-sm text-gray-500 dark:text-gray-400">
                         Total Employees

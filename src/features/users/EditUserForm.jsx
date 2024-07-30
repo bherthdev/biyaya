@@ -800,7 +800,7 @@ const EditUserForm = ({ user }) => {
                     <span
                       title="Cancel"
                       disabled={!isLoading && !isDelLoading}
-                      onClick={() => !isLoading && !isDelLoading ? navigate("/dash/users") : undefined}
+                      onClick={() => !isLoading && !isDelLoading ? navigate("/dashboard/users") : undefined}
                       className={
                         !isLoading && !isDelLoading
                           ? `cursor-pointer flex mr-6 px-3 sm:px-4 py-2 text-white border dark:text-gray-300 border-gray-200 dark:border-slate-600 bg-gray-600 dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md duration-150`

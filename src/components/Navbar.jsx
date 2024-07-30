@@ -34,7 +34,7 @@ const Navbar = () => {
     useSendLogoutMutation();
 
   const clickSettings = () => {
-    navigate(`/dash/users/${id}`)
+    navigate(`/dashboard/users/${id}`)
     setUserNav(!userNav)
   }
 
