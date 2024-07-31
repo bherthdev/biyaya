@@ -6,7 +6,7 @@ import { setCredentials } from '../../features/auth/authSlice'
 const baseQuery = fetchBaseQuery({
     // https://biyayaapi.onrender.com
     // http://localhost:3500
-    baseUrl: 'http://localhost:3500',
+    baseUrl: 'https://biyayaapi.onrender.com',
     credentials: 'include',
     prepareHeaders: (headers, { getState }) => {
         const token = getState().auth.token
