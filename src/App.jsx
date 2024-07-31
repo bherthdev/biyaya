@@ -7,6 +7,9 @@ import NotesList from './features/notes/NotesList'
 import UsersList from './features/users/UsersList'
 import EditUser from "./features/users/EditUser";
 import NewUserForm from "./features/users/NewUserForm";
+import ItemsList from './features/items/ItemsList'
+import EditItem from "./features/items/EditItem";
+import NewItemForm from "./features/items/NewItemForm";
 import EditNote from "./features/notes/EditNote";
 import NewNote from "./features/notes/NewNote";
 import Prefetch from "./features/auth/Prefetch";
@@ -20,7 +23,7 @@ import { Analytics } from "@vercel/analytics/react"
 
 function App() {
   return (
-    <div className="min-h-screen transition duration-200 bg-gray-50 dark:bg-slate-900">
+    <div className="h-full w-full bg-gray-50 dark:bg-slate-900">
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Login />} />
@@ -43,6 +46,19 @@ function App() {
                       <Route path=":id" element={<> <ToastContainer /><EditUser /> </>} />
 
                       <Route path="new" element={<> <ToastContainer /><NewUserForm /> </>} />
+
+
+
+                    </Route>
+                  </Route>
+                  <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin]} />}>
+                    <Route path="items">
+
+                      <Route index element={<> <ToastContainer /> <ItemsList /></>} />
+
+                      <Route path=":id" element={<> <ToastContainer /><EditItem /> </>} />
+
+                      <Route path="new" element={<> <ToastContainer /><NewItemForm /> </>} />
 
 
 

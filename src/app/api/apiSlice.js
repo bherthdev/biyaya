@@ -6,7 +6,7 @@ import { setCredentials } from '../../features/auth/authSlice'
 const baseQuery = fetchBaseQuery({
     // https://biyayaapi.onrender.com
     // http://localhost:3500
-    baseUrl: 'https://biyayaapi.onrender.com',
+    baseUrl: 'http://localhost:3500',
     credentials: 'include',
     prepareHeaders: (headers, { getState }) => {
         const token = getState().auth.token
@@ -54,6 +54,6 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 
 export const apiSlice = createApi({
     baseQuery: baseQueryWithReauth,
-    tagTypes: ['Note', 'User'],
+    tagTypes: ['Note', 'Item', 'User'],
     endpoints: builder => ({})
 })

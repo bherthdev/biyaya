@@ -194,7 +194,7 @@ const Login = () => {
   
         <a href='https://www.tyingknotworks.com/' 
           target='_blank' rel='noreferrer noopener'
-          className=" font-normal text-xs text-gray-300 underline"
+          className=" font-normal text-xs text-gray-300"
           >
             TyingKnot Works
           </a>

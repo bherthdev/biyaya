@@ -8,36 +8,17 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { IoIosLogOut } from "react-icons/io";
-import { useSendLogoutMutation } from "../features/auth/authApiSlice";
 import Spenner from "./Spenner";
 
 export const SideMenu = ({toggleSideMenu, setToggleSideMenu, setHeaderName}) => {
   const navigate = useNavigate();
 
-  const [sendLogout, { isLoading, isSuccess, isError, error }] =
-  useSendLogoutMutation();
-  
+
   
   const navigateMenu = (menuName)=>{
     navigate(menuName)
     setHeaderName(menuName)
   }
-  
-  console.log(isLoading, isSuccess, isError, error )
-
-  useEffect(() => {
-    if (isSuccess) navigate("/");
-
-  }, [isSuccess, navigate]);
-
-  if (isLoading) return (
-    <div className="flex text-gray-800 dark:text-gray-300 text-sm">
-      <Spenner />
-      <p>Logging Out...</p>
-    </div>
-  )
-  if (isError) return <p>Error: {error.data?.message}</p>;
-
 
   const classToggleSideMenu = toggleSideMenu ? 'w-52 ease-in-out duration-300' : 'w-16 ease-in-out duration-300'
 
@@ -45,14 +26,14 @@ export const SideMenu = ({toggleSideMenu, setToggleSideMenu, setHeaderName}) => 
     <>
 
     <div className={`flex h-full fixed ${classToggleSideMenu}  flex-col justify-between border-e bg-white `}>
-      <div className=" py-6">
+      <div className={toggleSideMenu ? `py-6 ease-in-out duration-300` : `py-12 ease-in-out duration-300`}>
         <div className={toggleSideMenu ? `cursor-pointer mx-auto w-20 rounded-lg text-xs text-gray-600  ease-in-out duration-300` : ` ease-in-out duration-300 cursor-pointer mx-auto w-10 rounded-lg text-xs text-gray-600`}
           onClick={() => setToggleSideMenu(!toggleSideMenu)}
         >
           <img src={biyayaLogo} className='' />
         </div>
 
-        <ul className="mt-6  ">
+        <ul className={toggleSideMenu ? `mt-6 ease-in-out duration-300` : `mt-10 ease-in-out duration-300`}>
           <li className={
             location.pathname === '/dashboard'
               ? `rounded border-r-[4px] border-r-gray-800 bg-gray-100 px-4 py-4 cursor-pointer font-sans font-medium  text-gray-700`
@@ -95,7 +76,13 @@ export const SideMenu = ({toggleSideMenu, setToggleSideMenu, setHeaderName}) => 
             </div>
           </li>
 
-          <li className="font-sans border-r-gray-800 font-medium px-4 py-4 cursor-pointer hover:bg-gray-100 text-gray-700">
+          <li className={
+            location.pathname === '/dashboard/items'
+              ? `rounded border-r-[4px] border-r-gray-800 bg-gray-100 px-4 py-4 cursor-pointer font-sans font-medium  text-gray-700`
+              : ` border-r-gray-800  px-4 py-4 cursor-pointer hover:bg-gray-100 font-sans font-medium  text-gray-700`
+          }
+            onClick={()=>navigateMenu('/dashboard/items')} 
+            >
             <div className={toggleSideMenu ? `flex gap-5` : `t group relative flex gap-5`}>
               <div className="text-gray-500">
                 <MdOutlineInventory size={25} />
@@ -163,7 +150,7 @@ export const SideMenu = ({toggleSideMenu, setToggleSideMenu, setHeaderName}) => 
 
       <div className={ ` border-r-gray-800  px-4 py-4 cursor-pointer hover:bg-gray-100 font-sans font-medium  text-gray-700 sticky inset-x-0 bottom-0 border-t border-gray-100 `
           }
-            onClick={sendLogout}
+            onClick={()=> navigate('/')}
           >
             <div className={toggleSideMenu ? `flex gap-5` : `t group relative flex gap-5`}>
               <div className="text-gray-500">

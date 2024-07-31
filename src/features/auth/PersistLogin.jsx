@@ -56,7 +56,7 @@ const PersistLogin = () => {
         //    console.log('loading')
         content = <PageLoader />
     } else if (isError) { //persist: yes, token: no
-        // console.log('error')
+        console.log('error')
         content = (
 
             <div className="flex items-center justify-center min-h-screen p-5 bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-400 min-w-screen">

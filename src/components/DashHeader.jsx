@@ -1,22 +1,43 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { useState } from 'react';
-import { AiOutlineMenu } from 'react-icons/ai';
-import { BsArrowLeftShort } from 'react-icons/bs';
-import { Link, Outlet } from 'react-router-dom'
-import Navbar from './Navbar'
-import { SideMenu } from './SideMenu';
+import { Link } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import useAuth from "../hooks/useAuth";
+import { useSendLogoutMutation } from "../features/auth/authApiSlice";
+import Spenner from "./Spenner";
 
-const DashHeader = ({toggleSideMenu, headerName}) => {
+const DashHeader = ({ headerName }) => {
 
-  const [nav, setNav] = useState(false);
+  const navigate = useNavigate();
+  const [sendLogout, { isLoading, isSuccess, isError, error }] = useSendLogoutMutation();
 
-  const handleNav = () => {
-    setNav(!nav);
-  };
-
-  nav ? document.body.classList.add("overflow-hidden") : document.body.classList.remove("overflow-hidden")
-
+  const [userNav, setUserNav] = useState(false);
   const [colorChange, setColorchange] = useState(false);
+
+  const { id, isAdmin, name, status, avatar } = useAuth();
+  let menuRef = useRef();
+
+
+  useEffect(() => {
+
+    if (isSuccess) navigate("/");
+
+  }, [isSuccess, navigate]);
+
+
+  useEffect(() => {
+    let handle = (e) => {
+      if (!menuRef.current.contains(e.target)) {
+        setUserNav(false);
+      }
+    };
+    document.addEventListener("mousedown", handle);
+
+    return () => {
+      document.removeEventListener("mousedown", handle);
+    };
+  });
+
   const changeNavbarColor = () => {
     if (window.scrollY >= 1) {
       setColorchange(true);
@@ -25,89 +46,137 @@ const DashHeader = ({toggleSideMenu, headerName}) => {
       setColorchange(false);
     }
   };
+
+  const clickSettings = () => {
+    navigate(`/dashboard/users/${id}`)
+    setUserNav(!userNav)
+  }
+
+
+  if (isLoading) return (
+    <div className="flex text-gray-800 dark:text-gray-300 text-sm">
+      <Spenner />
+      <p>Logging Out...</p>
+    </div>
+  )
+
+  if (isError) return <p>Error: {error.data?.message}</p>;
+
+
+  
+
   window.addEventListener('scroll', changeNavbarColor);
 
   const classNav = colorChange ? 'z-0 border-b sticky top-0 w-full border-b-slate-300 dark:border-b-slate-800 shadow-gray-300 dark:shadow-gray-900 shadow-md dark:shadow-xl ease-in-out duration-300' : 'ease-in-out duration-300'
 
 
-  const classToggleSideMenu = toggleSideMenu ? `ml-52 ease-in-out duration-300` : `ml-16 ease-in-out duration-300`
-
   const content = (
     <>
+      <div className={`bg-white dark:bg-slate-900 sm:px-8 border flex ${classNav} h-32  items-center justify-between px-4 right-0`}>
 
-      <header aria-label="Site Header" className={`${classToggleSideMenu} border-b dark:border-gray-800 w-full`}>
-        <div
-        className={`bg-white dark:bg-slate-900 sm:px-8 border flex ${classNav} h-32  items-center justify-between px-4 right-0`}
-      >
-      
         <div className="flex items-center">
-     
-          <button onClick={handleNav} type="button" className="pr-2 sm:mr-4 lg:hidden dark:text-gray-400">
-            <AiOutlineMenu size={25} /> 
-          </button>
-      
-          
           <p className="flex">
             <Link to={'/dashboard'} >
               <span className="sr-only">Logo</span>
               <span className="inline-block text-gray-700 dark:text-gray-200  text-2xl font-semibold">
-              {headerName === `/dashboard`
-              ?`Dashboard`
-              :`Settings`
-              }
+                {headerName === `/dashboard`
+                  ? `Dashboard`
+                  : headerName === `/dashboard/items` 
+                  ? `Inventory`
+                  : `Settings`
+                }
               </span>
             </Link>
           </p>
-
         </div>
+        {/* Navbar here */}
+        <div className={`flex flex-1 items-center justify-end `}>
 
-        <div>
-          <Navbar />
+
+          <nav
+            aria-label="Site Nav"
+            className="hidden lg:flex lg:gap-4 lg:text-xs lg:font-bold lg:uppercase lg:tracking-wide lg:text-gray-300"
+          >
+          </nav>
+
+          <div className="ml-8 flex items-center">
+            <div className="flex items-center divide-x divide-gray-100 border-gray-200 dark:border-l-gray-900 dark:border-r-gray-900">
+              <span>
+                <div className="flex gap-4">
+                  <div
+                    className="inline-flex bg-white dark:bg-slate-900 rounded-full "
+                    ref={menuRef}
+                  >
+                    <div className="relative">
+                      <button
+                        onClick={() => setUserNav(!userNav)}
+                        type="button"
+                        className="group flex shrink-0 items-center rounded-lg transition"
+                      >
+                        <span className="sr-only">Menu</span>
+
+
+                        <div className="mr-2 hidden   sm:flex flex-col tracking-wide gap-0 text-right">
+                          <h1 className="font-medium text-md text-gray-800 dark:text-gray-200 capitalize">
+                            {name}
+                          </h1>
+
+                          <p className="text-gray-500 font-normal text-sm"> {status} </p>
+                        </div>
+
+
+                        <img
+                          alt="Profile"
+                          src={avatar}
+                          className="h-16 w-16 rounded-full object-cover border border-slate-300  dark:border-slate-600"
+                        />
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className={`mx-2 hidden h-5 w-5 text-gray-500 transition group-hover:text-gray-700 sm:block ${userNav && "rotate-180"
+                            }`}
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </button>
+
+                      {userNav && (
+                        <div
+                          className={` absolute right-0 z-10  origin-top-right bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 mt-2 w-48 rounded-md shadow-lg
+`}
+                        >
+                          <div className="py-1">
+                            <span
+                              onClick={clickSettings}
+                              className="cursor-pointer block px-4 py-2 text-sm text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-gray-900 dark:hover:text-gray-400"
+                            >
+                              Account Setting
+                            </span>
+                            <span
+                              onClick={sendLogout}
+                              className="cursor-pointer block px-4 py-2 text-sm text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-gray-900 dark:hover:text-gray-400"
+                            >
+                              Sign out
+                            </span>
+                          </div>
+                        </div>
+                      )}
+
+
+                    </div>
+                  </div>
+                </div>
+              </span>
+            </div>
+          </div>
         </div>
       </div>
-        
 
-      <Outlet />
-
-      
-    
-      </header>
-
-      {/* <ul className={nav ? 'fixed z-40 left-0 top-0 w-full h-full bg-white dark:bg-slate-900 ease-in-out duration-300 text-md font-medium' : 'z-20 top-0 w-full h-full ease-in-out duration-300 fixed left-[-100%]'}>
-          <div className='flex w-full  p-4  text-gray-700 dark:text-gray-300 font-bold justify-between border-b border-b-gray-300 dark:border-b-gray-800'>
-
-            <p onClick={handleNav} className='cursor-pointer  flex items-center'>
-              {<BsArrowLeftShort size={30} />}
-            </p>
-            <Link to='/dash'>
-              <h1 onClick={handleNav} className='text-xl mr-4 cursor-pointer'>HR</h1>
-            </Link>
-          </div>
-
-
-          <Link to='/dash'>
-            <li onClick={handleNav} className='p-4 flex justify-center cursor-pointer text-slate-700 dark:text-slate-300 border-b border-b-gray-200 dark:border-b-gray-800'>
-              Dashboard
-            </li>
-          </Link>
-
-
-
-          <Link to='/dash/users'>
-            <li onClick={handleNav} className='p-4 flex justify-center  cursor-pointer text-slate-700 dark:text-slate-300 border-b border-b-gray-300 dark:border-b-gray-800'>
-              Employees
-            </li>
-          </Link>
-
-          <Link to='/dash/notes'>
-            <li onClick={handleNav} className='p-4 flex justify-center  cursor-pointer text-slate-700 dark:text-slate-300 border-b border-b-gray-300 dark:border-b-gray-800'>
-              Task List
-            </li>
-          </Link>
-
-        </ul> */}
-
-     
     </>
   )
 
