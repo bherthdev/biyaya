@@ -46,7 +46,7 @@ const ItemsList = () => {
           </h1>
           <span
             onClick={() => navigate("/dashboard/items/new")}
-            title='Add Employee'
+            title='Add Items'
             className="hidden sm:flex items-center cursor-pointer  px-8 py-3 text-black border dark:text-gray-300 font-medium border-gray-300 dark:border-slate-600  hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150"
           >
             <AiOutlineUserAdd size={20} />
@@ -137,9 +137,9 @@ const ItemsList = () => {
                 Item List
               </h1>
               <span
-                onClick={() => navigate("/dash/users/new")}
-                title='Add Employee'
-                className="ml-4 block sm:hidden cursor-pointer text-sm px-3 py-2 text-white border dark:text-gray-300 font-medium border-gray-200 dark:border-slate-600 bg-gray-600 dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md duration-150"
+                onClick={() => navigate("/dashboard/items/new")}
+                title='Add Item'
+                className="block sm:hidden items-center cursor-pointer  px-8 py-3 text-black border dark:text-gray-300 font-medium border-gray-300 dark:border-slate-600  hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150"
               >
                 <AiOutlineUserAdd size={20} />
               </span>
