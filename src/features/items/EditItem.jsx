@@ -10,7 +10,6 @@ const EditItem = () => {
 
     const item = useSelector(state => selectItemById(state, id))
 
-
     const content = item ? <EditItemForm item={item} /> : <PageLoader />
 
     return content

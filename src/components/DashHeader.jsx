@@ -67,7 +67,7 @@ const DashHeader = ({ headerName }) => {
 
   window.addEventListener('scroll', changeNavbarColor);
 
-  const classNav = colorChange ? 'z-0 border-b sticky top-0 w-full border-b-slate-300 dark:border-b-slate-800 shadow-gray-300 dark:shadow-gray-900 shadow-md dark:shadow-xl ease-in-out duration-300' : 'ease-in-out duration-300'
+  const classNav = colorChange ? 'z-0 border-b sticky top-0 w-full dark:border-b-slate-800 ease-in-out duration-300' : 'ease-in-out duration-300'
 
 
   const content = (
@@ -78,7 +78,7 @@ const DashHeader = ({ headerName }) => {
           <p className="flex">
             <Link to={'/dashboard'} >
               <span className="sr-only">Logo</span>
-              <span className="inline-block text-gray-700 dark:text-gray-200  text-2xl font-semibold">
+              <span className="inline-block text-gray-700 dark:text-gray-200  text-4xl font-semibold">
                 {headerName === `/dashboard`
                   ? `Dashboard`
                   : headerName === `/dashboard/items` 

@@ -52,7 +52,7 @@ const UsersList = () => {
     content = (
       <>
        
-        <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8">
+        <div className="mx-auto h-screen max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="sm:flex justify-between">
             <div className="flex justify-between">
               <h1 className="text-2xl font-bold text-gray-900  dark:text-gray-400">
@@ -117,7 +117,7 @@ const UsersList = () => {
             </div>
           </div>
 
-          <div className="overflow-x-auto border border-gray-200 mt-5 dark:border-gray-800 min-w-full shadow rounded-lg ">
+          <div className="overflow-x-auto border border-gray-200 mt-5 bg-white dark:border-gray-800 min-w-full shadow rounded-lg ">
             <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm leading-normal">
               <thead className="bg-gray-50 dark:bg-gray-800 ">
                 <tr>

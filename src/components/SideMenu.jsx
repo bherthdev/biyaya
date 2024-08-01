@@ -20,12 +20,12 @@ export const SideMenu = ({toggleSideMenu, setToggleSideMenu, setHeaderName}) => 
     setHeaderName(menuName)
   }
 
-  const classToggleSideMenu = toggleSideMenu ? 'w-52 ease-in-out duration-300' : 'w-16 ease-in-out duration-300'
+  const classToggleSideMenu = toggleSideMenu ? 'w-44 ease-in-out duration-300' : 'w-16 ease-in-out duration-300'
 
   const content = (
     <>
 
-    <div className={`flex h-full fixed ${classToggleSideMenu}  flex-col justify-between border-e bg-white `}>
+    <div className={`flex h-full fixed ${classToggleSideMenu}   flex-col justify-between border-e bg-white `}>
       <div className={toggleSideMenu ? `py-6 ease-in-out duration-300` : `py-12 ease-in-out duration-300`}>
         <div className={toggleSideMenu ? `cursor-pointer mx-auto w-20 rounded-lg text-xs text-gray-600  ease-in-out duration-300` : ` ease-in-out duration-300 cursor-pointer mx-auto w-10 rounded-lg text-xs text-gray-600`}
           onClick={() => setToggleSideMenu(!toggleSideMenu)}
@@ -36,7 +36,7 @@ export const SideMenu = ({toggleSideMenu, setToggleSideMenu, setHeaderName}) => 
         <ul className={toggleSideMenu ? `mt-6 ease-in-out duration-300` : `mt-10 ease-in-out duration-300`}>
           <li className={
             location.pathname === '/dashboard'
-              ? `rounded border-r-[4px] border-r-gray-800 bg-gray-100 px-4 py-4 cursor-pointer font-sans font-medium  text-gray-700`
+              ? `border-r-[4px] border-r-gray-800 bg-gray-100 px-4 py-4 cursor-pointer font-sans font-medium  text-gray-700`
               : ` border-r-gray-800  px-4 py-4 cursor-pointer hover:bg-gray-100 font-sans font-medium  text-gray-700`
           }
             onClick={()=>navigateMenu('/dashboard')}
@@ -78,7 +78,7 @@ export const SideMenu = ({toggleSideMenu, setToggleSideMenu, setHeaderName}) => 
 
           <li className={
             location.pathname === '/dashboard/items'
-              ? `rounded border-r-[4px] border-r-gray-800 bg-gray-100 px-4 py-4 cursor-pointer font-sans font-medium  text-gray-700`
+              ? `border-r-[4px] border-r-gray-800 bg-gray-100 px-4 py-4 cursor-pointer font-sans font-medium  text-gray-700`
               : ` border-r-gray-800  px-4 py-4 cursor-pointer hover:bg-gray-100 font-sans font-medium  text-gray-700`
           }
             onClick={()=>navigateMenu('/dashboard/items')} 
@@ -121,7 +121,7 @@ export const SideMenu = ({toggleSideMenu, setToggleSideMenu, setHeaderName}) => 
 
           <li className={
             location.pathname === '/dashboard/users'
-              ? `rounded border-r-[4px] border-r-gray-800 bg-gray-100 px-4 py-4 cursor-pointer font-sans font-medium  text-gray-700`
+              ? `border-r-[4px] border-r-gray-800 bg-gray-100 px-4 py-4 cursor-pointer font-sans font-medium  text-gray-700`
               : ` border-r-gray-800  px-4 py-4 cursor-pointer hover:bg-gray-100 font-sans font-medium  text-gray-700`
           }
             onClick={() => navigateMenu("/dashboard/users")}
