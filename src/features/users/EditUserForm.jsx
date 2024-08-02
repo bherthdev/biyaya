@@ -36,8 +36,6 @@ const EditUserForm = ({ user }) => {
   const navigate = useNavigate();
 
   const [name, setName] = useState(user.name);
-  const [email, setEmail] = useState(user.email);
-  const [department, setDepartment] = useState(user.department);
   const [position, setPosition] = useState(user.position);
   const [username, setUsername] = useState(user.username)
   const [validUsername, setValidUsername] = useState(false)
@@ -60,108 +58,6 @@ const EditUserForm = ({ user }) => {
     setIsModalOpen(false)
   }
 
-  const userDocs = []
-  if (user?.documents) {
-    user.documents.forEach((data) => {
-      const item = {
-        document_name: data.document_name,
-        document_no: data.document_no,
-        issue_date: data.issue_date,
-        expiry_date: data.expiry_date,
-        attachment: {
-          fileName: '',
-          data: ''
-        },
-        cloud_info: {
-          id: data.document_cloud_id,
-          format: data.document_format,
-          url: data.document_url
-        }
-      }
-      userDocs.push(item)
-    })
-  }
-
-  const [rows, setRows] = useState(userDocs)
-
-  const columnsArray = ["", "Document Name", "Document No", "Issue Date", "Expiry Date", "Attachment"]; // pass columns here dynamically
-
-
-
-  const handleRemoveSpecificRow = (idx) => {
-    const tempRows = [...rows] // to avoid  direct state mutation
-    tempRows.splice(idx, 1)
-    setRows(tempRows)
-  }
-  const handleRemoveSpecificFile = (idx) => {
-    const tempRows = [...rows]; // avoid direct state mutation
-    const tempObj = rows[idx]; // copy state object at index to a temporary object
-    tempObj.cloud_info = {
-      id: tempObj.cloud_info.id,
-      format: '',
-      url: ''
-    }
-    tempRows[idx] = tempObj
-
-
-    setRows(tempRows)
-  }
-
-  const updateState = (e) => {
-    let prope = e.target.attributes.column.value; // the custom column attribute
-    let index = e.target.attributes.index.value; // index of state array -rows
-    let fieldValue = e.target.value; // value
-
-    const tempRows = [...rows]; // avoid direct state mutation
-    const tempObj = rows[index]; // copy state object at index to a temporary object
-
-
-
-    if (prope === 'attachment') {
-
-      const file = e.target.files[0]
-      if (file) {
-        if (file.size < 10385760) {
-          const reader = new FileReader();
-          reader.readAsDataURL(file);
-          reader.onloadend = () => {
-            tempObj[prope].data = reader.result
-          }
-
-          tempObj[prope].fileName = fieldValue
-        } else {
-          alert("The file size is too large. Maximum 10MB only. Please select again.")
-          tempObj[prope].data = ''
-          tempObj[prope].fileName = ''
-        }
-      } else {
-        tempObj[prope].data = ''
-        tempObj[prope].fileName = ''
-      }
-
-    } else {
-
-      tempObj[prope] = fieldValue; // modify temporary object
-    }
-
-    // return object to rows` clone
-    tempRows[index] = tempObj;
-    setRows(tempRows); // update state
-
-  };
-
-  const handleAddRow = () => {
-    const item = {
-      document_name: '',
-      document_no: '',
-      issue_date: '',
-      expiry_date: '',
-      attachment: { fileName: '', data: '' },
-      cloud_info: {}
-    };
-    setRows([...rows, item])
-  }
-
 
   const togglePasswordVisiblity = () => {
     setPasswordShown(passwordShown ? false : true);
@@ -178,21 +74,17 @@ const EditUserForm = ({ user }) => {
   useEffect(() => {
     if (isSuccess || isDelSuccess) {
       setName("");
-      setEmail("");
-      setDepartment("");
       setPosition("");
       setUsername("");
       setPassword("");
       setRoles("");
       setDataImage();
-      navigate("/dash/users");
+      navigate("/dashboard/users");
     }
   }, [isSuccess, isDelSuccess, navigate]);
 
 
   const onNameChanged = (e) => setName(e.target.value);
-  const onEmailChanged = (e) => setEmail(e.target.value)
-  const onDepartmentChanged = (e) => setDepartment(e.target.value)
   const onPositionChanged = (e) => setPosition(e.target.value)
   const onUsernameChanged = (e) => setUsername(e.target.value);
   const onPasswordChanged = (e) => setPassword(e.target.value);
@@ -213,37 +105,18 @@ const EditUserForm = ({ user }) => {
 
   const onSaveUserClicked = async (e) => {
 
-    const userDocs = []
-    if (rows) {
-      rows.forEach((data) => {
-        const item = {
-          Document_Name: data.document_name,
-          Document_No: data.document_no,
-          Issue_Date: data.issue_date,
-          Expiry_Date: data.expiry_date,
-          Attachment: data.attachment.data,
-          Cloud_Format: data.cloud_info.format,
-          Cloud_ID: data.cloud_info.id,
-          Cloud_URL: data.cloud_info.url,
-        }
-        userDocs.push(item)
-      })
-    }
 
     if (password) {
       setSpinText('Saving...')
       const result = await updateUser({
         id: user.id,
         name,
-        email,
-        department,
         position,
         username,
         password,
         roles,
         active,
-        image,
-        userDocs
+        image
       });
       if (result) {
         toast.success(result.data.message, {
@@ -260,7 +133,7 @@ const EditUserForm = ({ user }) => {
 
     } else {
       setSpinText('Saving...')
-      const result = await updateUser({ id: user.id, name, email, department, position, username, roles, active, image, userDocs });
+      const result = await updateUser({ id: user.id, name, position, username, roles, active, image });
       if (result) {
         toast.success(result.data.message, {
           position: "bottom-left",
@@ -306,7 +179,7 @@ const EditUserForm = ({ user }) => {
           theme: localStorage.theme,
         });
       }
-    
+
 
     }
 
@@ -321,32 +194,13 @@ const EditUserForm = ({ user }) => {
     );
   });
 
-  // Check All Docs if empty
-  const isDocsEmpty = rows.every(obj => {
-    for (let prop in obj) {
-      if (prop === 'cloud_info') {
-        if (obj[prop]?.format === '' && obj.attachment.fileName === '') {
-          return false;
-        } else if (obj[prop]?.format === undefined && obj.attachment.fileName === '') {
-          return false;
-        }
-
-      } else if (prop !== 'cloud_info' || prop !== 'attachment') {
-        if (!obj[prop]) {
-          return false;
-        }
-      }
-    }
-    return true;
-  });
-
 
   let canSave;
   if (password) {
     canSave =
-      [roles, validUsername, validPassword].every(Boolean) && !isLoading && isDocsEmpty;
+      [roles, validUsername, validPassword].every(Boolean) && !isLoading;
   } else {
-    canSave = [roles, validUsername].every(Boolean) && !isLoading && isDocsEmpty;
+    canSave = [roles, validUsername].every(Boolean) && !isLoading;
   }
 
   const errClass = isError
@@ -380,7 +234,7 @@ const EditUserForm = ({ user }) => {
         <div className="bg-white dark:bg-gray-700 p-4">
           <h2 className="text-lg font-bold mb-4 text-gray-800 dark:text-gray-300"><AiOutlineWarning size={50} className="m-auto text-red-600" /></h2>
           <h2 className="text-lg font-bold mb-4 text-gray-800 dark:text-gray-300">{name}</h2>
-          <p className=" text-gray-800 dark:text-gray-400">Do you really want to delete this Employee?</p>
+          <p className=" text-gray-800 dark:text-gray-400">Do you really want to delete this User?</p>
         </div>
       </Modal>
 
@@ -392,19 +246,19 @@ const EditUserForm = ({ user }) => {
 
         <div className="mt-5 md:col-span-2 ">
           <form onSubmit={(e) => e.preventDefault()}>
-            <div className="shadow overflow-hidden rounded-md">
-              <div className="space-y-6 bg-white dark:bg-slate-800 px-4 py-5 sm:p-6">
-                <div className="grid grid-cols-2 gap-4">
+            <div className="border overflow-hidden rounded-md">
+              <div className="space-y-6 bg-white dark:bg-slate-800 px-4 py-5 sm:p-10">
+                <div className="grid grid-cols-2 gap-20">
                   <div className="col-span-2 sm:col-span-1 ">
                     <div className="">
                       <label
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+                        className="block text-base  text-gray-500 dark:text-gray-200"
                         htmlFor="name"
                       >
                         Name
                       </label>
                       <input
-                        className={`w-full mt-1 px-3 py-2 text-sm font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
+                        className={`w-full mt-1 px-3 py-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
                         id="name"
                         name="name"
                         type="text"
@@ -414,44 +268,43 @@ const EditUserForm = ({ user }) => {
                       />
                     </div>
 
-                    <div className="mt-3">
+                    <div className="mt-5">
                       <label
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-                        htmlFor="email"
+                        className="block text-base text-gray-500 dark:text-gray-200"
+                        htmlFor="position"
                       >
-                        Email
+                        Position
                       </label>
                       <input
-                        className={`w-full mt-1 px-3 py-2 text-sm font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
-                        id="email"
-                        name="email"
-                        type="email"
-                        autoComplete="off"
-                        required
-                        value={email}
-                        onChange={onEmailChanged}
-                      />
-                    </div>
-                    <div className="mt-3">
-                      <label
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-                        htmlFor="department"
-                      >
-                        Department
-                      </label>
-                      <input
-                        className={`w-full mt-1 px-3 py-2 text-sm font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
-                        id="department"
-                        name="department"
+                        className={`w-full mt-1 px-3 py-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
+                        id="position"
+                        name="position"
                         type="text"
                         autoComplete="off"
                         required
-                        value={department}
-                        onChange={onDepartmentChanged}
+                        value={position}
+                        onChange={onPositionChanged}
                       />
                     </div>
-                    <div className="mt-4">
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                    <div className="mt-5">
+                      <label
+                        htmlFor="country"
+                        className="block text-base text-gray-500 dark:text-gray-200"
+                      >
+                        Roles
+                      </label>
+                      <select
+                        id="roles"
+                        name="roles"
+                        value={roles}
+                        onChange={(e) => setRoles(e.target.value)}
+                        className="mt-1 block w-full py-2 px-2 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md"
+                      >
+                        {options}
+                      </select>
+                    </div>
+                    <div className="mt-10">
+                      <label className="block text-base  text-gray-500 dark:text-gray-200">
                         Photo
                       </label>
                       <div className="mt-1 flex items-center">
@@ -462,18 +315,18 @@ const EditUserForm = ({ user }) => {
                             rounded="rounded-md"
                           />
                         ) : (
-                          <span className="inline-block h-16 w-16 overflow-hidden rounded-md bg-gray-100">
+                          <span className="inline-block h-20 w-20 overflow-hidden rounded-md bg-gray-100">
                             <img
                               alt="Man"
                               src={user.avatar}
-                              className="h-16 w-16 rounded-md object-cover border border-slate-300  dark:border-slate-600"
+                              className="h-20 w-20 rounded-md object-cover border border-slate-300  dark:border-slate-600"
                             />
                           </span>
                         )}
 
                         <label
                           htmlFor="file-upload"
-                          className="ml-5 cursor-pointer text-[10px]  px-2 py-1 text-white border dark:text-gray-300 font-medium border-gray-200 dark:border-slate-600 bg-gray-600 dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md duration-150"
+                          className="ml-5 cursor-pointer text-[10px]  px-4 py-2 text-black border dark:text-gray-300 font-medium border-gray-300 dark:border-slate-600  dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full"
                         >
                           <span className="whitespace-nowrap">Replace Photo</span>
 
@@ -498,43 +351,8 @@ const EditUserForm = ({ user }) => {
                   <div className="col-span-2 sm:col-span-1">
                     <div className="">
                       <label
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-                        htmlFor="position"
-                      >
-                        Position
-                      </label>
-                      <input
-                        className={`w-full mt-1 px-3 py-2 text-sm font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
-                        id="position"
-                        name="position"
-                        type="text"
-                        autoComplete="off"
-                        required
-                        value={position}
-                        onChange={onPositionChanged}
-                      />
-                    </div>
-                    <div className="mt-3">
-                      <label
-                        htmlFor="country"
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-                      >
-                        Roles
-                      </label>
-                      <select
-                        id="roles"
-                        name="roles"
-                        value={roles}
-                        onChange={(e) => setRoles(e.target.value)}
-                        className="mt-1 block w-full py-2 px-2 text-sm font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md"
-                      >
-                        {options}
-                      </select>
-                    </div>
-                    <div className="mt-3">
-                      <label
                         htmlFor="username"
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+                        className="block text-base text-gray-500 dark:text-gray-200"
                       >
                         Username{" "}
                         <span className="nowrap text-[11px] text-red-600 dark:text-red-400">
@@ -543,7 +361,7 @@ const EditUserForm = ({ user }) => {
                       </label>
 
                       <input
-                        className={`w-full mt-1 px-3 py-2 text-sm font-normal  border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md ${validUserClass}`}
+                        className={`w-1/2 mt-1 px-3 py-3 text-base font-normal  border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md ${validUserClass}`}
                         id="username"
                         name="username"
                         type="text"
@@ -555,17 +373,17 @@ const EditUserForm = ({ user }) => {
 
                     <div className="mt-3">
                       <label
-                        className="mt-2 block text-sm font-medium text-gray-700 dark:text-gray-200"
+                        className="mt-2 block text-base text-gray-500 dark:text-gray-200"
                         htmlFor="password"
                       >
                         Password{" "}
-                        <span className="nowrap text-[11px] text-red-600 dark:text-red-400">
+                        <span className="nowrap text-xs text-red-600 dark:text-red-400">
                           {!validPassword
                             ? "[empty = no change] 4-12 characters including !@#$%"
                             : ""}
                         </span>
                       </label>
-                      <div className="relative w-full">
+                      <div className="relative w-1/2">
                         <div className="absolute inset-y-0 right-0 flex items-center px-2">
                           <input
                             className="hidden js-password-toggle"
@@ -585,7 +403,7 @@ const EditUserForm = ({ user }) => {
                           </label>
                         </div>
                         <input
-                          className={`leading-tight w-full mt-1 px-3 py-2 text-sm font-normal border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md ${validPwdClass}`}
+                          className={`leading-tight w-full mt-1 px-3 py-3 text-base font-normal border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md ${validPwdClass}`}
                           id="password"
                           name="password"
                           type={passwordShown ? "text" : "password"}
@@ -622,150 +440,6 @@ const EditUserForm = ({ user }) => {
                     }
                   </div>
                 </div>
-                <div className="">
-                  <div className="mt-6 overflow-x-auto rounded-md border min-w-full dark:border-gray-700 border-gray-200">
-                    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm leading-normal">
-                      <thead className="bg-gray-50 dark:bg-gray-800 ">
-                        <tr>
-                          {columnsArray.map((column, index) => (
-                            <Thead thName={column} key={index} />
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y dark:bg-slate-800 divide-gray-200 dark:divide-gray-700 ">
-                        {rows.map((item, idx) => (
-                          <tr key={idx}>
-
-                            <td className={`whitespace-nowrap px-1 py-1 font-medium text-gray-500 `}>
-                              <span
-                                title="Delete"
-                                onClick={() => handleRemoveSpecificRow(idx)}
-                                className="cursor-pointer flex px-1 py-1 justify-center   hover:bg-gray-200 dark:hover:bg-gray-900 dark:active:bg-slate-800 rounded-full duration-150" >
-                                <MdDelete size={25} className='' /></span>
-
-                            </td>
-
-                            {Object.keys(item).map((key, index) => (
-                              index <= 4 &&
-                              <td className={`flex-nowrap whitespace-nowrap px-4 py-4 font-medium text-gray-900 dark:text-gray-300 `} key={index}>
-                                {index === 0 &&
-                                  <input
-                                    className={` mt-1 px-3 py-2 text-sm font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
-                                    type="text"
-                                    column={key}
-                                    value={item[key]}
-                                    index={idx}
-                                    onChange={(e) => updateState(e)}
-                                    required
-                                  />
-
-                                }
-                                {index === 1 &&
-                                  <input
-                                    className={` mt-1 px-3 py-2 text-sm font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
-                                    type="text"
-                                    column={key}
-                                    value={item[key]}
-                                    index={idx}
-                                    onChange={(e) => updateState(e)}
-                                    required
-                                  />
-
-                                }
-
-                                {index === 2 &&
-                                  <input
-                                    className={` mt-1 px-3 py-2 text-sm font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
-                                    type="date"
-                                    column={key}
-                                    value={item[key]}
-                                    index={idx}
-                                    onChange={(e) => updateState(e)}
-                                    required
-                                  />
-                                }
-                                {
-                                  index === 3 &&
-                                  <input
-                                    className={` mt-1 px-3 py-2 text-sm font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
-                                    type="date"
-                                    column={key}
-                                    value={item[key]}
-                                    index={idx}
-                                    onChange={(e) => updateState(e)}
-                                    required
-                                  />
-                                }
-                                {index === 4 &&
-                                  Object.keys(item[key]).map((keys, indexs) => (
-                                    (indexs === 0 &&
-
-                                      (!item?.cloud_info.url ?
-                                        <input
-                                          key={indexs}
-                                          className={` mt-1 w-52 px-3 py-2 text-sm font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
-                                          type="file"
-                                          accept="image/png, image/jpeg, application/pdf"
-
-                                          column={key}
-                                          value={item[key][keys]}
-                                          index={idx}
-                                          onChange={(e) => updateState(e)}
-                                          required
-                                        />
-                                        :
-                                        <div className=" flex items-center  font-normal text-xs w-auto h-12 p-2 mt-2 whitespace-nowrap px-2 py-2" key={indexs}>
-                                          <a
-                                            href={`https://res.cloudinary.com/drqzvquzr/image/upload/fl_attachment:${item.document_name}_${user.name}/v1677265086/${item.cloud_info.id}.${item.cloud_info.format}`}
-                                            title="Download"
-                                            className="underline cursor-pointer flex px-4 py-2 text-white border dark:text-gray-300 border-gray-200 dark:border-slate-600 bg-gray-600 dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150"
-                                            disabled={!canSave}>
-
-                                            <RiAttachment2 size={16} className='mr-2' />
-                                            {`${item.document_name}_${user.name}.${item.cloud_info.format}`}
-                                            <span
-                                              title="Delete"
-
-                                              className="cursor-pointer flex justify-center hover:bg-gray-200 dark:hover:bg-gray-900 dark:active:bg-slate-800 rounded-full duration-150" >
-                                            </span>
-                                          </a>
-                                          <span
-                                            title="Replace"
-                                            className="cursor-pointer ml-1 "
-                                            onClick={() => handleRemoveSpecificFile(idx)}
-                                          >
-
-                                            <AiOutlineCloseCircle size={22} className=' flex text-center text-slate-400 hover:text-slate-600 dark:text-slate-600 hover:dark:text-slate-500' />
-                                          </span>
-                                        </div>
-                                      ))
-                                  ))
-                                }
-
-                              </td>
-
-                            ))}
-                          </tr>
-                        ))
-                        }
-                      </tbody>
-                    </table>
-                  </div>
-                  <div className="font-normal text-xs  w-40 h-12 p-2 mt-2 whitespace-nowrap px-2 py-2 text-gray-500">
-                    <span
-                      title="Add Row"
-                      onClick={!isLoading && !isDelLoading ? handleAddRow : undefined}
-                      className={
-                        !isLoading && !isDelLoading
-                          ? `cursor-pointer flex px-4 py-2 text-white border dark:text-gray-300 border-gray-200 dark:border-slate-600 bg-gray-600 dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150`
-                          : ` flex px-4 py-2 text-white border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150`
-                      }
-                      disabled={!isLoading && !isDelLoading}>
-
-                      <RiAddFill size={16} className='mr-2' />Add Document</span>
-                  </div>
-                </div>
-
                 {isDelLoading || isLoading
                   ?
                   <div className="mt-6 flex text-gray-400 justify-end">
@@ -783,8 +457,8 @@ const EditUserForm = ({ user }) => {
                   && <span
                     className={
                       !isLoading || isDelLoading
-                        ? `cursor-pointer flex  px-3 sm:px-4 py-2 text-red-700 border dark:text-red-500 border-red-300 dark:border-red-800  hover:bg-gray-200 dark:hover:bg-gray-900 dark:active:bg-slate-800 rounded-md duration-150`
-                        : "flex  px-3 sm:px-4 py-2 text-white border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md duration-150"
+                        ? `cursor-pointer flex  px-3 sm:px-6 py-3 text-red-700 border dark:text-red-500 border-red-300 dark:border-red-800  hover:bg-gray-200 dark:hover:bg-gray-900 dark:active:bg-slate-800 rounded-full`
+                        : "flex  px-3 sm:px-6 py-3 text-white border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full"
                     }
                     title="Delete User"
                     disabled={!isLoading || !isDelLoading}
@@ -795,7 +469,7 @@ const EditUserForm = ({ user }) => {
                   </span>
                 }
 
-                <div className="flex items-center ">
+                <div className="flex items-center gap-5">
                   <div>
                     <span
                       title="Cancel"
@@ -803,8 +477,8 @@ const EditUserForm = ({ user }) => {
                       onClick={() => !isLoading && !isDelLoading ? navigate("/dashboard/users") : undefined}
                       className={
                         !isLoading && !isDelLoading
-                          ? `cursor-pointer flex mr-6 px-3 sm:px-4 py-2 text-white border dark:text-gray-300 border-gray-200 dark:border-slate-600 bg-gray-600 dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md duration-150`
-                          : `flex mx-6 px-3 sm:px-4 py-2 text-white border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md duration-150`
+                        ? `cursor-pointer flex px-6 py-3 text-black border dark:text-gray-300 border-gray-300 dark:border-slate-600  dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`
+                        : `flex px-6 py-3 text-white border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`
                       } >
                       <BsArrowLeftShort size={20} className='mr-1 sm:mr-2' />
                       Cancel
@@ -817,8 +491,8 @@ const EditUserForm = ({ user }) => {
                     onClick={canSave && !isDelLoading ? onSaveUserClicked : undefined}
                     className={
                       canSave && !isDelLoading
-                        ? `cursor-pointer flex px-3 sm:px-4 py-2 text-white border dark:text-gray-300 border-gray-200 dark:border-slate-600 bg-gray-600 dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md duration-150`
-                        : `flex px-3 sm:px-4 py-2 text-white border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md duration-150`
+                        ? `cursor-pointer flex px-3 sm:px-6 py-3 text-white border dark:text-gray-300 border-gray-200 dark:border-slate-600 bg-black dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`
+                        : `flex px-3 sm:px-6 py-3 text-white border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`
                     }
                   >
                     <AiOutlineSave size={20} className="mr-1 sm:mr-2" />

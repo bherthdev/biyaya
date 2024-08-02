@@ -26,8 +26,6 @@ const NewUserForm = () => {
   const navigate = useNavigate();
 
   const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [department, setDepartment] = useState("")
   const [position, setPosition] = useState("")
   const [username, setUsername] = useState("")
   const [validUsername, setValidUsername] = useState(false)
@@ -37,85 +35,7 @@ const NewUserForm = () => {
   const [imageView, setImage] = useState("")
   const [image, setDataImage] = useState()
   const [passwordShown, setPasswordShown] = useState(false)
-  const [addDocs, setAddDocs] = useState(false)
 
-  const [rows, setRows] = useState([]);
-  // const [userDocs, setUserDocs] = useState([]);
-  const columnsArray = ["Document Name", "Document No", "Issue Date", "Expiry Date", "Attachment"]; // pass columns here dynamically
-
-  const handleRemoveSpecificRow = (idx) => {
-    const tempRows = [...rows]; // to avoid  direct state mutation
-    tempRows.splice(idx, 1);
-    setRows(tempRows);
-  };
-
-  const handleRemoveAllRow = () => {
-    const item = [{
-      Document_Name: '',
-      Document_No: '',
-      Issue_Date: '',
-      Expiry_Date: '',
-      Attachment: { fileName: '', data: '' }
-    }];
-
-    if (!addDocs) {
-      setAddDocs(!addDocs)
-      setRows(item);
-    } else {
-      setAddDocs(!addDocs)
-      setRows([]);
-    }
-  };
-
-
-  const updateState = (e) => {
-    let prope = e.target.attributes.column.value; // the custom column attribute
-    let index = e.target.attributes.index.value; // index of state array -rows
-    let fieldValue = e.target.value; // value
-
-    const tempRows = [...rows]; // avoid direct state mutation
-    const tempObj = rows[index]; // copy state object at index to a temporary object
-
-    if (prope === 'Attachment') {
-      const file = e.target.files[0]
-      if (file) {
-
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onloadend = () => {
-          tempObj[prope].data = reader.result;
-        }
-
-        tempObj[prope].fileName = fieldValue
-
-      } else {
-        tempObj[prope].data = ''
-        tempObj[prope].fileName = ''
-      }
-
-    } else {
-
-      tempObj[prope] = fieldValue; // modify temporary object
-    }
-
-
-    // return object to rows` clone
-    tempRows[index] = tempObj;
-    setRows(tempRows); // update state
-
-  };
-
-
-  const handleAddRow = () => {
-    const item = {
-      Document_Name: '',
-      Document_No: '',
-      Issue_Date: '',
-      Expiry_Date: '',
-      Attachment: { fileName: '', data: '' }
-    };
-    setRows([...rows, item]);
-  };
 
 
   const togglePasswordVisiblity = () => {
@@ -133,23 +53,17 @@ const NewUserForm = () => {
   useEffect(() => {
     if (isSuccess) {
       setName("")
-      setEmail("")
-      setDepartment("")
       setPosition("")
       setUsername("")
       setPassword("")
       setRoles("")
       setImage("")
       setDataImage()
-      setAddDocs(false)
-      setRows([])
-      navigate("/dash/users")
+      navigate("/dashboard/users")
     }
   }, [isSuccess, navigate]);
 
   const onNameChanged = (e) => setName(e.target.value)
-  const onEmailChanged = (e) => setEmail(e.target.value)
-  const onDepartmentChanged = (e) => setDepartment(e.target.value)
   const onPositionChanged = (e) => setPosition(e.target.value)
   const onUsernameChanged = (e) => setUsername(e.target.value)
   const onRolesChanged = (e) => setRoles(e.target.value)
@@ -170,45 +84,16 @@ const NewUserForm = () => {
   }
 
 
-  // Check All Docs if empty
-  const isDocsEmpty = rows.every(obj => {
-    for (let prop in obj) {
-      if (prop === 'Attachment') {
-        if (obj.Attachment.fileName === '' && obj.Attachment.data === '') {
-          return false;
-        }
-
-      } else if (prop !== 'Attachment') {
-        if (!obj[prop]) {
-          return false;
-        }
-      }
-    }
-    return true;
-  });
 
   const canSave =
-    [roles, name, validUsername, validPassword, image].every(Boolean) && !isLoading && rows.length >= 0 && isDocsEmpty;
+    [roles, name, validUsername, validPassword, image].every(Boolean) && !isLoading;
 
   const onSaveUserClicked = async (e) => {
     e.preventDefault()
 
 
     if (canSave) {
-      const userDocs = []
-      if (addDocs) {
-        rows.forEach((data, index) => {
-          const item = {
-            Document_Name: data.Document_Name,
-            Document_No: data.Document_No,
-            Issue_Date: data.Issue_Date,
-            Expiry_Date: data.Expiry_Date,
-            Attachment: data.Attachment.data
-          }
-          userDocs.push(item)
-        })
-      }
-      const result = await addNewUser({ name, email, department, position, username, password, roles, image, userDocs })
+      const result = await addNewUser({ name, position, username, password, roles, image })
       if (result?.error) {
         toast.error(result.error.error, {
           position: "bottom-left",
@@ -276,25 +161,25 @@ const NewUserForm = () => {
     <>
       <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8 ">
         <h1 className="mb-2 text-2xl font-bold text-gray-900 sm:text-2xl dark:text-gray-200">
-          New Employee
+          New User
         </h1>
         <p className={errClass}>{error?.data?.message}</p>
 
         <div className="mt-5 md:col-span-2">
           <form onSubmit={onSaveUserClicked} >
             <div className="shadow overflow-hidden rounded-md">
-              <div className="space-y-6 bg-white dark:bg-slate-800 px-4 py-5 sm:p-6">
-                <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-6 bg-white dark:bg-slate-800 px-4 py-5 sm:p-10">
+                <div className="grid grid-cols-2 gap-20">
                   <div className="col-span-2 sm:col-span-1 ">
                     <div className="">
                       <label
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+                        className="block text-base text-gray-500 dark:text-gray-200"
                         htmlFor="name"
                       >
                         Name
                       </label>
                       <input
-                        className={`w-full mt-1 px-3 py-2 text-sm font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
+                        className={`w-full mt-1 px-3 py-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
                         id="name"
                         name="name"
                         type="text"
@@ -304,53 +189,57 @@ const NewUserForm = () => {
                         onChange={onNameChanged}
                       />
                     </div>
-
-                    <div className="mt-3">
+                    <div className="mt-5">
                       <label
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-                        htmlFor="email"
+                        className="block text-base text-gray-500 dark:text-gray-200"
+                        htmlFor="position"
                       >
-                        Email
+                        Position
                       </label>
                       <input
-                        className={`w-full mt-1 px-3 py-2 text-sm font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
-                        id="email"
-                        name="email"
-                        type="email"
-                        autoComplete="off"
-                        required
-                        value={email}
-                        onChange={onEmailChanged}
-                      />
-                    </div>
-                    <div className="mt-3">
-                      <label
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-                        htmlFor="department"
-                      >
-                        Department
-                      </label>
-                      <input
-                        className={`w-full mt-1 px-3 py-2 text-sm font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
-                        id="department"
-                        name="department"
+                        className={`w-full mt-1 px-3 py-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
+                        id="position"
+                        name="position"
                         type="text"
                         autoComplete="off"
                         required
-                        value={department}
-                        onChange={onDepartmentChanged}
+                        value={position}
+                        onChange={onPositionChanged}
                       />
                     </div>
 
+                    <div className="mt-5">
+                      <label
+                        htmlFor="country"
+                        className="block text-base  text-gray-500 dark:text-gray-200"
+                      >
+                        Roles
+                      </label>
+                      <select
+                        id="roles"
+                        name="roles"
+                        value={roles}
+                        onChange={onRolesChanged}
+                        className="mt-1 block w-full py-3 px-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md"
+                      >
+                        <option defaultValue value={""}>
+                          ---
+                        </option>
+                        {options}
+                      </select>
+                    </div>
 
-                    <div className="mt-4">
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+
+
+
+                    <div className="mt-10">
+                      <label className="block text-base  text-gray-500 dark:text-gray-200">
                         Photo
                       </label>
                       <div className="mt-1 flex items-center">
                         {imageView
-                          ? <Image data={imageView} size="h-16 w-16" rounded="rounded-md" />
-                          : <span className="inline-block h-16 w-16 overflow-hidden rounded-md bg-gray-100">
+                          ? <Image data={imageView} size="h-20 w-20" rounded="rounded-md" />
+                          : <span className="inline-block h-20 w-20 overflow-hidden rounded-md bg-gray-100">
                             <svg
                               className="h-full w-full text-gray-300"
                               fill="currentColor"
@@ -363,7 +252,7 @@ const NewUserForm = () => {
 
                         <label
                           htmlFor="file-upload"
-                          className="ml-5 cursor-pointer text-[10px]  px-2 py-1 text-white border dark:text-gray-300 font-medium border-gray-200 dark:border-slate-600 bg-gray-600 dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md duration-150"
+                          className="ml-5 cursor-pointer text-[10px]  px-4 py-2 text-black border dark:text-gray-300 font-medium border-gray-300 dark:border-slate-600  dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150"
                         >
 
                           <span className="whitespace-nowrap">Upload Photo</span>
@@ -387,50 +276,10 @@ const NewUserForm = () => {
                     </div>
                   </div>
                   <div className=" col-span-2 sm:col-span-1">
-
                     <div className="">
                       <label
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-                        htmlFor="position"
-                      >
-                        Position
-                      </label>
-                      <input
-                        className={`w-full mt-1 px-3 py-2 text-sm font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
-                        id="position"
-                        name="position"
-                        type="text"
-                        autoComplete="off"
-                        required
-                        value={position}
-                        onChange={onPositionChanged}
-                      />
-                    </div>
-                    <div className="mt-3">
-                      <label
-                        htmlFor="country"
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-                      >
-                        Roles
-                      </label>
-                      <select
-                        id="roles"
-                        name="roles"
-                        value={roles}
-                        onChange={onRolesChanged}
-                        className="mt-1 block w-full py-2 px-2 text-sm font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md"
-                      >
-                        <option defaultValue value={""}>
-                          ---
-                        </option>
-                        {options}
-                      </select>
-                    </div>
-
-                    <div className="mt-3">
-                      <label
                         htmlFor="username"
-                        className={`block text-sm font-medium text-gray-700 dark:text-gray-200`}
+                        className={`block text-sm font-base text-gray-500 dark:text-gray-200`}
                       >
                         Username{" "}
                         <span className="nowrap text-[11px] text-red-600 dark:text-red-400">
@@ -439,7 +288,7 @@ const NewUserForm = () => {
                       </label>
 
                       <input
-                        className={`w-full mt-1 px-3 py-2 text-sm font-normal  border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md ${validUserClass}`}
+                        className={`w-1/2 mt-1 px-3 py-3 text-base font-normal  border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md ${validUserClass}`}
                         id="username"
                         name="username"
                         type="text"
@@ -449,19 +298,19 @@ const NewUserForm = () => {
                       />
                     </div>
 
-                    <div className="mt-3">
+                    <div className="mt-5">
                       <label
-                        className="mt-2 block text-sm font-medium text-gray-700 dark:text-gray-200"
+                        className="mt-2 block text-base  text-gray-500 dark:text-gray-200"
                         htmlFor="password"
                       >
                         Password{" "}
-                        <span className="nowrap text-[11px] text-red-600 dark:text-red-400">
+                        <span className="nowrap text-xs text-red-600 dark:text-red-400 font-normal">
                           {!validPassword
                             ? "4-12 characters including !@#$%"
                             : ""}
                         </span>
                       </label>
-                      <div className="relative w-full">
+                      <div className="relative w-1/2">
                         <div className="absolute inset-y-0 right-0 flex items-center px-2">
                           <input
                             className="hidden js-password-toggle"
@@ -481,7 +330,7 @@ const NewUserForm = () => {
                           </label>
                         </div>
                         <input
-                          className={`leading-tight w-full mt-1 px-3 py-2 text-sm font-normal border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md ${validPwdClass}`}
+                          className={`leading-tight w-full mt-1 px-3 py-3 text-base font-normal border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md ${validPwdClass}`}
                           id="password"
                           name="password"
                           type={passwordShown ? "text" : "password"}
@@ -492,159 +341,8 @@ const NewUserForm = () => {
                         />
                       </div>
                     </div>
-
-                    <div className="mt-4 space-y-4">
-
-                      <div className="flex items-start">
-                        <div className="flex h-5 items-center">
-                          <input
-                            id="user-active"
-                            name="user-active"
-                            type="checkbox"
-                            checked={addDocs}
-                            onChange={handleRemoveAllRow}
-                            className="h-3 w-3 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                        </div>
-                        <div className="ml-2 text-sm">
-                          <label
-                            htmlFor="user-active"
-                            className="font-medium text-gray-700 dark:text-gray-300"
-                          >
-                            Add Documents Info
-                          </label>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
-
-                {/* document files */}
-                {addDocs &&
-                  <div className="">
-                    <div className="mt-6 overflow-x-auto rounded-md border min-w-full dark:border-gray-700 border-gray-200">
-                      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm leading-normal">
-                        <thead className="bg-gray-100 dark:bg-gray-800 ">
-                          <tr>
-                            <Thead thName="" />
-                            {columnsArray.map((column, index) => (
-                              <Thead thName={column} key={index} />
-                            ))}
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y dark:bg-slate-800 divide-gray-200 dark:divide-gray-700 ">
-                          {rows.map((item, idx) => (
-                            <tr key={idx}>
-
-
-                              <td className={`whitespace-nowrap px-2 py-2 font-medium text-gray-500 `}>
-                                <span
-                                  title="Delete"
-                                  onClick={() => handleRemoveSpecificRow(idx)}
-                                  className="cursor-pointer flex px-1 py-1 justify-center   hover:bg-gray-200 dark:hover:bg-gray-900 dark:active:bg-slate-800 rounded-full duration-150" >
-                                  <MdDelete size={25} className='' /></span>
-                              </td>
-
-                              {Object.keys(item).map((key, index) => (
-
-                                <td className={`flex-nowrap whitespace-nowrap px-2 py-2 font-medium text-gray-900 dark:text-gray-300 `} key={index}>
-                                  {index === 0 &&
-                                    <input
-                                      className={` mt-1 px-3 py-2 text-sm font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
-                                      type="text"
-                                      column={key}
-                                      value={item[key]}
-                                      index={idx}
-                                      onChange={(e) => updateState(e)}
-                                      required
-                                    />
-
-                                  }
-                                  {index === 1 &&
-                                    <input
-                                      className={` mt-1 px-3 py-2 text-sm font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
-                                      type="text"
-                                      column={key}
-                                      value={item[key]}
-                                      index={idx}
-                                      onChange={(e) => updateState(e)}
-                                      required
-                                    />
-
-                                  }
-
-                                  {index === 2 &&
-                                    <input
-                                      className={` mt-1 px-3 py-2 text-sm font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
-                                      type="date"
-                                      column={key}
-                                      value={item[key]}
-                                      index={idx}
-                                      onChange={(e) => updateState(e)}
-                                      required
-                                    />
-                                  }
-                                  {
-                                    index === 3 &&
-                                    <input
-                                      className={` mt-1 px-3 py-2 text-sm font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
-                                      type="date"
-                                      column={key}
-                                      value={item[key]}
-                                      index={idx}
-                                      onChange={(e) => updateState(e)}
-                                      required
-                                    />
-                                  }
-                                  {index === 4 &&
-                                    Object.keys(item[key]).map((keys, indexs) => (
-                                      indexs === 0 &&
-                                      <input
-                                        key={indexs}
-                                        className={` mt-1 px-3 py-2 text-sm font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
-                                        type="file"
-                                        accept="image/png, image/jpeg, application/pdf"
-
-                                        column={key}
-                                        value={item[key][keys]}
-                                        index={idx}
-                                        onChange={(e) => updateState(e)}
-                                        required
-                                      />
-
-
-                                    ))
-                                  }
-
-                                </td>
-                              ))}
-
-
-                            </tr>
-
-                          ))}
-
-                        </tbody>
-
-
-                      </table>
-                    </div>
-                    <div className="font-normal text-xs  w-40 h-12 p-2 mt-2 whitespace-nowrap px-2 py-2 text-gray-500">
-                      <span
-                        title="Add Row"
-                        onClick={handleAddRow}
-                        className="cursor-pointer flex px-4 py-2 text-white border dark:text-gray-300 border-gray-200 dark:border-slate-600 bg-gray-600 dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150"
-                        disabled={!canSave}>
-
-                        <RiAddFill size={16} className='mr-2' />Add Document</span>
-                      {/* <span
-                        title="Add Row"
-                        onClick={postResults}
-                        className="cursor-pointer flex px-4 py-2 text-white border dark:text-gray-300 border-gray-200 dark:border-slate-600 bg-gray-600 dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150" >Show Data</span> */}
-                    </div>
-
-                  </div>
-                }
                 {isLoading &&
                   <div className="mt-6 flex text-gray-400 justify-end">
                     <Spenner />
@@ -654,22 +352,20 @@ const NewUserForm = () => {
               </div>
 
               {/* Footer */}
-              <div className="flex text-sm justify-between bg-gray-50 dark:bg-slate-800 px-4 py-3 text-right sm:px-6 dark:border-t dark:border-slate-700">
-                <div>
-                  <span
+              <div className="flex text-sm justify-end bg-gray-50 dark:bg-slate-800 px-4 py-3 text-right sm:px-6 dark:border-t dark:border-slate-700">
+              
+                <div className="flex items-center gap-5">
+                <span
                     title="Cancel"
-                    onClick={() => !btnCancel && navigate("/dash/users")}
+                    onClick={() => !btnCancel && navigate("/dashboard/users")}
                     className={
                       !btnCancel
-                        ? `cursor-pointer flex px-4 py-2 text-white border dark:text-gray-300 border-gray-200 dark:border-slate-600 bg-gray-600 dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md duration-150`
-                        : `flex px-4 py-2 text-white border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md duration-150`
+                        ? `cursor-pointer flex px-6 py-3 text-black border dark:text-gray-300 border-gray-300 dark:border-slate-600  dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`
+                        : `flex px-6 py-3 text-white border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`
                     } >
                     <BsArrowLeftShort size={20} className='mr-2' />
                     Cancel
                   </span>
-                </div>
-                <div className="flex items-center">
-                  {/* {spin && <Spenner />} */}
 
                   <button
                     title="Save"
@@ -678,8 +374,8 @@ const NewUserForm = () => {
                     type="submit"
                     className={
                       canSave
-                        ? `cursor-pointer flex px-3 sm:px-4 py-2 text-white border dark:text-gray-300 border-gray-200 dark:border-slate-600 bg-gray-600 dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md duration-150`
-                        : `flex px-3 sm:px-4 py-2 text-white border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md duration-150`
+                        ? `cursor-pointer flex items-center px-3 sm:px-7 py-3 text-white border dark:text-gray-300 border-gray-400 dark:border-slate-600 bg-black  dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`
+                        : `flex items-center px-3 sm:px-7 py-3 text-white border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`
                     }
                   >
                     <AiOutlineSave size={20} className="mr-2" />

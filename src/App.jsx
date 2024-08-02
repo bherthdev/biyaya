@@ -19,6 +19,7 @@ import { ROLES } from './config/roles'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Analytics } from "@vercel/analytics/react"
+import POS from "./features/pos/POS";
 
 
 function App() {
@@ -40,28 +41,24 @@ function App() {
 
                   <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin]} />}>
                     <Route path="users">
-
                       <Route index element={<> <ToastContainer /> <UsersList /></>} />
-
                       <Route path=":id" element={<> <ToastContainer /><EditUser /> </>} />
-
                       <Route path="new" element={<> <ToastContainer /><NewUserForm /> </>} />
+                    </Route>
+                  </Route>
 
-
-
+                  <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin]} />}>
+                    <Route path="items">
+                      <Route index element={<> <ToastContainer /> <ItemsList /></>} />
+                      <Route path=":id" element={<> <ToastContainer /><EditItem /> </>} />
+                      <Route path="new" element={<> <ToastContainer /><NewItemForm /> </>} />
                     </Route>
                   </Route>
                   <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin]} />}>
-                    <Route path="items">
-
-                      <Route index element={<> <ToastContainer /> <ItemsList /></>} />
-
+                    <Route path="pos">
+                      <Route index element={<> <ToastContainer /> <POS /></>} />
                       <Route path=":id" element={<> <ToastContainer /><EditItem /> </>} />
-
                       <Route path="new" element={<> <ToastContainer /><NewItemForm /> </>} />
-
-
-
                     </Route>
                   </Route>
 

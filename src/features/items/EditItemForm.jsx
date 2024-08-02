@@ -219,7 +219,7 @@ const EditItemForm = ({ item }) => {
 
         <div className="mt-5 md:col-span-2 ">
           <form onSubmit={(e) => e.preventDefault()}>
-            <div className="shadow overflow-hidden rounded-md">
+            <div className="border overflow-hidden rounded-md">
               <div className="space-y-6 bg-white dark:bg-slate-800 px-4 py-5 sm:p-6">
                 <div className="grid grid-cols-2 gap-4">
 
@@ -281,7 +281,7 @@ const EditItemForm = ({ item }) => {
 
                         <label
                           htmlFor="file-upload"
-                          className="ml-5 cursor-pointer text-[10px]  px-4 py-2 text-white border dark:text-gray-300 tracking-wider border-gray-200 dark:border-slate-600 bg-gray-400 dark:bg-gray-700 hover:bg-gray-500 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full"
+                          className="ml-5 cursor-pointer text-[10px]  px-4 py-2 text-black border dark:text-gray-300 font-medium border-gray-300 dark:border-slate-600  dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150"
                         >
 
                           <span className="whitespace-nowrap">Replace Photo</span>
@@ -320,10 +320,19 @@ const EditItemForm = ({ item }) => {
                         onChange={onCategoryChanged}
                         className="mt-1 block w-1/2 py-3 px-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md"
                       >
-                        <option defaultValue value={""}>
-                          ---
+                        
+                        <option value="Coffee">
+                          Coffee
                         </option>
-                        {options}
+                        <option value="Non Coffee">
+                          Non Coffee
+                        </option>
+                        <option value="Food">
+                          Food
+                        </option>
+                        <option value="Other">
+                          Other
+                        </option>
                       </select>
                     </div>
 
@@ -356,7 +365,7 @@ const EditItemForm = ({ item }) => {
                         className={`w-1/2 mt-1 px-3 py-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-300 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
                         id="price"
                         name="price"
-                        type="text"
+                        type="number"
                         autoComplete="off"
                         required
                         value={price}
@@ -412,7 +421,7 @@ const EditItemForm = ({ item }) => {
                   && <span
                     className={
                       !isLoading || isDelLoading
-                        ? `cursor-pointer flex  px-3 sm:px-4 py-2 text-red-700 border dark:text-red-500 border-red-300 dark:border-red-800  hover:bg-gray-200 dark:hover:bg-gray-900 dark:active:bg-slate-800 rounded-md duration-150`
+                        ? `cursor-pointer flex  px-3 sm:px-6 py-3 text-red-700 border dark:text-red-500 border-red-300 dark:border-red-800  hover:bg-gray-200 dark:hover:bg-gray-900 dark:active:bg-slate-800 rounded-full duration-150`
                         : "flex  px-3 sm:px-4 py-2 text-white border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md duration-150"
                     }
                     title="Delete User"
@@ -424,7 +433,7 @@ const EditItemForm = ({ item }) => {
                   </span>
                 }
 
-                <div className="flex items-center ">
+                <div className="flex items-center gap-5">
                   <div>
                     <span
                       title="Cancel"
@@ -432,8 +441,8 @@ const EditItemForm = ({ item }) => {
                       onClick={() => !isLoading && !isDelLoading ? navigate("/dashboard/items") : undefined}
                       className={
                         !isLoading && !isDelLoading
-                          ? `cursor-pointer flex mr-6 px-3 sm:px-4 py-2 text-white border dark:text-gray-300 border-gray-200 dark:border-slate-600 bg-gray-600 dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md duration-150`
-                          : `flex mx-6 px-3 sm:px-4 py-2 text-white border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md duration-150`
+                          ? `cursor-pointer flex px-6 py-3 text-black border dark:text-gray-300 border-gray-300 dark:border-slate-600  dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`
+                          : `flex px-6 py-3 text-white border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`
                       } >
                       <BsArrowLeftShort size={20} className='mr-1 sm:mr-2' />
                       Cancel
@@ -444,12 +453,12 @@ const EditItemForm = ({ item }) => {
                     title="Save"
                     onClick={!isDelLoading ? onSaveUserClicked : undefined}
                     className={!isDelLoading
-                      ? `cursor-pointer flex px-3 sm:px-4 py-2 text-white border dark:text-gray-300 border-gray-200 dark:border-slate-600 bg-gray-600 dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md duration-150`
-                      : `flex px-3 sm:px-4 py-2 text-white border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md duration-150`
+                      ? `cursor-pointer flex px-3 sm:px-6 py-3 text-white border dark:text-gray-300 border-gray-200 dark:border-slate-600 bg-black dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150`
+                      : `flex px-3 sm:px-4 py-2 text-white border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150`
                     }
                   >
                     <AiOutlineSave size={20} className="mr-1 sm:mr-2" />
-                     Update
+                    Update
                   </span>
                 </div>
               </div>
