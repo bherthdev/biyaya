@@ -60,7 +60,7 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
         <>
 
 
-            <div className={`flex h-screen fixed w-80 border ${classToggleCart} z-20 px-4  flex-col justify-start border-e bg-white `}>
+            <div className={`flex h-screen bg-white fixed w-80 border ${classToggleCart} z-20 px-5  flex-col justify-start border-e bg-white `}>
                 <div className={`py-5 flex flex-col  gap-5`}>
                     <div className="flex justify-between items-center">
                         <h1 className={`text-3xl text-gray-700`}
@@ -142,7 +142,7 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
                     ))}
 
                 </div>
-                <div className={`  py-4  font-sans   sticky inset-x-0 bottom-0 border-t border-gray-100 `}>
+                <div className={` py-4  font-sans sticky bottom-0 border-t border-gray-100 `}>
                     <div className={`flex flex-col gap-5`}>
                         <div className="flex justify-between text-2xl font-medium">
                             <h1 className="text-gray-500">Total</h1>
