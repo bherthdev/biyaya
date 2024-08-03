@@ -5,19 +5,56 @@ import { useNavigate } from 'react-router-dom';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import iconItem from "../../assets/icon-item.svg"
 
-const MenuItem = ({ itemId, search }) => {
 
-    const { username } = useAuth();
+const MenuItem = ({ itemId, search, orderTransac, setOrderTransac, orderItems, setOrdersItems }) => {
+
 
     const item = useSelector((state) => selectItemById(state, itemId));
 
-    const navigate = useNavigate();
 
-    
+
+    const addToCart = (item) => {
+
+        const index = orderItems.findIndex(items => items.id === item.id)
+
+        const tempRows = [...orderItems]; // avoid direct state mutation
+        const tempObj = orderItems[index]; // copy state object at index to a temporary object
+
+        if (index !== -1) {
+
+
+            if (Number(tempObj.qty) >= 1) {
+
+                tempObj.qty = Number(tempObj.qty) + 1
+
+                tempRows[index] = tempObj;
+
+                tempObj.total = Number(tempObj.qty) * Number(tempObj.price)
+
+                setOrdersItems(tempRows)
+
+                 console.log(orderItems.reduce((totalOrder, item)=> totalOrder + item.total, 0))
+
+                setOrderTransac({...orderTransac, Total: orderItems.reduce((totalOrder, item)=> totalOrder + item.total, 0)})
+            }
+
+        } else {
+            setOrdersItems([...orderItems, { id: item.id, name: item.name, avatar: item.avatar, qty: 1, price: item.price, total: Number(item.price) }])
+            
+            setOrderTransac({...orderTransac, Total: orderTransac.Total + Number(item.price)})
+       
+        }
+
+       
+
+      
+
+    }
+
+
     if (item && item.status === "In Stock" && item.qty > 0) {
 
-        if (item.category === search) 
-        {
+        if (item.category === search) {
             return (
 
                 <div className="flex bg-white dark:bg-slate-800 rounded-3xl shadow-sm border-gray-200 dark:border-gray-800 p-4 text-center text-gray-800 dark:text-gray-200 hover:text-gray-500 dark:hover:text-gray-400">
@@ -33,7 +70,7 @@ const MenuItem = ({ itemId, search }) => {
                             />
                         </div>
 
-                        <div className="flex justify-center gap-8 items-center">
+                        {/* <div className="flex justify-center gap-8 items-center">
                             <div className=''>
                                 <label htmlFor="Quantity" className="sr-only"> Quantity </label>
 
@@ -56,22 +93,23 @@ const MenuItem = ({ itemId, search }) => {
                                     </span>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="w-full px-2 text-sm flex flex-col gap-3 items-start justify-between text-gray-500 dark:text-gray-400">
                         <div className='text-black text-lg text-left'>
                             <h1 className='font-bold'>{item.name}
                             </h1>
-                            <h1 className='mb-2'>₱ {Number(item.price).toFixed(2)}</h1>
+                            <h1 className='mb-2 text-base text-gray-500 font-semibold'>₱ {Number(item.price).toFixed(2)}</h1>
                             <p className='text-left text-xs text-gray-400'
-                               title={item.description}
+                                title={item.description}
                             >
-                            {item.description.length > 120 ? item.description.slice(0, 120) + '...' :  item.description} 
+                                {item.description.length > 120 ? item.description.slice(0, 120) + '...' : item.description}
                             </p>
                         </div>
                         <div className=''>
                             <span
                                 title="Add to cart"
+                                onClick={() => addToCart(item)}
 
                                 className={`cursor-pointer text-sx flex items-center gap-2 px-4 py-2 text-black border dark:text-gray-300 border-gray-300 dark:border-slate-600  dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
 

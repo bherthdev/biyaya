@@ -67,7 +67,7 @@ const DashHeader = ({ headerName }) => {
 
   window.addEventListener('scroll', changeNavbarColor);
 
-  const classNav = colorChange ? 'border-b z-40 sticky top-0 w-full dark:border-b-slate-800 ease-in-out duration-300' : 'ease-in-out duration-300'
+  const classNav = colorChange ? 'border-b z-10 sticky top-0 w-full dark:border-b-slate-800 ease-in-out duration-300' : 'ease-in-out duration-300'
  
 
   const content = (

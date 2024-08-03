@@ -3,9 +3,14 @@ import DashHeader from "./DashHeader";
 import { SideMenu } from "./SideMenu";
 import { useState } from "react";
 import { Cart } from "../features/pos/Cart";
+import Order from "../features/pos/Order"
 
 
 const DashLayout = () => {
+
+  const {orderTransac, orderItems, setOrdersItems} = Order()
+
+  console.log(orderItems, orderTransac)
 
   const [toggleSideMenu, setToggleSideMenu] = useState(true)
   const [toggleCart, setToggleCart] = useState(false)
@@ -24,7 +29,7 @@ const DashLayout = () => {
             
           <Outlet />
         </div>
-        <Cart toggleCart={toggleCart}/>
+        {/* <Cart toggleCart={toggleCart} orderItems={orderItems} orderTransac={orderTransac} setOrdersItems={setOrdersItems}/> */}
       </div>
     </>
   )

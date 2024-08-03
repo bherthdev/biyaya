@@ -1,13 +1,26 @@
 import React, { useState } from 'react'
-import { FaMinus, FaPlus } from 'react-icons/fa'
-import biyayaLogo from "../../assets/biyaya_logo.png";
 import { useGetItemsQuery } from '../items/itemsApiSlice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import PageLoader from "../../components/PageLoader";
 import MenuItem from './MenuItem';
+import Order from "./Order"
+import { Cart } from './Cart';
 
 
 const POS = () => {
+
+    const { orderTransac, setOrderTransac, orderItems, setOrdersItems } = Order()
+    
+    const [menuItems, setMenuItems ] = useState([])
+
+    const item = {
+        id:'',
+        name:'',
+        desc:'',
+        avatar:'',
+        qty:'',
+        price:''
+    }
 
     const [search, setsearch] = useState("Coffee");
 
@@ -38,13 +51,16 @@ const POS = () => {
 
     if (isSuccess) {
         const { ids } = items;
-        const menuContent = ids?.length && ids.map((itemId) => <MenuItem key={itemId} itemId={itemId} search={search} />)
+
+        const menuContent = ids?.length && ids.map((itemId) => <MenuItem key={itemId} itemId={itemId} search={search} orderItems={orderItems} setOrderTransac={setOrderTransac}  orderTransac={orderTransac} setOrdersItems={setOrdersItems} />)
 
 
 
 
         content = (
             <>
+                <Cart toggleCart={true} orderTransac={orderTransac} setOrderTransac={setOrderTransac} orderItems={orderItems} setOrdersItems={setOrdersItems}/>
+
                 <div aria-label="Page Header" className="bg-[#F1F1F1] h-screen">
                     <div className="mx-auto max-w-screen-xl px-4 py-5 sm:px-6 lg:px-5">
                         <div className="mt-2 ">
@@ -78,7 +94,7 @@ const POS = () => {
                             </div>
 
                             <p className="text-xl mt-10 font-medium  text-gray-700 sm:text-2xl dark:text-gray-200">
-                                Coffee menu
+                                {search} menu
                             </p>
 
                             <div className="mx-auto max-w-screen-xl mt-10">
