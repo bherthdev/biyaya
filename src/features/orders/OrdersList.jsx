@@ -13,11 +13,11 @@ import { IoMdAdd } from "react-icons/io";
 const OrdersList = () => {
 
   const [search, setsearch] = useState("");
-  const columnsArray = ["ITEM NAME", "DESCRIPTION", "QTY", "PRICE", "CATEGORY", "STATUS"];
+  const columnsArray = ["ORDER#/TYPE", "DATE/TIME", "NO. OF ITEMS", "TOTAL", "BARISTA",""];
 
 
   const navigate = useNavigate();
-  
+
   const {
     data: orders,
     isLoading,
@@ -136,7 +136,7 @@ const OrdersList = () => {
           <div className="sm:flex justify-between">
             <div className="flex justify-between items-center">
               <h1 className="text-xl font-semibold  text-gray-500  dark:text-gray-400">
-                Item List
+                Order List
               </h1>
               <span
                 onClick={() => navigate("/dashboard/items/new")}
@@ -153,7 +153,7 @@ const OrdersList = () => {
                   Search
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none shrink-0">
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-5 pointer-events-none shrink-0">
                     <svg
                       className="w-4 h-4  text-gray-500 dark:text-gray-400"
                       xmlns="http://www.w3.org/2000/svg"
@@ -173,7 +173,7 @@ const OrdersList = () => {
                   <input
                     type="text"
                     id="table-search"
-                    className="w-full pl-10 p-2 block py-4 px-3 text-sm font-normal bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700 outline-none focus:border-gray-300  focus:shadow-sm rounded-lg"
+                    className="w-full pl-10 p-2 block py-4 px-6 text-sm font-normal bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700 outline-none focus:border-gray-300  focus:shadow-sm rounded-xl"
                     placeholder="Search..."
                     value={search}
                     onChange={(e) => handleSearch(e.target.value)}
@@ -181,7 +181,7 @@ const OrdersList = () => {
                 </div>
               </div>
 
-              <div className="flex">
+              {/* <div className="flex">
                 <span
                   onClick={() => navigate("/dashboard/items/new")}
                   title='Add New Item'
@@ -190,7 +190,7 @@ const OrdersList = () => {
                   <IoMdAdd size={19} />
                   Add Item
                 </span>
-              </div>
+              </div> */}
             </div>
           </div>
 

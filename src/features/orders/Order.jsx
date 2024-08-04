@@ -21,70 +21,48 @@ const Order = ({ orderId, search }) => {
       order.dateTime.toLowerCase().indexOf(search.toLowerCase()) > -1
     ) {
 
-      const handleEdit = () => navigate(`/dashboard/orders/${orderId}`);
+      // const handleEdit = () => navigate(`/dashboard/orders/${orderId}`);
 
       return (
-        <tr onClick={handleEdit} className="hover:bg-slate-200 text-xl dark:hover:bg-[#151e30] cursor-pointer">
+        <tr className=" text-xl dark:hover:bg-[#151e30] ">
 
           <td
             className={`sm:flex gap-4 whitespace-nowrap px-6 py-6 font-medium text-gray-900 dark:text-gray-300`}
           >
-            <div className="flex items-center">
-              {/* <div className="flex-shrink-0 h-16 w-16">
-                <img
-                  alt="Man"
-                  src={
-                    item.avatar
-                      ? item.avatar
-                      : `https://images.unsplash.com/photo-1600486913747-55e5470d6f40?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80`
-                  }
-                  className="h-16 w-16 rounded-full border border-slate-300  dark:border-slate-600 object-cover"
-                />
-              </div> */}
-              <div className="ml-4">
-                <p className="capitalize">{order.orderNo} </p>
-              </div>
+            <div className="flex flex-col text-left">
+              <h1 className="font-bold">{order.orderNo} </h1>
+              <p className="text-gray-600 text-lg font-normal">{order.orderType} </p>
+
             </div>
 
 
           </td>
 
           <td className={`whitespace-pre-wrap  px-6 py-6  text-gray-900 dark:text-gray-300`}>
-            <div className="flex-wrap">
-              <p className=" text-base text-gray-700 dark:text-gray-500"
-                title={order.barista}
-              >
-                {order.barista.slice(0, 30)}...
-              </p>
-            </div>
+            <p className="text-lg text-gray-700 dark:text-gray-500">
+              {order.dateTime}
+            </p>
           </td>
 
           <td className={`whitespace-nowrap px-6 py-6  text-gray-900 dark:text-gray-300`}>
-            <div className="flex-nowrap">
-              <p className="capitalize">{order.orderType} </p>
-
-            </div>
+            <p className="">{order.items.reduce((totalItem, item) => totalItem + Number(item.qty), 0)} </p>
           </td>
-          <td className={`whitespace-nowrap px-6 py-6 font-semibold  text-gray-900 dark:text-gray-300`}>
-            <div className="flex-nowrap">
-              <p className="capitalize">₱ {Number(order.total).toFixed(2)} </p>
-
-            </div>
+          <td className={`whitespace-nowrap px-6 py-6 font-bold  text-gray-900 dark:text-gray-300`}>
+            <p className="">₱ {Number(order.total).toFixed(2)} </p>
           </td>
 
-          <td className={`whitespace-nowrap px-6 py-6 text-base  text-gray-900 dark:text-gray-300 `}>
-            {order.dateTime}
+          <td className={`whitespace-nowrap px-6 py-6 text-lg  text-gray-900 dark:text-gray-300 `}>
+            {order.barista}
           </td>
+          <td className={`whitespace-nowrap px-6 py-6 flex flex-col items-end justify-end text-lg  text-gray-900 dark:text-gray-300 `}>
+            <span
 
-          <td className={`whitespace-nowrap px-6 py-6 font-medium text-gray-600 dark:text-gray-500 `}>
-            {/* <span
-              className={` ${order.status === "In Stock"
-                ? "bg-green-200 text-green-900 font-semibold dark:bg-green-900 dark:text-green-200"
-                : "bg-red-200 text-red-900 font-semibold dark:bg-red-900 dark:text-red-200"
-                }  inline-flex items-center justify-center px-3 py-2 text-sm font-normal leading-none  rounded-full`}
+              title='Receipt'
+              className="items-center cursor-pointer  px-8 py-3 text-black border dark:text-gray-300 font-medium border-gray-300 dark:border-slate-600  hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150"
             >
-              {item.status === "In Stock" ? "In Stock" : "Out of Stock"}
-            </span> */}
+
+              Receipt
+            </span>
           </td>
         </tr>
       );

@@ -63,12 +63,12 @@ const DashHeader = ({ headerName }) => {
   if (isError) return <p>Error: {error.data?.message}</p>;
 
 
-  
+
 
   window.addEventListener('scroll', changeNavbarColor);
 
   const classNav = colorChange ? 'border-b z-10 sticky top-0 w-full dark:border-b-slate-800 ease-in-out duration-300' : 'ease-in-out duration-300'
- 
+
 
   const content = (
     <>
@@ -81,9 +81,13 @@ const DashHeader = ({ headerName }) => {
               <span className="inline-block text-gray-700 dark:text-gray-200  text-4xl font-semibold">
                 {headerName === `/dashboard`
                   ? `Dashboard`
-                  : headerName === `/dashboard/items` 
-                  ? `Inventory`
-                  : `Settings`
+                  : headerName === `/dashboard/items`
+                    ? `Inventory`
+                    : headerName === `/dashboard/orders`
+                      ? `Orders`
+                      : headerName === `/dashboard/pos`
+                        ? `POS`
+                        : `Settings`
                 }
               </span>
             </Link>
