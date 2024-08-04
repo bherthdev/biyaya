@@ -60,8 +60,8 @@ const POS = () => {
             <>
                 <Cart toggleCart={location.pathname == '/dashboard/pos'} orderTransac={orderTransac} setOrderTransac={setOrderTransac} orderItems={orderItems} setOrdersItems={setOrdersItems}/>
 
-                <div aria-label="Page Header" className="bg-[#F1F1F1] h-screen">
-                    <div className="mx-auto max-w-screen-xl px-4 py-5 sm:px-6 lg:px-5">
+                <div aria-label="Page Header" className="bg-[#F1F1F1] h-full">
+                    <div className="mx-auto max-w-screen-xl px-4 h-full py-5 sm:px-6 lg:px-5">
                         <div className="mt-2 ">
 
                             <div className='flex items-center gap-5'>

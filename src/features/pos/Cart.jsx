@@ -63,7 +63,7 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
         <>
 
 
-            <div className={`flex h-full bg-white fixed w-80 border ${classToggleCart} z-20 px-5  flex-col justify-between border-e bg-white `}>
+            <div className={`hidden sm:flex h-full bg-white fixed w-80 border ${classToggleCart} z-20 px-5  flex-col justify-between border-e bg-white `}>
                 <div className={`py-5 flex flex-col  gap-5`}>
                     <div className="flex justify-between items-center">
                         <h1 className={`text-3xl text-gray-700`}

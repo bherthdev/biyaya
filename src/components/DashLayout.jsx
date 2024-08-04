@@ -23,7 +23,7 @@ const DashLayout = () => {
     <>
       <div className="flex">
         <SideMenu toggleSideMenu={toggleSideMenu} setToggleSideMenu={setToggleSideMenu} setHeaderName={setHeaderName} setToggleCart={setToggleCart}/>
-        <div aria-label="Site Header" className={`${classToggleSideMenu} ${classToggleCart} border-b dark:border-gray-800 bg-[#F1F1F1] h-full w-full`}>
+        <div aria-label="Site Header" className={`${classToggleSideMenu} ${classToggleCart} dark:border-gray-800 h-full w-full`}>
            <DashHeader toggleSideMenu={toggleSideMenu} headerName={headerName} toggleCart={toggleCart} />
             
           <Outlet />

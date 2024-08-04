@@ -24,7 +24,7 @@ import POS from "./features/pos/POS";
 
 function App() {
   return (
-    <div className="h-full w-full bg-gray-50 dark:bg-slate-900">
+    <div className="h-full w-full  dark:bg-slate-900">
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Login />} />
