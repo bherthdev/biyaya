@@ -4,7 +4,9 @@ import {
 } from "@reduxjs/toolkit";
 import { apiSlice } from "../../app/api/apiSlice"
 
-const ordersAdapter = createEntityAdapter({})
+const ordersAdapter = createEntityAdapter({
+    sortComparer: (a, b) => new Date(b.dateTime) - new Date(a.dateTime),
+})
 
 const initialState = ordersAdapter.getInitialState()
 

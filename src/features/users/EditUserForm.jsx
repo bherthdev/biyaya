@@ -120,7 +120,7 @@ const EditUserForm = ({ user }) => {
       });
       if (result) {
         toast.success(result.data.message, {
-          position: "bottom-left",
+          position: "bottom-right",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -136,7 +136,7 @@ const EditUserForm = ({ user }) => {
       const result = await updateUser({ id: user.id, name, position, username, roles, active, image });
       if (result) {
         toast.success(result.data.message, {
-          position: "bottom-left",
+          position: "bottom-right",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -157,7 +157,7 @@ const EditUserForm = ({ user }) => {
       const result = await deleteUser({ id: user.id })
       if (result?.error) {
         toast.error(result.error, {
-          position: "bottom-left",
+          position: "bottom-right",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -169,7 +169,7 @@ const EditUserForm = ({ user }) => {
 
       } else {
         toast.success(result.data, {
-          position: "bottom-left",
+          position: "bottom-right",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,

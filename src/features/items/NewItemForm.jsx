@@ -86,7 +86,7 @@ const NewUserForm = () => {
       const result = await addNewItem({ name, description, category, qty, price, status, image })
       if (result?.error) {
         toast.error(result.error.error, {
-          position: "bottom-left",
+          position: "bottom-right",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -98,7 +98,7 @@ const NewUserForm = () => {
 
       } else {
         toast.success(result.data.message, {
-          position: "bottom-left",
+          position: "bottom-right",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,

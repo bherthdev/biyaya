@@ -148,7 +148,7 @@ const OrdersList = () => {
             </div>
 
             <div className="sm:flex  mt-6 sm:mt-0">
-              <div className="pr-0 sm:pr-4 ">
+              <div className="">
                 <label htmlFor="table-search" className="sr-only">
                   Search
                 </label>
@@ -180,17 +180,6 @@ const OrdersList = () => {
                   />
                 </div>
               </div>
-
-              {/* <div className="flex">
-                <span
-                  onClick={() => navigate("/dashboard/items/new")}
-                  title='Add New Item'
-                  className="hidden sm:flex items-center cursor-pointer  px-8 py-3 text-black border dark:text-gray-300 font-medium border-gray-300 dark:border-slate-600  hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150"
-                >
-                  <IoMdAdd size={19} />
-                  Add Item
-                </span>
-              </div> */}
             </div>
           </div>
 

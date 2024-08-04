@@ -109,7 +109,7 @@ const EditItemForm = ({ item }) => {
 
       if (result?.error) {
         toast.error(result.error, {
-          position: "bottom-left",
+          position: "bottom-right",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -121,7 +121,7 @@ const EditItemForm = ({ item }) => {
 
       } else {
         toast.success(result.data, {
-          position: "bottom-left",
+          position: "bottom-right",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -143,7 +143,7 @@ const EditItemForm = ({ item }) => {
       const result = await deleteItem({ id: item.id })
       if (result?.error) {
         toast.error(result.error, {
-          position: "bottom-left",
+          position: "bottom-right",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -155,7 +155,7 @@ const EditItemForm = ({ item }) => {
 
       } else {
         toast.success(result.data, {
-          position: "bottom-left",
+          position: "bottom-right",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,

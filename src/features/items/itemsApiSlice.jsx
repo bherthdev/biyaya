@@ -4,7 +4,15 @@ import {
 } from "@reduxjs/toolkit";
 import { apiSlice } from "../../app/api/apiSlice"
 
-const itemsAdapter = createEntityAdapter({})
+const itemsAdapter = createEntityAdapter({
+    sortComparer: (a, b) => {
+        const statusOrder = {
+          "In Stock": 1,
+          "Out of Stock": 2,
+        }
+        return statusOrder[a.status] - statusOrder[b.status];
+      },
+})
 
 const initialState = itemsAdapter.getInitialState()
 
