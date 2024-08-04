@@ -97,10 +97,11 @@ const MenuItem = ({ itemId, search, orderTransac, setOrderTransac, orderItems, s
                    
                     </div>
                     <div className="w-full  text-sm font-normal mt-3 gap-4 flex flex-col items-start justify-between text-gray-500 dark:text-gray-400">
-                        <div className='text-black text-lg text-left '>
-                            <h1 className='font-bold mb-3'>{item.name}
-                            <span className=' ml-3 text-base text-gray-500 font-semibold'>₱ {Number(item.price).toFixed(2)}</span>
+                        <div className='text-black text-lg text-center '>
+                            
+                            <h1 className='font-bold '>{item.name}
                             </h1>
+                            <p className='mb-3 text-base text-gray-500 font-semibold'>₱ {Number(item.price).toFixed(2)}</p>
                             <p className='text-left text-xs text-gray-400'
                                 title={item.description}
                             >
