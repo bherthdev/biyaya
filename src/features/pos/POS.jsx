@@ -96,13 +96,10 @@ const POS = () => {
                                 {search} menu
                             </p>
 
-                            <div className="mx-auto max-w-screen-xl mt-10">
+                            <div className="mx-auto max-w-screen-xl mt-8">
                                 <div className="mt-4 sm:mt-4">
-                                    <div className="font-normal grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-4 xl:grid-cols-4 xl:gap-8 ">
-
+                                    <div className="font-normal grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 xl:gap-6 ">
                                         {menuContent}
-
-
                                     </div>
                                 </div>
                             </div>

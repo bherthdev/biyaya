@@ -33,21 +33,21 @@ const MenuItem = ({ itemId, search, orderTransac, setOrderTransac, orderItems, s
 
                 setOrdersItems(tempRows)
 
-                 console.log(orderItems.reduce((totalOrder, item)=> totalOrder + item.total, 0))
+                console.log(orderItems.reduce((totalOrder, item) => totalOrder + item.total, 0))
 
-                setOrderTransac({...orderTransac, Total: orderItems.reduce((totalOrder, item)=> totalOrder + item.total, 0)})
+                setOrderTransac({ ...orderTransac, Total: orderItems.reduce((totalOrder, item) => totalOrder + item.total, 0) })
             }
 
         } else {
             setOrdersItems([...orderItems, { id: item.id, name: item.name, avatar: item.avatar, qty: 1, price: item.price, total: Number(item.price) }])
-            
-            setOrderTransac({...orderTransac, Total: orderTransac.Total + Number(item.price)})
-       
+
+            setOrderTransac({ ...orderTransac, Total: orderTransac.Total + Number(item.price) })
+
         }
 
-       
 
-      
+
+
 
     }
 
@@ -94,22 +94,22 @@ const MenuItem = ({ itemId, search, orderTransac, setOrderTransac, orderItems, s
                                 </div>
                             </div>
                         </div> */}
-                   
+
                     </div>
                     <div className="w-full  text-sm font-normal mt-3 gap-4 flex flex-col items-start justify-between text-gray-500 dark:text-gray-400">
                         <div className='text-black text-lg text-center '>
-                            
+
                             <h1 className='font-bold '>{item.name}
                             </h1>
                             <p className='mb-3 text-base text-gray-500 font-semibold'>₱ {Number(item.price).toFixed(2)}</p>
                             <p className='text-left text-xs text-gray-400'
                                 title={item.description}
                             >
-                                {item.description.length > 120 ? item.description.slice(0, 120) + '...' : item.description}
+                                {item.description.length > 110 ? item.description.slice(0, 110) + '...' : item.description}
                             </p>
                         </div>
-                       
-                    <div className='flex justify-start items-center w-full'>
+
+                        <div className='flex justify-start items-center w-full'>
                             <span
                                 title="Add to cart"
                                 onClick={() => addToCart(item)}
@@ -121,7 +121,7 @@ const MenuItem = ({ itemId, search, orderTransac, setOrderTransac, orderItems, s
                             </span>
                         </div>
                     </div>
-                    
+
 
                 </div>
 
