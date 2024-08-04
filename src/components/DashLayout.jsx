@@ -10,13 +10,12 @@ const DashLayout = () => {
 
   const {orderTransac, orderItems, setOrdersItems} = Order()
 
-  console.log(orderItems, orderTransac)
 
   const [toggleSideMenu, setToggleSideMenu] = useState(true)
-  const [toggleCart, setToggleCart] = useState(false)
+  const [toggleCart, setToggleCart] = useState(location.pathname == '/dashboard/pos')
   const [headerName, setHeaderName] = useState(location.pathname)
 
- 
+
   const classToggleSideMenu = toggleSideMenu ? `ml-44 ease-in-out duration-300` : `ml-16 ease-in-out duration-300`
   const classToggleCart = toggleCart ? 'mr-80 ease-in-out duration-300' : 'mr-0 ease-in-out duration-300'
 

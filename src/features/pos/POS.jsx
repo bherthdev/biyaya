@@ -11,7 +11,6 @@ const POS = () => {
 
     const { orderTransac, setOrderTransac, orderItems, setOrdersItems } = Order()
     
-    const [menuItems, setMenuItems ] = useState([])
 
     const item = {
         id:'',
@@ -59,7 +58,7 @@ const POS = () => {
 
         content = (
             <>
-                <Cart toggleCart={true} orderTransac={orderTransac} setOrderTransac={setOrderTransac} orderItems={orderItems} setOrdersItems={setOrdersItems}/>
+                <Cart toggleCart={location.pathname == '/dashboard/pos'} orderTransac={orderTransac} setOrderTransac={setOrderTransac} orderItems={orderItems} setOrdersItems={setOrdersItems}/>
 
                 <div aria-label="Page Header" className="bg-[#F1F1F1] h-screen">
                     <div className="mx-auto max-w-screen-xl px-4 py-5 sm:px-6 lg:px-5">
@@ -99,7 +98,7 @@ const POS = () => {
 
                             <div className="mx-auto max-w-screen-xl mt-10">
                                 <div className="mt-4 sm:mt-4">
-                                    <div className="font-normal grid grid-cols-1 gap-4 sm:grid-cols-3">
+                                    <div className="font-normal grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-4 xl:grid-cols-4 xl:gap-8 ">
 
                                         {menuContent}
 

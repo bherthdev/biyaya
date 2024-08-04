@@ -11,21 +11,22 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
 
     const inputChange = (e) => {
         setOrderTransac({ ...orderTransac, Cash: e.target.value, Change: Number(e.target.value) - Number(orderTransac.Total) })
-        Number(e.target.value) >= Number(orderTransac.Total) ? setEnableSaveOrder(true): setEnableSaveOrder(false)
+        Number(e.target.value) >= Number(orderTransac.Total) ? setEnableSaveOrder(true) : setEnableSaveOrder(false)
+
     }
 
     const computeTotal = () => {
-        orderItems.length && setPlaceOrder(placeOrder => !placeOrder)
+        if (orderItems.length) {
+            setPlaceOrder(placeOrder => !placeOrder)
+            setOrderTransac({ ...orderTransac, Items: orderItems })
+        }
+
     }
 
-    const saveOrder = () =>{
-        setOrderTransac({...orderTransac, Items: [...orderItems, orderItems]})
-        console.log(orderTransac)
+    const saveOrder = () => {
+
+     enableSaveOrder && console.log(orderTransac, orderItems)
     }
-
-
-
-    const classToggleCart = toggleCart ? ' ease-in-out duration-300 right-0 top-0' : ' right-[-100%]  ease-in-out duration-300'
 
 
     const updateItems = (id, option) => {
@@ -47,20 +48,22 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
         setOrdersItems(tempRows)
 
         // update computation
-        if(orderItems.length > 0 ) {
-            setPlaceOrder(false) 
-            setEnableSaveOrder(false) 
-            setOrderTransac({...orderTransac, Total: orderItems.reduce((totalOrder, item) => totalOrder + item.total, 0) ,  Cash: 0, Change: 0 })
+        if (orderItems.length > 0) {
+            setPlaceOrder(false)
+            setEnableSaveOrder(false)
+            setOrderTransac({ ...orderTransac, Total: orderItems.reduce((totalOrder, item) => totalOrder + item.total, 0), Cash: 0, Change: 0 })
         }
 
     }
 
 
+    const classToggleCart = toggleCart ? ' ease-in-out duration-300 right-0 top-0 bottom-0' : ' right-[-100%]  ease-in-out duration-300'
+
     const content = (
         <>
 
 
-            <div className={`flex h-screen bg-white fixed w-80 border ${classToggleCart} z-20 px-5  flex-col justify-start border-e bg-white `}>
+            <div className={`flex h-full bg-white fixed w-80 border ${classToggleCart} z-20 px-5  flex-col justify-between border-e bg-white `}>
                 <div className={`py-5 flex flex-col  gap-5`}>
                     <div className="flex justify-between items-center">
                         <h1 className={`text-3xl text-gray-700`}
@@ -167,7 +170,7 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
                                     <h1 className="text-gray-500">Change</h1>
                                     <p className="text-red-800 font-medium">₱ {Number(orderTransac.Change).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
                                 </div>
-                                <span    
+                                <span
                                     onClick={saveOrder}
                                     title="Place an order"
                                     disabled={enableSaveOrder}
