@@ -5,8 +5,11 @@ import DashLayout from "./components/DashLayout";
 import Welcome from "./features/auth/Welcome";
 import NotesList from './features/notes/NotesList'
 import UsersList from './features/users/UsersList'
+import OrdersList from './features/orders/OrdersList'
 import EditUser from "./features/users/EditUser";
+import EditOrder from "./features/orders/EditOrder";
 import NewUserForm from "./features/users/NewUserForm";
+import NewOrderForm from "./features/orders/NewOrderForm";
 import ItemsList from './features/items/ItemsList'
 import EditItem from "./features/items/EditItem";
 import NewItemForm from "./features/items/NewItemForm";
@@ -59,6 +62,14 @@ function App() {
                       <Route index element={<> <ToastContainer /> <POS /></>} />
                       <Route path=":id" element={<> <ToastContainer /><EditItem /> </>} />
                       <Route path="new" element={<> <ToastContainer /><NewItemForm /> </>} />
+                    </Route>
+                  </Route>
+
+                  <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin]} />}>
+                    <Route path="orders">
+                      <Route index element={<> <ToastContainer /> <OrdersList /></>} />
+                      {/* <Route path=":id" element={<> <ToastContainer /><EditOrder /> </>} />
+                      <Route path="new" element={<> <ToastContainer /><NewOrderForm /> </>} /> */}
                     </Route>
                   </Route>
 

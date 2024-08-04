@@ -107,8 +107,13 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
               </div>
             </li>
 
-            <li className="font-sans border-r-gray-800 font-medium px-4 py-4 cursor-pointer hover:bg-gray-100 text-gray-700">
-              <div className={toggleSideMenu ? `flex gap-5` : `t group relative flex gap-5`}>
+            <li className={
+              location.pathname === '/dashboard/orders'
+                ? `border-r-[4px] border-r-gray-800 bg-gray-100 px-4 py-4 cursor-pointer font-sans font-medium  text-gray-700`
+                : ` border-r-gray-800  px-4 py-4 cursor-pointer hover:bg-gray-100 font-sans font-medium  text-gray-700`
+            }
+              onClick={()=> navigateMenu("/dashboard/orders")}
+            ><div className={toggleSideMenu ? `flex gap-5` : `t group relative flex gap-5`}>
                 <div className="text-gray-500">
                   <IoReceiptOutline size={25} />
                 </div>

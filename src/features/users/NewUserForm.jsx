@@ -103,7 +103,7 @@ const NewUserForm = () => {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: localStorage.theme,
+          theme: "dark",
         })
 
       } else {
@@ -115,7 +115,7 @@ const NewUserForm = () => {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: localStorage.theme,
+          theme: "dark",
         })
       }
     }

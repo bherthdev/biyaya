@@ -32,16 +32,13 @@ const MenuItem = ({ itemId, search, orderTransac, setOrderTransac, orderItems, s
                 tempObj.total = Number(tempObj.qty) * Number(tempObj.price)
 
                 setOrdersItems(tempRows)
-
-                console.log(orderItems.reduce((totalOrder, item) => totalOrder + item.total, 0))
-
-                setOrderTransac({ ...orderTransac, Total: orderItems.reduce((totalOrder, item) => totalOrder + item.total, 0) })
+                setOrderTransac({ ...orderTransac, total: orderItems.reduce((totalOrder, item) => totalOrder + item.total, 0) })
             }
 
         } else {
             setOrdersItems([...orderItems, { id: item.id, name: item.name, avatar: item.avatar, qty: 1, price: item.price, total: Number(item.price) }])
 
-            setOrderTransac({ ...orderTransac, Total: orderTransac.Total + Number(item.price) })
+            setOrderTransac({ ...orderTransac, total: orderTransac.total + Number(item.price) })
 
         }
 

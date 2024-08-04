@@ -127,7 +127,7 @@ const EditUserForm = ({ user }) => {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: localStorage.theme,
+          theme: "dark",
         });
       }
 
@@ -143,7 +143,7 @@ const EditUserForm = ({ user }) => {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: localStorage.theme,
+          theme: "dark",
         });
       }
     }

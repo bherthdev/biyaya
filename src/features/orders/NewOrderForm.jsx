@@ -1,63 +1,44 @@
-/* eslint-disable array-callback-return */
-import { useState, useEffect } from "react";
-import { useUpdateItemMutation, useDeleteItemMutation } from "./itemsApiSlice";
+import { useEffect, useState } from "react";
+import { useAddNewOrderMutation } from "./ordersApiSlice";
 import { useNavigate } from "react-router-dom";
 import { ROLES } from "../../config/roles";
-import { AiOutlineCloseCircle, AiOutlineEye, AiOutlineEyeInvisible, AiOutlineSave, AiOutlineWarning } from "react-icons/ai";
+import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineSave } from "react-icons/ai";
 import Image from "../../components/Image";
 import Spenner from "../../components/Spenner";
-import useAuth from "../../hooks/useAuth";
-import { AiOutlineUserDelete } from 'react-icons/ai';
 import { BsArrowLeftShort } from 'react-icons/bs';
 import { MdDelete } from 'react-icons/md';
 import { RiAddFill } from 'react-icons/ri';
-import { RiAttachment2 } from 'react-icons/ri';
-import Thead from "../../components/Thead"
+import Thead from "../../components/Thead";
 import { toast } from 'react-toastify';
-import Modal from "../../components/Modal";
 import iconPicture from "../../assets/icon-item.svg"
 
 
-const EditItemForm = ({ item }) => {
+const USER_REGEX = /^[A-z]{3,20}$/;
+const PWD_REGEX = /^[A-z0-9!@#$%]{4,12}$/;
+
+const NewUserForm = () => {
 
 
-  const { id } = useAuth(); //current user id
+  const [btnCancel, setBtnCancel] = useState(false)
 
-  const [updateItem, { isLoading, isSuccess, isError, error }] =
-    useUpdateItemMutation();
-
-  const [
-    deleteItem,
-    { isSuccess: isDelSuccess, isLoading: isDelLoading, },
-  ] = useDeleteItemMutation();
+  const [addNewOrder, { isLoading, isSuccess, isError, error }] =
+  useAddNewOrderMutation();
 
   const navigate = useNavigate();
 
-  const [name, setName] = useState(item.name);
-  const [description, setDescription] = useState(item.description)
-  const [category, setCategory] = useState(item.category)
-  const [qty, setQTY] = useState(item.qty)
-  const [price, setPrice] = useState(item.price)
-  const [status, setStatus] = useState(item.status)
-  const [roles, setRoles] = useState(item.roles)
+  const [name, setName] = useState("")
+  const [description, setDescription] = useState("")
+  const [category, setCategory] = useState("")
+  const [qty, setQTY] = useState("")
+  const [price, setPrice] = useState("")
+  const [status, setStatus] = useState("")
   const [imageView, setImage] = useState("")
-  const [image, setDataImage] = useState();
-  const [spinText, setSpinText] = useState('')
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-
-  const handleModalOpen = () => {
-    setIsModalOpen(true)
-  }
-
-  const handleModalClose = () => {
-    setIsModalOpen(false)
-  }
-
+  const [image, setDataImage] = useState()
+  const [roles, setRoles] = useState("")
 
 
   useEffect(() => {
-    if (isSuccess || isDelSuccess) {
+    if (isSuccess) {
       setName("")
       setDescription("")
       setCategory("")
@@ -68,81 +49,43 @@ const EditItemForm = ({ item }) => {
       setDataImage()
       navigate("/dashboard/items")
     }
-  }, [isSuccess, isDelSuccess, navigate]);
+  }, [isSuccess, navigate]);
 
-
-  const onNameChanged = (e) => setName(e.target.value);
+  const onNameChanged = (e) => setName(e.target.value)
   const onDescriptionChanged = (e) => setDescription(e.target.value)
   const onCategoryChanged = (e) => setCategory(e.target.value)
   const onQTYChanged = (e) => setQTY(e.target.value)
   const onPriceChanged = (e) => setPrice(e.target.value)
   const onStatusChanged = (e) => setStatus(e.target.value)
+  const onRolesChanged = (e) => setRoles(e.target.value)
 
   const onImageChanged = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files[0]
     setFileToBase(file);
   };
 
   const setFileToBase = (file) => {
-    const reader = new FileReader();
+    const reader = new FileReader()
     reader.readAsDataURL(file);
     reader.onloadend = () => {
-      setDataImage(reader.result);
-    };
-  };
-
-
-  const onSaveUserClicked = async () => {
-
-    if (!isLoading) {
-      setSpinText('Updating...')
-      const result = await updateItem({
-        id: item.id,
-        name,
-        description,
-        category,
-        qty,
-        price,
-        status,
-        image,
-      });
-
-      if (result?.error) {
-        toast.error(result.error, {
-          position: "bottom-left",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
-
-      } else {
-        toast.success(result.data, {
-          position: "bottom-left",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
-      }
+      setDataImage(reader.result)
     }
 
-  };
+  }
 
-  const onDeleteUserClicked = async () => {
 
-    if (!isDelLoading) {
-      setIsModalOpen(false)
-      setSpinText('Deleting...')
-      const result = await deleteItem({ id: item.id })
+
+  const canSave =
+    [name, description, category, image].every(Boolean) && !isLoading;
+
+  const onSaveUserClicked = async (e) => {
+    e.preventDefault()
+
+    if (canSave) {
+
+      const result = await addNewItem({ name, description, category, qty, price, status, image })
       if (result?.error) {
-        toast.error(result.error, {
+        toast.error(result.error.error, {
           position: "bottom-left",
           autoClose: 5000,
           hideProgressBar: false,
@@ -151,10 +94,10 @@ const EditItemForm = ({ item }) => {
           draggable: true,
           progress: undefined,
           theme: localStorage.theme,
-        });
+        })
 
       } else {
-        toast.success(result.data, {
+        toast.success(result.data.message, {
           position: "bottom-left",
           autoClose: 5000,
           hideProgressBar: false,
@@ -163,13 +106,11 @@ const EditItemForm = ({ item }) => {
           draggable: true,
           progress: undefined,
           theme: localStorage.theme,
-        });
+        })
       }
-
-
     }
-
   };
+
 
   const options = Object.values(ROLES).map((role) => {
     return (
@@ -180,12 +121,9 @@ const EditItemForm = ({ item }) => {
     );
   });
 
-
-
   const errClass = isError
     ? "text-gray-900 sm:text-2xl dark:text-gray-200"
     : "offscreen";
-
 
   async function readImage(e, func) {
     const file = e.target.files[0];
@@ -195,34 +133,27 @@ const EditItemForm = ({ item }) => {
       let base64String = window.btoa(binaryData);
       func(base64String);
     };
+
     let image = reader.readAsBinaryString(file);
+
     return image;
   }
 
-  const btnClass = id !== item._id ? 'flex justify-between' : null;
 
-  const content = (
+
+  return (
     <>
-      <Modal isOpen={isModalOpen} onClose={handleModalClose} onOk={onDeleteUserClicked}>
-        <div className="bg-white dark:bg-gray-700 p-4">
-          <h2 className="text-lg font-bold mb-4 text-gray-800 dark:text-gray-300"><AiOutlineWarning size={50} className="m-auto text-red-600" /></h2>
-          <h2 className="text-lg font-bold mb-4 text-gray-800 dark:text-gray-300">{name}</h2>
-          <p className=" text-gray-800 dark:text-gray-400">Do you really want to delete this Item?</p>
-        </div>
-      </Modal>
-
-      <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8 ">
-        <h1 className="mb-2 text-2xl font-bold text-gray-900 sm:text-2xl dark:text-gray-200 ">
-          {id === item._id ? 'Account Setting' : 'Edit Item'}
+      <div className="mx-auto h-screen max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8 ">
+        <h1 className="mb-2 text-2xl font-bold text-gray-600 sm:text-2xl dark:text-gray-200">
+          New Item
         </h1>
         <p className={errClass}>{error?.data?.message}</p>
 
-        <div className="mt-5 md:col-span-2 ">
-          <form onSubmit={(e) => e.preventDefault()}>
+        <div className="mt-5 md:col-span-2">
+          <form onSubmit={onSaveUserClicked} >
             <div className="border overflow-hidden rounded-md">
-              <div className="space-y-6 bg-white dark:bg-slate-800 px-4 py-5 sm:p-6">
-                <div className="grid grid-cols-2 gap-4">
-
+              <div className="space-y-6 bg-white dark:bg-slate-800 px-4 py-5 sm:p-10">
+                <div className="grid grid-cols-2 gap-20">
                   <div className="col-span-2 sm:col-span-1 ">
                     <div className="">
                       <label
@@ -271,11 +202,7 @@ const EditItemForm = ({ item }) => {
                         {imageView
                           ? <Image data={imageView} size="h-20 w-20" rounded="rounded-md" />
                           : <span className="inline-block h-20 w-20 overflow-hidden rounded-md bg-gray-100">
-                            <img
-                              alt="Item Photo"
-                              src={item.avatar}
-                              className="h-20 w-20 rounded-md object-cover border border-slate-300  dark:border-slate-600"
-                            />
+                            <img src={iconPicture} />
                           </span>
                         }
 
@@ -284,7 +211,7 @@ const EditItemForm = ({ item }) => {
                           className="ml-5 cursor-pointer text-[10px]  px-4 py-2 text-black border dark:text-gray-300 font-medium border-gray-300 dark:border-slate-600  dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150"
                         >
 
-                          <span className="whitespace-nowrap">Replace Photo</span>
+                          <span className="whitespace-nowrap">Upload Photo</span>
 
                           <input
                             id="file-upload"
@@ -304,7 +231,6 @@ const EditItemForm = ({ item }) => {
                       </div>
                     </div>
                   </div>
-
                   <div className=" col-span-2 sm:col-span-1">
                     <div className="">
                       <label
@@ -320,7 +246,9 @@ const EditItemForm = ({ item }) => {
                         onChange={onCategoryChanged}
                         className="mt-1 block w-1/2 py-3 px-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md"
                       >
-                        
+                        <option defaultValue value={""}>
+                          ---
+                        </option>
                         <option value="Coffee">
                           Coffee
                         </option>
@@ -401,75 +329,56 @@ const EditItemForm = ({ item }) => {
                       </select>
                     </div>
                   </div>
-
                 </div>
 
-                {isDelLoading || isLoading
-                  ?
+                {isLoading &&
                   <div className="mt-6 flex text-gray-400 justify-end">
                     <Spenner />
-                    <p>{spinText} </p>
+                    <p>Saving.... </p>
                   </div>
-                  : null
                 }
-
               </div>
 
-              {/*footer  */}
-              <div className={`flex justify-end text-sm bg-gray-50 dark:bg-slate-800 px-4 py-3 text-right sm:px-6 dark:border-t dark:border-slate-700 ${btnClass}`}>
-                {id !== item._id
-                  && <span
-                    className={
-                      !isLoading || isDelLoading
-                        ? `cursor-pointer flex  px-3 sm:px-6 py-3 text-red-700 border dark:text-red-500 border-red-300 dark:border-red-800  hover:bg-gray-200 dark:hover:bg-gray-900 dark:active:bg-slate-800 rounded-full duration-150`
-                        : "flex  px-3 sm:px-4 py-2 text-white border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md duration-150"
-                    }
-                    title="Delete User"
-                    disabled={!isLoading || !isDelLoading}
-                    onClick={handleModalOpen}
-                  >
-                    <AiOutlineUserDelete size={20} className='mr-1 sm:mr-2' />
-                    Delete
-                  </span>
-                }
+              {/* Footer */}
+              <div className="flex text-base justify-end bg-gray-50 dark:bg-slate-800 px-4 py-3 text-right sm:px-6 dark:border-t dark:border-slate-700">
 
                 <div className="flex items-center gap-5">
-                  <div>
-                    <span
-                      title="Cancel"
-                      disabled={!isLoading && !isDelLoading}
-                      onClick={() => !isLoading && !isDelLoading ? navigate("/dashboard/items") : undefined}
-                      className={
-                        !isLoading && !isDelLoading
-                          ? `cursor-pointer flex px-6 py-3 text-black border dark:text-gray-300 border-gray-300 dark:border-slate-600  dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`
-                          : `flex px-6 py-3 text-white border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`
-                      } >
-                      <BsArrowLeftShort size={20} className='mr-1 sm:mr-2' />
-                      Cancel
-                    </span>
-                  </div>
-
                   <span
+                    title="Cancel"
+                    onClick={() => !btnCancel && navigate("/dashboard/items")}
+                    className={
+                      !btnCancel
+                        ? `cursor-pointer flex items-center px-6 py-2 text-black border dark:text-gray-300 border-gray-400 dark:border-slate-600 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`
+                        : `flex px-4 py-2 items-center text-black border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md`
+                    } >
+                    <BsArrowLeftShort size={20} className='mr-2' />
+                    Cancel
+                  </span>
+
+                  <button
                     title="Save"
-                    onClick={!isDelLoading ? onSaveUserClicked : undefined}
-                    className={!isDelLoading
-                      ? `cursor-pointer flex px-3 sm:px-6 py-3 text-white border dark:text-gray-300 border-gray-200 dark:border-slate-600 bg-black dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150`
-                      : `flex px-3 sm:px-4 py-2 text-white border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150`
+                    onClick={() => setBtnCancel(!btnCancel)}
+                    disabled={!canSave}
+                    type="submit"
+                    className={
+                      canSave
+                        ? `cursor-pointer flex items-center px-3 sm:px-7 py-2 text-white border dark:text-gray-300 border-gray-400 dark:border-slate-600 bg-black  dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`
+                        : `flex items-center px-3 sm:px-7 py-2 text-white border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`
                     }
                   >
-                    <AiOutlineSave size={20} className="mr-1 sm:mr-2" />
-                    Update
-                  </span>
+                    <AiOutlineSave size={20} className="mr-2" />
+                    Save
+                  </button>
                 </div>
               </div>
+
             </div>
           </form>
+          {/* <AddTableRow /> */}
         </div>
       </div>
-
     </>
   );
-
-  return content;
 };
-export default EditItemForm;
+
+export default NewUserForm;

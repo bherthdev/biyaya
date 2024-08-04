@@ -1,6 +1,6 @@
 /* eslint-disable array-callback-return */
 import { useState, useEffect } from "react";
-import { useUpdateItemMutation, useDeleteItemMutation } from "./itemsApiSlice";
+import { useUpdateOrderMutation, useDeleteOrderMutation } from "./ordersApiSlice";
 import { useNavigate } from "react-router-dom";
 import { ROLES } from "../../config/roles";
 import { AiOutlineCloseCircle, AiOutlineEye, AiOutlineEyeInvisible, AiOutlineSave, AiOutlineWarning } from "react-icons/ai";
@@ -23,13 +23,13 @@ const EditItemForm = ({ item }) => {
 
   const { id } = useAuth(); //current user id
 
-  const [updateItem, { isLoading, isSuccess, isError, error }] =
-    useUpdateItemMutation();
+  const [updateOrder, { isLoading, isSuccess, isError, error }] =
+  useUpdateOrderMutation();
 
   const [
-    deleteItem,
+    deleteOrder,
     { isSuccess: isDelSuccess, isLoading: isDelLoading, },
-  ] = useDeleteItemMutation();
+  ] = useDeleteOrderMutation();
 
   const navigate = useNavigate();
 
@@ -116,7 +116,7 @@ const EditItemForm = ({ item }) => {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
+          theme: localStorage.theme,
         });
 
       } else {
@@ -128,7 +128,7 @@ const EditItemForm = ({ item }) => {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
+          theme: localStorage.theme,
         });
       }
     }

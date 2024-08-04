@@ -7,36 +7,30 @@ const Order = () => {
 
   const [orderItems, setOrdersItems] = useState([])
 
-const formatDate =(date)=>{
-    // Get individual components of the date
-    let month = String(date.getMonth() + 1).padStart(2, '0');
-    let day = String(date.getDate()).padStart(2, '0');
-    let year = date.getFullYear();
+const formatDate =()=>  new Date().toLocaleDateString("en-US", {year:'numeric' , day: 'numeric' , month: 'short' }) + ", " + new Date().toLocaleTimeString()
 
-    // Get individual components of the time
-    let hours = String(date.getHours()).padStart(2, '0');
-    let minutes = String(date.getMinutes()).padStart(2, '0');
 
-    // Combine date and time into the desired format
-    return `${month}/${day}/${year}, ${hours}:${minutes}`;
-}
 
+const generateOR = ()=> `#${new Date().getFullYear()}-${new Date().getMonth()+ 1}${new Date().getDate()}${new Date().getHours()}-${new Date().getMinutes()}${new Date().getSeconds()}`
+
+// OR number: YEAR-MONTH/DAY/HOUR/MINUTES/SECONDS
 
   const [orderTransac, setOrderTransac] = useState({
-    OrderNo: '#202401',
-    DateTime: formatDate(new Date()),
-    Barista: name,
-    OrderType: 'Dine in',
-    Items: [],
-    Total: 0,
-    Cash: '',
-    Change: 0
+    user: id,
+    orderNo: generateOR(),
+    dateTime: formatDate(),
+    barista: name,
+    orderType: 'Dine in',
+    items: [],
+    total: 0,
+    cash: 0,
+    change: 0
   })
 
   // console.log(orderTransac, orderItems)
 
 
-  return { orderTransac, setOrderTransac, orderItems, setOrdersItems }
+  return { orderTransac, setOrderTransac, orderItems, setOrdersItems, formatDate, generateOR }
 }
 
 export default Order
