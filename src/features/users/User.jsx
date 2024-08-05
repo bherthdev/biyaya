@@ -41,9 +41,9 @@ const User = ({ userId, search }) => {
                   className="h-14 w-14 rounded-full border border-slate-300  dark:border-slate-600 object-cover"
                 />
               </div>
-            <div className="ml-4">
-              <p className="capitalize">{user.name} </p>
-            </div>
+              <div className="ml-4">
+                <p className="capitalize">{user.name} </p>
+              </div>
             </div>
 
 
@@ -54,20 +54,54 @@ const User = ({ userId, search }) => {
           >
             <div className="flex-nowrap">
               <p className="capitalize">{user.position} </p>
-             
+
             </div>
           </td>
 
           <td
             className={`whitespace-nowrap px-6 py-6 font-medium text-gray-900 dark:text-gray-300 `}
           >
+
             <span
               className={` ${user.active
-                ? " text-green-700 font-semibold dark:bg-green-900 dark:text-green-200"
-                : "text-red-700 font-semibold dark:bg-red-900 dark:text-red-200"
-                }  inline-flex items-center justify-center px-3 py-2 font-normal leading-none  rounded-full`}
+                ? "border-emerald-500 text-emerald-700"
+                : "border-red-500 text-red-700"
+                }  inline-flex items-center justify-center rounded-full border  px-2.5 py-0.5`}
             >
-              {user.active ? "Active" : "Inactive"}
+              {user.active
+                ? <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="-ms-1 me-1.5 h-4 w-4"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                : <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="-ms-1 me-1.5 h-4 w-4"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+                  />
+                </svg>
+              }
+
+              <p className="whitespace-nowrap text-sm">
+                {user.active ? "Active" : "Inactive"}
+              </p>
             </span>
           </td>
 

@@ -13,7 +13,7 @@ import { IoMdAdd } from "react-icons/io";
 const OrdersList = () => {
 
   const [search, setsearch] = useState("");
-  const columnsArray = ["ORDER#/TYPE", "DATE/TIME", "NO. OF ITEMS", "TOTAL", "BARISTA",""];
+  const columnsArray = ["ORDER#/TYPE", "DATE/TIME", "NO. OF ITEMS", "TOTAL", "BARISTA", ""];
 
 
   const navigate = useNavigate();

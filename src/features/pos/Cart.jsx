@@ -20,7 +20,7 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
     const [enableSaveOrder, setEnableSaveOrder] = useState(false)
 
     const inputChange = (e) => {
-        setOrderTransac({ ...orderTransac, cash: e.target.value, change: Number(e.target.value) - Number(orderTransac.total) })
+        setOrderTransac({ ...orderTransac, dateTime: formatDate(), cash: e.target.value, change: Number(e.target.value) - Number(orderTransac.total) })
         Number(e.target.value) >= Number(orderTransac.total) ? setEnableSaveOrder(true) : setEnableSaveOrder(false)
 
     }
@@ -75,7 +75,6 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
                     cash: 0,
                     change: 0
                 })
-                console.log(generateOR())
             }
         }
 
