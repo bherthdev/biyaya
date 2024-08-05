@@ -120,7 +120,7 @@ const Welcome = () => {
                     <div>
                       <p className="text-sm text-gray-500"> Sales Today</p>
   
-                      <p className="text-2xl font-medium text-gray-900">₱ {Number(salesToday()).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
+                      <p className="text-2xl font-medium text-gray-900">₱{Number(salesToday()).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
                     </div>
   
                     <span className="rounded-full bg-green-100 p-3 text-green-600">
