@@ -23,6 +23,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Analytics } from "@vercel/analytics/react"
 import POS from "./features/pos/POS";
+import AccessDenied from "./components/AccessDenied";
 
 
 function App() {
@@ -39,9 +40,8 @@ function App() {
             <Route element={<RequireAuth allowedRoles={[...Object.values(ROLES)]} />}>
               <Route element={<Prefetch />}>
                 <Route path="dashboard" element={<DashLayout />}>
-
                   <Route index element={<Welcome />} />
-
+                  
                   <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin]} />}>
                     <Route path="users">
                       <Route index element={<> <ToastContainer /> <UsersList /></>} />
@@ -57,11 +57,16 @@ function App() {
                       <Route path="new" element={<> <ToastContainer /><NewItemForm /> </>} />
                     </Route>
                   </Route>
-                  <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin]} />}>
+
+                  <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin, ROLES.Employee]} />}>
                     <Route path="pos">
                       <Route index element={<> <ToastContainer /> <POS /></>} />
-                      <Route path=":id" element={<> <ToastContainer /><EditItem /> </>} />
-                      <Route path="new" element={<> <ToastContainer /><NewItemForm /> </>} />
+                    </Route>
+                  </Route>
+                  
+                  <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin, ROLES.Employee]} />}>
+                    <Route path="access-denied">
+                      <Route index element={<> <ToastContainer /> <AccessDenied /></>} />
                     </Route>
                   </Route>
 
@@ -73,13 +78,7 @@ function App() {
                     </Route>
                   </Route>
 
-                  <Route path="notes">
-                    <Route index element={<NotesList />} />
-                    <Route path=":id" element={<EditNote />} />
-                    <Route path="new" element={<NewNote />} />
-                  </Route>
-
-                </Route>{/* End Dash */}
+                </Route>{/* End Dashboard */}
               </Route>
             </Route>
           </Route>{/* End Protected Routes */}

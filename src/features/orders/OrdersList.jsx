@@ -45,13 +45,6 @@ const OrdersList = () => {
             <h1 className="text-2xl font-bold text-gray-500  dark:text-gray-400">
               Order List
             </h1>
-            <span
-              onClick={() => navigate("/dashboard/items/new")}
-              title='Add Items'
-              className="hidden sm:flex items-center cursor-pointer  px-8 py-3 text-black border dark:text-gray-300 font-medium border-gray-300 dark:border-slate-600  hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150"
-            >
-              <AiOutlineUserAdd size={20} />
-            </span>
           </div>
 
           <div className="sm:flex  mt-6 sm:mt-0">
@@ -153,7 +146,7 @@ const OrdersList = () => {
                   Search
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 flex items-center pl-5 pointer-events-none shrink-0">
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none shrink-0">
                     <svg
                       className="w-4 h-4  text-gray-500 dark:text-gray-400"
                       xmlns="http://www.w3.org/2000/svg"

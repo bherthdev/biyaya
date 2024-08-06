@@ -9,20 +9,13 @@ import Spenner from "./Spenner";
 const DashHeader = ({ headerName }) => {
 
   const navigate = useNavigate();
-  const [sendLogout, { isLoading, isSuccess, isError, error }] = useSendLogoutMutation();
-
+  
   const [userNav, setUserNav] = useState(false);
   const [colorChange, setColorchange] = useState(false);
-
+  
   const { id, isAdmin, name, status, avatar } = useAuth();
+
   let menuRef = useRef();
-
-
-  useEffect(() => {
-
-    if (isSuccess) navigate("/");
-
-  }, [isSuccess, navigate]);
 
 
   useEffect(() => {
@@ -51,16 +44,6 @@ const DashHeader = ({ headerName }) => {
     navigate(`/dashboard/users/${id}`)
     setUserNav(!userNav)
   }
-
-
-  if (isLoading) return (
-    <div className="flex text-gray-800 dark:text-gray-300 text-sm">
-      <Spenner />
-      <p>Logging Out...</p>
-    </div>
-  )
-
-  if (isError) return <p>Error: {error.data?.message}</p>;
 
 
 
@@ -134,7 +117,7 @@ const DashHeader = ({ headerName }) => {
                           src={avatar}
                           className="h-16 w-16 rounded-full object-cover border border-slate-300  dark:border-slate-600"
                         />
-                        <svg
+                       {isAdmin && <svg
                           xmlns="http://www.w3.org/2000/svg"
                           className={`mx-2 hidden h-5 w-5 text-gray-500 transition group-hover:text-gray-700 sm:block ${userNav && "rotate-180"
                             }`}
@@ -146,10 +129,10 @@ const DashHeader = ({ headerName }) => {
                             d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
                             clipRule="evenodd"
                           />
-                        </svg>
+                        </svg>}
                       </button>
 
-                      {userNav && (
+                      {isAdmin && userNav &&(
                         <div
                           className={` absolute right-0 z-10  origin-top-right bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 mt-2 w-48 rounded-md shadow-lg
 `}
@@ -160,12 +143,6 @@ const DashHeader = ({ headerName }) => {
                               className="cursor-pointer block px-4 py-2 text-sm text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-gray-900 dark:hover:text-gray-400"
                             >
                               Account Setting
-                            </span>
-                            <span
-                              onClick={sendLogout}
-                              className="cursor-pointer block px-4 py-2 text-sm text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-gray-900 dark:hover:text-gray-400"
-                            >
-                              Sign out
                             </span>
                           </div>
                         </div>

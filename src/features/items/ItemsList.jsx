@@ -146,12 +146,12 @@ const ItemsList = () => {
             </div>
 
             <div className="sm:flex  mt-6 sm:mt-0">
-              <div className="pr-0 sm:pr-4 ">
+            <div className="mr-5">
                 <label htmlFor="table-search" className="sr-only">
                   Search
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none shrink-0">
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none shrink-0">
                     <svg
                       className="w-4 h-4  text-gray-500 dark:text-gray-400"
                       xmlns="http://www.w3.org/2000/svg"
@@ -171,7 +171,7 @@ const ItemsList = () => {
                   <input
                     type="text"
                     id="table-search"
-                    className="w-full pl-10 p-2 block py-4 px-3 text-sm font-normal bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700 outline-none focus:border-gray-300  focus:shadow-sm rounded-lg"
+                    className="w-full pl-10 p-2 block py-4 px-6 text-sm font-normal bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700 outline-none focus:border-gray-300  focus:shadow-sm rounded-xl"
                     placeholder="Search..."
                     value={search}
                     onChange={(e) => handleSearch(e.target.value)}

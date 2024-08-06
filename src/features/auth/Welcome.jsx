@@ -11,7 +11,7 @@ import Spenner from "../../components/Spenner";
 import { MdErrorOutline } from "react-icons/md";
 
 const Welcome = () => {
-
+  
   const columnsOrders = ["Order#/Type", "Date/Time", "QTY", "Amount", "Barista"];
   const columnsItems = ["Item Name", "QTY", "Status"];
 
@@ -259,48 +259,40 @@ const Welcome = () => {
                   <div className="flex  text-sm flex-col gap-3  dark:bg-gray-900 text-red-700 dark:text-gray-400">
                     <div className="flex flex-col  m-auto ">
                       <div className="m-auto">
-                        <MdErrorOutline size={35} />
+                        <MdErrorOutline size={30} />
                       </div>
-                      <h1 className='text-xl m-auto'>Error</h1>
-
                     </div>
-                    <div className='m-auto text-gray-800 text-center'>{error?.data?.message}There is an error fetching the data form server!</div>
+                    <div className='m-auto  text-center'>{error?.data?.message}</div>
                   </div>
                 </article>
                 <article className="rounded-lg border border-gray-100 bg-white p-6">
                   <div className="flex  text-sm flex-col gap-3  dark:bg-gray-900 text-red-700 dark:text-gray-400">
                     <div className="flex flex-col  m-auto ">
                       <div className="m-auto">
-                        <MdErrorOutline size={35} />
+                        <MdErrorOutline size={30} />
                       </div>
-                      <h1 className='text-xl m-auto'>Error</h1>
-
                     </div>
-                    <div className='m-auto text-gray-800 text-center'>{error?.data?.message}There is an error fetching the data form server!</div>
+                    <div className='m-auto text-center'>{error?.data?.message}</div>
                   </div>
                 </article>
                 <article className="rounded-lg border border-gray-100 bg-white p-6">
                   <div className="flex  text-sm flex-col gap-3  dark:bg-gray-900 text-red-700 dark:text-gray-400">
                     <div className="flex flex-col  m-auto ">
                       <div className="m-auto">
-                        <MdErrorOutline size={35} />
+                        <MdErrorOutline size={30} />
                       </div>
-                      <h1 className='text-xl m-auto'>Error</h1>
-
                     </div>
-                    <div className='m-auto text-gray-800 text-center'>{error?.data?.message}There is an error fetching the data form server!</div>
+                    <div className='m-auto text-center'>{error?.data?.message}</div>
                   </div>
                 </article>
                 <article className="rounded-lg border border-gray-100 bg-white p-6">
                   <div className="flex  text-sm flex-col gap-3  dark:bg-gray-900 text-red-700 dark:text-gray-400">
                     <div className="flex flex-col  m-auto ">
                       <div className="m-auto">
-                        <MdErrorOutline size={35} />
+                        <MdErrorOutline size={30} />
                       </div>
-                      <h1 className='text-xl m-auto'>Error</h1>
-
                     </div>
-                    <div className='m-auto text-gray-800 text-center'>{error?.data?.message}There is an error fetching the data form server!</div>
+                    <div className='m-auto text-center'>{error?.data?.message}</div>
                   </div>
                 </article>
               </dl>
@@ -327,12 +319,10 @@ const Welcome = () => {
                   <div className="flex text-sm flex-col p-5 gap-3  dark:bg-gray-900 text-red-700 dark:text-gray-400">
                     <div className="flex flex-col  m-auto ">
                       <div className="m-auto">
-                        <MdErrorOutline size={35} />
+                        <MdErrorOutline size={30} />
                       </div>
-                      <h1 className='text-xl m-auto'>Error</h1>
-
                     </div>
-                    <div className='m-auto text-gray-800'>{error?.data?.message}There is an error fetching the data form server!</div>
+                    <div className='m-auto'>{error?.data?.message}</div>
                   </div>
                 </div>
                 <div className="pt-8 bg-gray-200 rounded-b"></div>
@@ -357,12 +347,10 @@ const Welcome = () => {
                   <div className="flex text-sm flex-col p-5 gap-3  dark:bg-gray-900 text-red-700 dark:text-gray-400">
                     <div className="flex flex-col  m-auto ">
                       <div className="m-auto">
-                        <MdErrorOutline size={35} />
+                        <MdErrorOutline size={30} />
                       </div>
-                      <h1 className='text-xl m-auto'>Error</h1>
-
                     </div>
-                    <div className='m-auto text-gray-800'>{error?.data?.message}There is an error fetching the data form server!</div>
+                    <div className='m-auto '>{error?.data?.message}</div>
                   </div>
                 </div>
                 <div className="pt-8 bg-gray-200 rounded-b"></div>

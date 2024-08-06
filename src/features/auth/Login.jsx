@@ -10,6 +10,7 @@ import Switcher from "../../components/Switcher";
 import PageLoader from "../../components/PageLoader";
 import biyayaLogo from "../../assets/biyaya_logo.png";
 import { FaRegUser } from "react-icons/fa";
+import Spenner from "../../components/Spenner";
 
 const Login = () => {
   const userRef = useRef();
@@ -66,21 +67,43 @@ const Login = () => {
 
   const errClass = errMsg ? "list-disc mt-8 text-red-800 dark:text-red-300 text-xs tracking-wide" : null;
 
-  if (isLoading) return <PageLoader />
+  if (isLoading) return (
+
+    <div className="w-full h-screen flex flex-col items-center bg-biyaya bg-cover justify-center px-4">
+      <div ref={userRef} className="mt-7 overflow-x-auto border-gray-400  dark:border-gray-800  rounded-2xl overflow-hidden">
+        <div className="flex flex-col items-center  bg-gray-200 backdrop-blur-2xl bg-opacity-[20%] dark:bg-gray-900 px-10 py-8 sm:py-10 sm:px-28 ease-in-out duration-300">
+
+          <img src={biyayaLogo} className='animate-bounce shadow-md shadow-black  rounded-full h-[100px] xl:h-[150px] mx-auto ease-in-out duration-300' />
+          <div className="flex space-x-2">
+            <span className='mr-3 border-t-transparent border-solid animate-spin  rounded-full border-slate-100 border-2 h-6 w-6'></span>
+
+            <div className='m-auto text-xs sm:text-lg text-white'>Logging in ...</div>
+          </div>
+
+          <div className="flex items-center gap-2 mt-16">
+            <p className="text-xs font-thin text-gray-100 dark:text-gray-400">Designed and developed by: </p>
+
+            <a href='https://www.tyingknotworks.com/'
+              target='_blank' rel='noreferrer noopener'
+              className=" font-normal text-xs text-white"
+            >
+              TyingKnot Works
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  )
+
 
   const content = (
     <div className="w-full h-screen flex flex-col items-center bg-biyaya bg-cover justify-center px-4">
+      <div className="mt-7 overflow-x-auto rounded-2xl overflow-hidden">
+        <div className=" bg-gray-400 backdrop-blur-2xl bg-opacity-[45%] dark:bg-gray-900 px-10 py-8 sm:py-10 sm:px-28 ease-in-out duration-300">
 
-      {/* <div className="flex items-center gap-2">
-        <p className="text-sm font-bold text-gray-900 dark:text-gray-400">Darkmode</p>
-        <span className=""><Switcher /></span>
-      </div> */}
-
-      <div className="mt-7 overflow-x-auto border border-gray-400  dark:border-gray-800 shadow rounded-2xl overflow-hidden">
-        <div className=" bg-gray-400 backdrop-blur-2xl bg-opacity-[45%] dark:bg-gray-900 px-10 py-8 sm:py-10 sm:px-28">
-
-          <img src={biyayaLogo} className='h-[100px] xl:h-[130px] mx-auto' />
-          <div className="sm:w-72 text-gray-600">
+          <img src={biyayaLogo} className='h-[100px] xl:h-[130px] mx-auto ease-in-out duration-300' />
+          <div className="sm:w-72 text-black">
             <div className="text-center">
               <div className="mt-5 space-y-2">
 
@@ -103,9 +126,9 @@ const Login = () => {
               <div className="relative">
                 <label
                   htmlFor="UserEmail"
-                  className="block overflow-hidden bg-white rounded-md border border-gray-200 px-3 pb-2 pt-1 shadow-sm focus-within:border-gray-400 focus-within:ring-1 focus-within:ring-gray-400"
+                  className="block overflow-hidden bg-white rounded-lg border border-gray-200 px-3 pb-2 pt-1"
                 >
-                  <span className="text-xs text-gray-500"> Username: </span>
+                  <span className="text-xs font-light tracking-wider text-gray-400"> Username: </span>
 
                   <input
                     type="text"
@@ -115,7 +138,7 @@ const Login = () => {
                     onChange={handleUserInput}
                     autoComplete="current-password"
                     required={true}
-                    className="mt-1 w-full border-none p-0 focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm font-semibold"
+                    className="mt-1 w-full border-none p-0 focus:border-transparent focus:outline-none focus:ring-0 sm:text-lg"
                   />
                   <div className="absolute inset-y-0 end-0 grid w-10 place-content-center text-gray-400 text-lg">
 
@@ -130,9 +153,9 @@ const Login = () => {
               <div className="relative">
                 <label
                   htmlFor="UserEmail"
-                  className="block overflow-hidden bg-white rounded-md border border-gray-200 px-3 pb-2 pt-1 shadow-sm focus-within:border-gray-400 focus-within:ring-1 focus-within:ring-gray-400"
+                  className="block overflow-hidden bg-white rounded-lg  px-3 pb-2 pt-1 shadow-sm"
                 >
-                  <span className="text-xs text-gray-500"> Password: </span>
+                  <span className="text-xs font-light tracking-wider text-gray-400"> Password: </span>
 
                   <input
                     type={passwordShown ? "text" : "password"}
@@ -141,7 +164,7 @@ const Login = () => {
                     value={password}
                     autoComplete="off"
                     required
-                    className="mt-1 w-full border-none p-0 focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm font-semibold"
+                    className="mt-1 w-full border-none p-0 focus:border-transparent focus:outline-none focus:ring-0 sm:text-lg"
                   />
                   <span className="absolute inset-y-0 end-0 grid w-10 place-content-center text-gray-300 text-lg">
 
@@ -191,15 +214,16 @@ const Login = () => {
 
       <div className="flex items-center gap-2 mt-5">
         <p className="text-xs font-thin text-gray-300 dark:text-gray-400">Designed and developed by: </p>
-  
-        <a href='https://www.tyingknotworks.com/' 
+
+        <a href='https://www.tyingknotworks.com/'
           target='_blank' rel='noreferrer noopener'
           className=" font-normal text-xs text-gray-300"
-          >
-            TyingKnot Works
-          </a>
+        >
+          TyingKnot Works
+        </a>
       </div>
     </div>
+
   );
   return content;
 };

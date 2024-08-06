@@ -69,12 +69,12 @@ const UsersList = () => {
             </div>
 
             <div className="sm:flex  mt-6 sm:mt-0">
-              <div className="pr-0 sm:pr-4 ">
+              <div className="pr-0 sm:pr-5">
                 <label htmlFor="table-search" className="sr-only">
                   Search
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none shrink-0">
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none shrink-0">
                     <svg
                       className="w-4 h-4  text-gray-500 dark:text-gray-400"
                       xmlns="http://www.w3.org/2000/svg"
@@ -94,7 +94,7 @@ const UsersList = () => {
                   <input
                     type="text"
                     id="table-search"
-                    className="w-full pl-10 p-2 block py-4 px-3 text-sm font-normal bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700 outline-none focus:border-gray-300  focus:shadow-sm rounded-lg"
+                    className="w-full pl-10 p-2 block py-4 px-6 text-sm font-normal bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700 outline-none focus:border-gray-300  focus:shadow-sm rounded-xl"
                     placeholder="Search..."
                     value={search}
                     onChange={(e) => handleSearch(e.target.value)}
@@ -115,7 +115,7 @@ const UsersList = () => {
             </div>
           </div>
           <div className="flex flex-col mt-5 text-sm font-medium text-gray-500">
-              {/* <div className="flex">
+            {/* <div className="flex">
                 <div className="flex justify-center items-center w-32 h-12 px-10 py-2 rounded-t-lg bg-white">
                   <div>USERS</div>
                 </div>
@@ -124,11 +124,11 @@ const UsersList = () => {
                 </div>
               </div> */}
 
-              <div className="w-full bg-white h-5 rounded-t-lg">
+            <div className="w-full bg-white h-5 rounded-t-lg">
 
 
-              </div>
             </div>
+          </div>
           <div className="overflow-x-auto bg-white min-w-full shadow-sm rounded-b-lg ">
             <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm leading-normal">
               <thead className="bg-gray-50 dark:bg-gray-800 ">

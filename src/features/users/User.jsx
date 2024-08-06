@@ -17,9 +17,7 @@ const User = ({ userId, search }) => {
   if (user && user.username !== username) {
 
     if (user.name.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
-      user.email.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
-      user.position.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
-      user.department.toLowerCase().indexOf(search.toLowerCase()) > -1
+      user.position.toLowerCase().indexOf(search.toLowerCase()) > -1 
     ) {
 
       const handleEdit = () => navigate(`/dashboard/users/${userId}`);

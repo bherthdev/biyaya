@@ -7,12 +7,17 @@ import { IoReceiptOutline } from "react-icons/io5";
 import { IoSettingsOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { IoIosLogOut } from "react-icons/io";
-import { faL } from "@fortawesome/free-solid-svg-icons";
+import { useSendLogoutMutation } from "../features/auth/authApiSlice";
+import { useEffect } from "react";
+import useAuth from "../hooks/useAuth";
 
 export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, setToggleCart }) => {
+
+  const { isAdmin } = useAuth(); //current user id
   const navigate = useNavigate();
 
-
+  const [sendLogout, { isLoading, isSuccess, isError, error }] =
+    useSendLogoutMutation();
 
   const navigateMenu = (menuName) => {
     navigate(menuName)
@@ -20,6 +25,21 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
 
     menuName === '/dashboard/pos' ? setToggleCart(true) : setToggleCart(false)
   }
+
+  if (isLoading) return (
+    <div className="flex text-gray-800 dark:text-gray-300 text-sm">
+      <Spenner />
+      <p>Logging Out...</p>
+    </div>
+  )
+
+  if (isError) return <p>Error: {error.data?.message}</p>;
+
+
+  useEffect(() => {
+    if (isSuccess) navigate("/");
+
+  }, [isSuccess, navigate]);
 
   const classToggleSideMenu = toggleSideMenu ? 'w-44 ease-in-out duration-300' : 'w-16 ease-in-out duration-300'
 
@@ -64,7 +84,7 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
                 ? `border-r-[4px] border-r-gray-800 bg-gray-100 px-4 py-4 cursor-pointer font-sans font-medium  text-gray-700`
                 : ` border-r-gray-800  px-4 py-4 cursor-pointer hover:bg-gray-100 font-sans font-medium  text-gray-700`
             }
-              onClick={()=> navigateMenu("/dashboard/pos")}
+              onClick={() => navigateMenu("/dashboard/pos")}
             >
               <div className={toggleSideMenu ? `flex gap-5` : `t group relative flex gap-5`}>
                 <div className="text-gray-500">
@@ -83,79 +103,84 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
               </div>
             </li>
 
-            <li className={
-              location.pathname === '/dashboard/items'
-                ? `border-r-[4px] border-r-gray-800 bg-gray-100 px-4 py-4 cursor-pointer font-sans font-medium  text-gray-700`
-                : ` border-r-gray-800  px-4 py-4 cursor-pointer hover:bg-gray-100 font-sans font-medium  text-gray-700`
+            {isAdmin &&
+              <li className={
+                location.pathname === '/dashboard/items'
+                  ? `border-r-[4px] border-r-gray-800 bg-gray-100 px-4 py-4 cursor-pointer font-sans font-medium  text-gray-700`
+                  : ` border-r-gray-800  px-4 py-4 cursor-pointer hover:bg-gray-100 font-sans font-medium  text-gray-700`
+              }
+                onClick={() => navigateMenu('/dashboard/items')}
+              >
+                <div className={toggleSideMenu ? `flex gap-5` : `t group relative flex gap-5`}>
+                  <div className="text-gray-500">
+                    <MdOutlineInventory size={25} />
+                  </div>
+                  <div
+                    className={toggleSideMenu ? `text-md tracking-wide ease-in-out duration-300` : ` text-[0px] tracking-wide ease-in-out duration-300`}
+                  >
+                    Inventory
+                  </div>
+                  <span
+                    className="invisible absolute start-full top-[48%] ms-2 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
+                  >
+                    Inventory
+                  </span>
+                </div>
+              </li>}
+
+            {isAdmin &&
+              <li className={
+                location.pathname === '/dashboard/orders'
+                  ? `border-r-[4px] border-r-gray-800 bg-gray-100 px-4 py-4 cursor-pointer font-sans font-medium  text-gray-700`
+                  : ` border-r-gray-800  px-4 py-4 cursor-pointer hover:bg-gray-100 font-sans font-medium  text-gray-700`
+              }
+                onClick={() => navigateMenu("/dashboard/orders")}
+              ><div className={toggleSideMenu ? `flex gap-5` : `t group relative flex gap-5`}>
+                  <div className="text-gray-500">
+                    <IoReceiptOutline size={25} />
+                  </div>
+
+                  <div
+                    className={toggleSideMenu ? `text-md tracking-wide  ease-in-out duration-300` : ` text-[0px] tracking-wide  ease-in-out duration-300`}
+                  >
+                    Orders
+                  </div>
+                  <span
+                    className="invisible absolute start-full top-[48%] ms-2 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
+                  >
+                    Orders
+                  </span>
+                </div>
+              </li>
             }
-              onClick={() => navigateMenu('/dashboard/items')}
-            >
-              <div className={toggleSideMenu ? `flex gap-5` : `t group relative flex gap-5`}>
-                <div className="text-gray-500">
-                  <MdOutlineInventory size={25} />
-                </div>
-                <div
-                  className={toggleSideMenu ? `text-md tracking-wide ease-in-out duration-300` : ` text-[0px] tracking-wide ease-in-out duration-300`}
-                >
-                  Inventory
-                </div>
-                <span
-                  className="invisible absolute start-full top-[48%] ms-2 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
-                >
-                  Inventory
-                </span>
-              </div>
-            </li>
 
-            <li className={
-              location.pathname === '/dashboard/orders'
-                ? `border-r-[4px] border-r-gray-800 bg-gray-100 px-4 py-4 cursor-pointer font-sans font-medium  text-gray-700`
-                : ` border-r-gray-800  px-4 py-4 cursor-pointer hover:bg-gray-100 font-sans font-medium  text-gray-700`
+            {isAdmin &&
+              <li className={
+                location.pathname === '/dashboard/users'
+                  ? `border-r-[4px] border-r-gray-800 bg-gray-100 px-4 py-4 cursor-pointer font-sans font-medium  text-gray-700`
+                  : ` border-r-gray-800  px-4 py-4 cursor-pointer hover:bg-gray-100 font-sans font-medium  text-gray-700`
+              }
+                onClick={() => navigateMenu("/dashboard/users")}
+              >
+                <div className={toggleSideMenu ? `flex gap-5` : `t group relative flex gap-5`}>
+                  <div className="text-gray-500">
+                    <IoSettingsOutline size={25} />
+                  </div>
+                  <div
+                    className={toggleSideMenu ? `text-md tracking-wide  ease-in-out duration-300` : `group text-[0px] tracking-wide  ease-in-out duration-300`}
+                  >
+                    Settings
+
+                  </div>
+                  <span
+                    className="invisible absolute start-full top-[48%] ms-2 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
+                  >
+                    Settings
+                  </span>
+                </div>
+
+              </li>
             }
-              onClick={()=> navigateMenu("/dashboard/orders")}
-            ><div className={toggleSideMenu ? `flex gap-5` : `t group relative flex gap-5`}>
-                <div className="text-gray-500">
-                  <IoReceiptOutline size={25} />
-                </div>
-
-                <div
-                  className={toggleSideMenu ? `text-md tracking-wide  ease-in-out duration-300` : ` text-[0px] tracking-wide  ease-in-out duration-300`}
-                >
-                  Orders
-                </div>
-                <span
-                  className="invisible absolute start-full top-[48%] ms-2 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
-                >
-                  Orders
-                </span>
-              </div>
-            </li>
-
-            <li className={
-              location.pathname === '/dashboard/users'
-                ? `border-r-[4px] border-r-gray-800 bg-gray-100 px-4 py-4 cursor-pointer font-sans font-medium  text-gray-700`
-                : ` border-r-gray-800  px-4 py-4 cursor-pointer hover:bg-gray-100 font-sans font-medium  text-gray-700`
-            }
-              onClick={() => navigateMenu("/dashboard/users")}
-            >
-              <div className={toggleSideMenu ? `flex gap-5` : `t group relative flex gap-5`}>
-
-                <div className="text-gray-500">
-                  <IoSettingsOutline size={25} />
-                </div>
-                <div
-                  className={toggleSideMenu ? `text-md tracking-wide  ease-in-out duration-300` : `group text-[0px] tracking-wide  ease-in-out duration-300`}
-                >
-                  Settings
-
-                </div>
-                <span
-                  className="invisible absolute start-full top-[48%] ms-2 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
-                >
-                  Settings
-                </span>
-              </div>
-            </li>
 
           </ul>
         </div>
@@ -175,6 +200,7 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
 
             </div>
             <span
+              onClick={sendLogout}
               className="invisible absolute start-full top-[48%] ms-2 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
             >
               Logout
