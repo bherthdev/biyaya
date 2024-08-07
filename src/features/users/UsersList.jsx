@@ -129,7 +129,7 @@ const UsersList = () => {
 
             </div>
           </div>
-          <div className="overflow-x-auto bg-white min-w-full shadow-sm rounded-b-lg ">
+          <div className="overflow-x-auto bg-white min-w-full shadow-sm ">
             <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm leading-normal">
               <thead className="bg-gray-50 dark:bg-gray-800 ">
                 <tr>
@@ -142,6 +142,7 @@ const UsersList = () => {
               <Tbody tbName={tableContent} />
             </table>
           </div>
+          <div className="pt-10 bg-slate-100 rounded-b"></div>
         </div>
 
 

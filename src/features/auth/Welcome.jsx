@@ -9,12 +9,24 @@ import { useGetOrdersQuery } from "../orders/ordersApiSlice";
 import { useGetItemsQuery } from "../items/itemsApiSlice";
 import Spenner from "../../components/Spenner";
 import { MdErrorOutline } from "react-icons/md";
+import ReceiptModal from "../../components/ReceiptModal"
 
 const Welcome = () => {
-  
-  const columnsOrders = ["Order#/Type", "Date/Time", "QTY", "Amount", "Barista"];
+
+  const columnsOrders = ["Order#/Type", "Date/Time", "ITEMS", "Amount", "Barista"];
   const columnsItems = ["Item Name", "QTY", "Status"];
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [orderId, setOderID] = useState('');
+
+  const handleModalOpen = (id) => {
+    setOderID(id)
+    setIsModalOpen(true)
+  }
+
+  const handleModalClose = () => {
+    setIsModalOpen(false)
+  }
 
   const {
     data: ordersData,
@@ -365,24 +377,21 @@ const Welcome = () => {
 
   if (isSuccess) {
 
-    const {  entities: ordersEntities } = ordersData;
-    const {  entities: itemsEntities } = itemsData;
+    const { entities: ordersEntities } = ordersData;
+    const { entities: itemsEntities } = itemsData;
 
     // Sort items by status
-    const items = Object.values(itemsEntities).sort((a,b) =>{
+    const items = Object.values(itemsEntities).sort((a, b) => {
       const statusOrder = {
         "In Stock": 2,
         "Out of Stock": 1,
       }
       return statusOrder[a.status] - statusOrder[b.status]
-    } 
-  )
+    }
+    )
 
-  // Sort orders by recent or current date
-    const orders = Object.values(ordersEntities).sort((a, b)=> new Date(b.dateTime) - new Date(a.dateTime))
-
-    
-
+    // Sort orders by recent or current date
+    const orders = Object.values(ordersEntities).sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime))
 
 
     const salesToday = () => {
@@ -410,15 +419,19 @@ const Welcome = () => {
       return totalSalesToday.length;
     }
 
-    const totalQty = orders.reduce((total, order) => {
-      const orderQty = order.items.reduce((sum, item) => sum + Number(item.qty), 0);
-      return total + orderQty;
-    }, 0);
+    // const totalQty = orders.reduce((total, order) => {
+    //   const orderQty = order.items.reduce((sum, item) => sum + Number(item.qty), 0);
+    //   return total + orderQty;
+    // }, 0);
+   
+    const totalSales = orders.reduce((total, order) => total + Number(order.total), 0);
 
 
 
     content = (
       <div aria-label="Page Header" className="">
+        <ReceiptModal isOpen={isModalOpen} onClose={handleModalClose} orderId={orderId} />
+
         <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="mt-2">
             <p className="text-xl font-bold text-gray-900 sm:text-2xl dark:text-gray-200">
@@ -430,12 +443,13 @@ const Welcome = () => {
             </p>
             <div className="mx-auto max-w-screen-xl  py-3  md:py-5">
               <dl className="font-normal grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+
                 <article className="rounded-lg border border-gray-100 bg-white p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-500"> Sales Today</p>
+                      <p className="text-sm text-gray-500">Total Sales</p>
 
-                      <p className="text-2xl font-medium text-gray-900">₱{Number(salesToday()).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
+                      <p className="text-2xl font-medium text-gray-900">₱{Number(totalSales).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
                     </div>
 
                     <span className="rounded-full bg-green-100 p-3 text-green-600">
@@ -448,19 +462,7 @@ const Welcome = () => {
                     </p>
                   </div>
                 </article>
-                <article className=" rounded-lg border border-gray-100 bg-white p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-gray-500">  Orders Today </p>
 
-                      <p className="text-2xl font-medium text-gray-900"> {ordersToday()}</p>
-                    </div>
-
-                    <span className="rounded-full bg-gray-100 p-3 text-green-600">
-                      <PiReceiptLight size={25} className="text-gray-500 dark:text-gray-500" />
-                    </span>
-                  </div>
-                </article>
                 <article className="rounded-lg border border-gray-100 bg-white p-6">
                   <div className="flex items-center justify-between">
                     <div>
@@ -474,20 +476,41 @@ const Welcome = () => {
                     </span>
                   </div>
                 </article>
+
                 <article className="rounded-lg border border-gray-100 bg-white p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-500"> Total Items </p>
+                      <p className="text-sm text-gray-500"> Sales Today</p>
 
-                      <p className="text-2xl font-medium text-gray-900">{totalQty}</p>
+                      <p className="text-2xl font-medium text-gray-900">₱{Number(salesToday()).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
                     </div>
 
-                    <span className="rounded-full bg-gray-100 p-3 text-green-600">
+                    <span className="rounded-full bg-orange-100 p-3 text-orange-600">
                       <CiViewList size={25} className="text-gray-700 dark:text-gray-500" />
 
                     </span>
                   </div>
+                  <div className="mt-1 flex gap-1 text-green-600">
+                    <p className="flex gap-2 text-xs">
+                      <span className="text-gray-500">  *Updated every order success </span>
+                    </p>
+                  </div>
                 </article>
+
+                <article className=" rounded-lg border border-gray-100 bg-white p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-gray-500">  Orders Today </p>
+
+                      <p className="text-2xl font-medium text-gray-900"> {ordersToday()}</p>
+                    </div>
+
+                    <span className="rounded-full bg-gray-100 p-3 text-green-600">
+                      <PiReceiptLight size={25} className="text-gray-500 dark:text-gray-500" />
+                    </span>
+                  </div>
+                </article>
+
               </dl>
             </div>
 
@@ -508,7 +531,8 @@ const Welcome = () => {
                     </thead>
                     <tbody className="divide-y dark:bg-slate-800 divide-gray-200 dark:divide-gray-700 ">
                       {orders.map((order, idx) => (
-                        <tr key={idx} className=" dark:hover:bg-[#151e30] ">
+                        <tr key={idx} onClick={(() => handleModalOpen(order.id))} className="hover:bg-gray-100 cursor-pointer dark:hover:bg-[#151e30] ">
+
                           <td
                             className={`sm:flex gap-4 whitespace-nowrap px-6 py-3 font-medium text-gray-900 dark:text-gray-300`}
                           >
@@ -535,6 +559,7 @@ const Welcome = () => {
                             {order.barista}
                           </td>
                         </tr>
+
                       ))}
 
 
