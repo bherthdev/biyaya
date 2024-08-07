@@ -65,7 +65,7 @@ const Login = () => {
   const handlePwdInput = (e) => setPassword(e.target.value);
   const handleToggle = () => setPersist((prev) => !prev);
 
-  const errClass = errMsg ? "list-disc mt-8 text-red-800 dark:text-red-300 text-xs tracking-wide" : null;
+  const errClass = errMsg ? "list-disc mt-8 text-red-500 dark:text-red-300 text-xs tracking-wide" : null;
 
   if (isLoading) return (
 
@@ -128,7 +128,7 @@ const Login = () => {
                   htmlFor="UserEmail"
                   className="block overflow-hidden bg-white rounded-lg border border-gray-200 px-3 pb-2 pt-1"
                 >
-                  <span className="text-xs font-light tracking-wider text-gray-400"> Username: </span>
+                  <span className="text-xs font-light tracking-wider text-gray-500"> Username: </span>
 
                   <input
                     type="text"
@@ -155,7 +155,7 @@ const Login = () => {
                   htmlFor="UserEmail"
                   className="block overflow-hidden bg-white rounded-lg  px-3 pb-2 pt-1 shadow-sm"
                 >
-                  <span className="text-xs font-light tracking-wider text-gray-400"> Password: </span>
+                  <span className="text-xs font-light tracking-wider text-gray-500"> Password: </span>
 
                   <input
                     type={passwordShown ? "text" : "password"}
