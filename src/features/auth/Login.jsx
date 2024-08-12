@@ -11,6 +11,7 @@ import PageLoader from "../../components/PageLoader";
 import biyayaLogo from "../../assets/biyaya_logo.png";
 import { FaRegUser } from "react-icons/fa";
 import Spenner from "../../components/Spenner";
+import { motion as m } from "framer-motion"
 
 const Login = () => {
   const userRef = useRef();
@@ -100,19 +101,37 @@ const Login = () => {
   const content = (
     <div className="w-full h-screen flex flex-col items-center bg-biyaya bg-cover justify-center px-4">
       <div className="mt-7 overflow-x-auto rounded-2xl overflow-hidden">
-        <div className=" bg-gray-400 backdrop-blur-2xl bg-opacity-[45%] dark:bg-gray-900 px-10 py-8 sm:py-10 sm:px-28 ease-in-out duration-300">
-
-          <img src={biyayaLogo} className='h-[100px] xl:h-[130px] mx-auto ease-in-out duration-300' />
+        <m.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.5, ease: "easeIn" }}
+          className=" bg-gray-700 backdrop-blur-2xl bg-opacity-[45%] dark:bg-gray-900 px-10 py-8 sm:py-10 sm:px-28 ease-in-out duration-300">
+          <div className="">
+            <m.img
+              initial={{ opacity: 0, filter: "blur(5px)" }}
+              animate={{ opacity: 1,filter: "blur(0px)" }}
+              transition={{ delay: 1, duration: 0.75, ease: "easeIn" }}
+              src={biyayaLogo}
+              className='h-[100px] xl:h-[130px] mx-auto ease-in-out duration-300' />
+          </div>
           <div className="sm:w-72 text-black">
             <div className="text-center">
               <div className="mt-5 space-y-2">
 
-                <h3 className="text-white dark:text-gray-300 text-xl font-bold tracking-widest font-sans">
+                <m.h3
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.7, duration: 0.75, ease: "easeIn" }}
+                  className="text-white dark:text-gray-300 text-xl font-bold tracking-widest font-sans">
                   Login
-                </h3>
-                <p className="text-white dark:text-gray-300 text-sm font-thin text-left pt-5">
+                </m.h3>
+                <m.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 2, duration: 0.75, ease: "easeIn" }}
+                  className="text-white dark:text-gray-300 text-sm font-thin text-left pt-5">
                   Enter you login information to access the system.
-                </p>
+                </m.p>
               </div>
 
               <ul className="list-inside">
@@ -124,7 +143,10 @@ const Login = () => {
             <form onSubmit={handleSubmit} className="mt-8 space-y-5">
 
               <div className="relative">
-                <label
+                <m.label
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 2.5, duration: 0.75, ease: "easeIn" }}
                   htmlFor="UserEmail"
                   className="block overflow-hidden bg-white rounded-lg border border-gray-200 px-3 pb-2 pt-1"
                 >
@@ -147,11 +169,14 @@ const Login = () => {
                   </div>
 
 
-                </label>
+                </m.label>
               </div>
 
               <div className="relative">
-                <label
+                <m.label
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 2.5, duration: 0.75, ease: "easeIn" }}
                   htmlFor="UserEmail"
                   className="block overflow-hidden bg-white rounded-lg  px-3 pb-2 pt-1 shadow-sm"
                 >
@@ -189,9 +214,13 @@ const Login = () => {
                   </span>
 
 
-                </label>
+                </m.label>
               </div>
-              <div className="pb-3">
+              <m.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 2.5, duration: 0.75, ease: "easeIn" }}
+                className="pb-3">
                 <input
                   type="checkbox"
                   className="accent-slate-200"
@@ -202,17 +231,25 @@ const Login = () => {
                 <label htmlFor="persist" className="pl-2 text-white font-thin tracking-wide">
                   Trust this device
                 </label>
-              </div>
+              </m.div>
 
-              <button className="w-full px-4 py-3 font-sans text-white bg-[#1E1E1E] hover:bg-slate-700 active:bg-slate-800 rounded-full duration-150">
+              <m.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 3, duration: 0.75, ease: "easeIn" }}
+                className="w-full px-4 py-3 font-sans text-white bg-[#1E1E1E] hover:bg-slate-700 active:bg-slate-800 rounded-full duration-150">
                 LOGIN
-              </button>
+              </m.button>
             </form>
           </div>
-        </div>
+        </m.div>
       </div>
 
-      <div className="flex items-center gap-2 mt-5">
+      <m.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 3.2, duration: 0.75, ease: "easeIn" }}
+        className="flex items-center gap-2 mt-5">
         <p className="text-xs font-thin text-gray-300 dark:text-gray-400">Designed and developed by: </p>
 
         <a href='https://www.tyingknotworks.com/'
@@ -221,7 +258,7 @@ const Login = () => {
         >
           TyingKnot Works
         </a>
-      </div>
+      </m.div>
     </div>
 
   );
