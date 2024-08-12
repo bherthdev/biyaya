@@ -3,18 +3,13 @@ import Layout from "./components/Layout";
 import Login from "./features/auth/Login";
 import DashLayout from "./components/DashLayout";
 import Welcome from "./features/auth/Welcome";
-import NotesList from './features/notes/NotesList'
 import UsersList from './features/users/UsersList'
 import OrdersList from './features/orders/OrdersList'
 import EditUser from "./features/users/EditUser";
-import EditOrder from "./features/orders/EditOrder";
 import NewUserForm from "./features/users/NewUserForm";
-import NewOrderForm from "./features/orders/NewOrderForm";
 import ItemsList from './features/items/ItemsList'
 import EditItem from "./features/items/EditItem";
 import NewItemForm from "./features/items/NewItemForm";
-import EditNote from "./features/notes/EditNote";
-import NewNote from "./features/notes/NewNote";
 import Prefetch from "./features/auth/Prefetch";
 import PersistLogin from './features/auth/PersistLogin';
 import RequireAuth from "./features/auth/RequireAuth";
@@ -27,6 +22,8 @@ import AccessDenied from "./components/AccessDenied";
 
 
 function App() {
+
+  
   return (
     <div className="h-full w-full  dark:bg-slate-900">
       <Routes>
@@ -79,6 +76,12 @@ function App() {
                   </Route>
 
                 </Route>{/* End Dashboard */}
+
+
+                <Route path="pos" element={<DashLayout />}>
+                  <Route index element={<POS />} />
+                  </Route>{/* End pos */}
+
               </Route>
             </Route>
           </Route>{/* End Protected Routes */}

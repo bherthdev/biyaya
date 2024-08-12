@@ -66,13 +66,13 @@ const Login = () => {
   const handlePwdInput = (e) => setPassword(e.target.value);
   const handleToggle = () => setPersist((prev) => !prev);
 
-  const errClass = errMsg ? "list-disc mt-8 text-red-500 dark:text-red-300 text-xs tracking-wide" : null;
+  const errClass = errMsg ? "list-disc mt-8 text-red-400 dark:text-red-300 text-xs tracking-wide" : null;
 
   if (isLoading) return (
 
     <div className="w-full h-screen flex flex-col items-center bg-biyaya bg-cover justify-center px-4">
       <div ref={userRef} className="mt-7 overflow-x-auto border-gray-400  dark:border-gray-800  rounded-2xl overflow-hidden">
-        <div className="flex flex-col items-center  bg-gray-200 backdrop-blur-2xl bg-opacity-[20%] dark:bg-gray-900 px-10 py-8 sm:py-10 sm:px-28 ease-in-out duration-300">
+        <div className="flex flex-col items-center  bg-gray-700 backdrop-blur-2xl bg-opacity-[20%] dark:bg-gray-900 px-10 py-8 sm:py-10 sm:px-28 ease-in-out duration-300">
 
           <img src={biyayaLogo} className='animate-bounce shadow-md shadow-black  rounded-full h-[100px] xl:h-[150px] mx-auto ease-in-out duration-300' />
           <div className="flex space-x-2">
@@ -101,37 +101,30 @@ const Login = () => {
   const content = (
     <div className="w-full h-screen flex flex-col items-center bg-biyaya bg-cover justify-center px-4">
       <div className="mt-7 overflow-x-auto rounded-2xl overflow-hidden">
-        <m.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 0.5, ease: "easeIn" }}
-          className=" bg-gray-700 backdrop-blur-2xl bg-opacity-[45%] dark:bg-gray-900 px-10 py-8 sm:py-10 sm:px-28 ease-in-out duration-300">
+        <div className=" bg-gray-700 backdrop-blur-2xl bg-opacity-[45%] dark:bg-gray-900 px-10 py-8 sm:py-10 sm:px-28 ease-in-out duration-300">
           <div className="">
             <m.img
               initial={{ opacity: 0, filter: "blur(5px)" }}
-              animate={{ opacity: 1,filter: "blur(0px)" }}
-              transition={{ delay: 1, duration: 0.75, ease: "easeIn" }}
+              animate={{ opacity: 1, filter: "blur(0px)" }}
+              transition={{ delay: 0.5, duration: 0.50, ease: "easeIn" }}
               src={biyayaLogo}
               className='h-[100px] xl:h-[130px] mx-auto ease-in-out duration-300' />
           </div>
-          <div className="sm:w-72 text-black">
+          <m.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1, duration: 0.50, ease: "easeIn" }}
+            className="sm:w-72 text-black">
             <div className="text-center">
               <div className="mt-5 space-y-2">
 
-                <m.h3
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1.7, duration: 0.75, ease: "easeIn" }}
-                  className="text-white dark:text-gray-300 text-xl font-bold tracking-widest font-sans">
+                <h3 className="text-white dark:text-gray-300 text-xl font-bold tracking-widest font-sans">
                   Login
-                </m.h3>
-                <m.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 2, duration: 0.75, ease: "easeIn" }}
+                </h3>
+                <p
                   className="text-white dark:text-gray-300 text-sm font-thin text-left pt-5">
                   Enter you login information to access the system.
-                </m.p>
+                </p>
               </div>
 
               <ul className="list-inside">
@@ -143,10 +136,7 @@ const Login = () => {
             <form onSubmit={handleSubmit} className="mt-8 space-y-5">
 
               <div className="relative">
-                <m.label
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 2.5, duration: 0.75, ease: "easeIn" }}
+                <label
                   htmlFor="UserEmail"
                   className="block overflow-hidden bg-white rounded-lg border border-gray-200 px-3 pb-2 pt-1"
                 >
@@ -169,14 +159,11 @@ const Login = () => {
                   </div>
 
 
-                </m.label>
+                </label>
               </div>
 
               <div className="relative">
-                <m.label
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 2.5, duration: 0.75, ease: "easeIn" }}
+                <label
                   htmlFor="UserEmail"
                   className="block overflow-hidden bg-white rounded-lg  px-3 pb-2 pt-1 shadow-sm"
                 >
@@ -214,12 +201,9 @@ const Login = () => {
                   </span>
 
 
-                </m.label>
+                </label>
               </div>
-              <m.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 2.5, duration: 0.75, ease: "easeIn" }}
+              <div
                 className="pb-3">
                 <input
                   type="checkbox"
@@ -231,24 +215,21 @@ const Login = () => {
                 <label htmlFor="persist" className="pl-2 text-white font-thin tracking-wide">
                   Trust this device
                 </label>
-              </m.div>
+              </div>
 
-              <m.button
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 3, duration: 0.75, ease: "easeIn" }}
+              <button
                 className="w-full px-4 py-3 font-sans text-white bg-[#1E1E1E] hover:bg-slate-700 active:bg-slate-800 rounded-full duration-150">
                 LOGIN
-              </m.button>
+              </button>
             </form>
-          </div>
-        </m.div>
+          </m.div>
+        </div>
       </div>
 
       <m.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 3.2, duration: 0.75, ease: "easeIn" }}
+        transition={{ delay: 1.5, duration: 0.75, ease: "easeIn" }}
         className="flex items-center gap-2 mt-5">
         <p className="text-xs font-thin text-gray-300 dark:text-gray-400">Designed and developed by: </p>
 

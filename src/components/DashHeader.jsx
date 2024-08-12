@@ -55,20 +55,20 @@ const DashHeader = ({ headerName }) => {
 
   const content = (
     <>
-      <div className={`bg-white dark:bg-slate-900 sm:px-8 border flex ${classNav} h-32  items-center justify-between px-4 right-0`}>
+      <div className={`bg-white dark:bg-slate-900 sm:px-8 border flex ${classNav} h-24 sm:h-32  items-center justify-between px-4 right-0`}>
 
         <div className="flex items-center">
           <p className="flex">
             <Link to={'/dashboard'} >
               <span className="sr-only">Logo</span>
-              <span className="inline-block text-gray-700 dark:text-gray-200  text-4xl font-semibold">
+              <span className="inline-block text-gray-700 dark:text-gray-200 text-2xl  sm:text-4xl font-semibold">
                 {headerName === `/dashboard`
                   ? `Dashboard`
                   : headerName === `/dashboard/items`
                     ? `Inventory`
                     : headerName === `/dashboard/orders`
                       ? `Orders`
-                      : headerName === `/dashboard/pos`
+                      : headerName === `/pos`
                         ? `POS`
                         : `Settings`
                 }
@@ -115,7 +115,7 @@ const DashHeader = ({ headerName }) => {
                         <img
                           alt="Profile"
                           src={avatar}
-                          className="h-16 w-16 rounded-full object-cover border border-slate-300  dark:border-slate-600"
+                          className="h-12 w-12 sm:h-16 sm:w-16 rounded-full object-cover border border-slate-300  dark:border-slate-600"
                         />
                        {isAdmin && <svg
                           xmlns="http://www.w3.org/2000/svg"

@@ -23,7 +23,7 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
     navigate(menuName)
     setHeaderName(menuName)
 
-    menuName === '/dashboard/pos' ? setToggleCart(true) : setToggleCart(false)
+    menuName === '/pos' ? setToggleCart(true) : setToggleCart(false)
   }
 
   if (isLoading) return (
@@ -41,20 +41,20 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
 
   }, [isSuccess, navigate]);
 
-  const classToggleSideMenu = toggleSideMenu ? 'w-44 ease-in-out duration-300' : 'w-16 ease-in-out duration-300'
+  const classToggleSideMenu = toggleSideMenu ? 'w-16 sm:w-44 ease-in-out duration-300' : 'w-16 ease-in-out duration-300'
 
   const content = (
     <>
 
       <div className={`flex h-full fixed ${classToggleSideMenu}   flex-col justify-between border-e bg-white `}>
-        <div className={toggleSideMenu ? `py-6 ease-in-out duration-300` : `py-12 ease-in-out duration-300`}>
-          <div className={toggleSideMenu ? `cursor-pointer mx-auto w-20 rounded-lg text-xs text-gray-600  ease-in-out duration-300` : ` ease-in-out duration-300 cursor-pointer mx-auto w-10 rounded-lg text-xs text-gray-600`}
+        <div className={toggleSideMenu ? `py-12 sm:py-6 ease-in-out duration-300` : `py-12 ease-in-out duration-300`}>
+          <div className={toggleSideMenu ? `cursor-pointer mx-auto w-10 sm:w-20 rounded-lg text-xs text-gray-600  ease-in-out duration-300` : ` ease-in-out duration-300 cursor-pointer mx-auto w-10 rounded-lg text-xs text-gray-600`}
             onClick={() => setToggleSideMenu(!toggleSideMenu)}
           >
             <img src={biyayaLogo} className='' />
           </div>
 
-          <ul className={toggleSideMenu ? `mt-6 ease-in-out duration-300` : `mt-10 ease-in-out duration-300`}>
+          <ul className={toggleSideMenu ? `mt-10 sm:mt-6 ease-in-out duration-300` : `mt-10 ease-in-out duration-300`}>
             <li className={
               location.pathname === '/dashboard'
                 ? `border-r-[4px] border-r-gray-800 bg-gray-100 px-4 py-4 cursor-pointer font-sans font-medium  text-gray-700`
@@ -67,7 +67,7 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
                   <AiOutlineDashboard size={25} />
                 </div>
                 <div
-                  className={toggleSideMenu ? `text-md tracking-wide w-16 ease-in-out duration-300` : ` text-[0px] tracking-wide w-16 ease-in-out duration-300`}
+                  className={toggleSideMenu ? ` hidden sm:flex text-md tracking-wide w-16 ease-in-out duration-300` : ` text-[0px] tracking-wide w-16 ease-in-out duration-300`}
                 >
                   Dashboard
                 </div>
@@ -80,23 +80,23 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
             </li>
 
             <li className={
-              location.pathname === '/dashboard/pos'
+              location.pathname === '/pos'
                 ? `border-r-[4px] border-r-gray-800 bg-gray-100 px-4 py-4 cursor-pointer font-sans font-medium  text-gray-700`
                 : ` border-r-gray-800  px-4 py-4 cursor-pointer hover:bg-gray-100 font-sans font-medium  text-gray-700`
             }
-              onClick={() => navigateMenu("/dashboard/pos")}
+              onClick={() => navigateMenu("/pos")}
             >
               <div className={toggleSideMenu ? `flex gap-5` : `t group relative flex gap-5`}>
                 <div className="text-gray-500">
                   <BsFillMenuButtonWideFill size={25} />
                 </div>
                 <div
-                  className={toggleSideMenu ? `text-md tracking-wide ease-in-out duration-300` : ` text-[0px] tracking-wide ease-in-out duration-300`}
+                  className={toggleSideMenu ? `hidden sm:flex text-md tracking-wide ease-in-out duration-300` : ` text-[0px] tracking-wide ease-in-out duration-300`}
                 >
                   POS
                 </div>
                 <span
-                  className="invisible absolute start-full top-[48%] ms-2 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
+                  className="invisible z-auto absolute start-full top-[48%] ms-2 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
                 >
                   POS
                 </span>
@@ -116,7 +116,7 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
                     <MdOutlineInventory size={25} />
                   </div>
                   <div
-                    className={toggleSideMenu ? `text-md tracking-wide ease-in-out duration-300` : ` text-[0px] tracking-wide ease-in-out duration-300`}
+                    className={toggleSideMenu ? `hidden sm:flex text-md tracking-wide ease-in-out duration-300` : ` text-[0px] tracking-wide ease-in-out duration-300`}
                   >
                     Inventory
                   </div>
@@ -141,7 +141,7 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
                   </div>
 
                   <div
-                    className={toggleSideMenu ? `text-md tracking-wide  ease-in-out duration-300` : ` text-[0px] tracking-wide  ease-in-out duration-300`}
+                    className={toggleSideMenu ? `hidden sm:flex text-md tracking-wide  ease-in-out duration-300` : ` text-[0px] tracking-wide  ease-in-out duration-300`}
                   >
                     Orders
                   </div>
@@ -167,7 +167,7 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
                     <IoSettingsOutline size={25} />
                   </div>
                   <div
-                    className={toggleSideMenu ? `text-md tracking-wide  ease-in-out duration-300` : `group text-[0px] tracking-wide  ease-in-out duration-300`}
+                    className={toggleSideMenu ? `hidden sm:flex text-md tracking-wide  ease-in-out duration-300` : `group text-[0px] tracking-wide  ease-in-out duration-300`}
                   >
                     Settings
 
@@ -194,7 +194,7 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
               <IoIosLogOut size={25} />
             </div>
             <div
-              className={toggleSideMenu ? `text-md tracking-wide  ease-in-out duration-300` : `group text-[0px] tracking-wide  ease-in-out duration-300`}
+              className={toggleSideMenu ? `hidden sm:flex text-md tracking-wide  ease-in-out duration-300` : `group text-[0px] tracking-wide  ease-in-out duration-300`}
             >
               Logout
 

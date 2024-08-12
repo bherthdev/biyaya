@@ -12,7 +12,6 @@ const MenuItem = ({ itemId, search, orderTransac, setOrderTransac, orderItems, s
     const item = useSelector((state) => selectItemById(state, itemId));
 
 
-
     const addToCart = (item) => {
 
         const index = orderItems.findIndex(items => items.id === item.id)
@@ -54,7 +53,7 @@ const MenuItem = ({ itemId, search, orderTransac, setOrderTransac, orderItems, s
         if (item.category === search) {
             return (
 
-                <div className="gap-3 group relative flex sm:block overflow-hidden bg-white dark:bg-slate-800 rounded-3xl shadow-sm border-gray-200 dark:border-gray-800 p-4 text-center text-gray-800 dark:text-gray-200 hover:text-gray-500 dark:hover:text-gray-400">
+                <div className="gap-3 group relative block overflow-hidden bg-white dark:bg-slate-800 rounded-3xl shadow-sm border-gray-200 dark:border-gray-800 p-4 text-center text-gray-800 dark:text-gray-200 hover:text-gray-500 dark:hover:text-gray-400">
                     <div className="text-4xl  font-bold  md:text-5xl flex gap-2">
                         <div className='rounded-lg h-36 w-full lg:h-36 lg:w-full object-cover'>
                             <img
@@ -111,7 +110,7 @@ const MenuItem = ({ itemId, search, orderTransac, setOrderTransac, orderItems, s
                                 title="Add to cart"
                                 onClick={() => addToCart(item)}
 
-                                className={`cursor-pointer w-full text-sx sm:text-base flex justify-center items-center gap-2 px-4 py-2 sm:py-3 text-black border dark:text-gray-300 border-gray-300 dark:border-slate-600  dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
+                                className={`cursor-pointer w-full bg-[#242424] active:bg-gray-900 text-sx sm:text-base flex justify-center items-center gap-2 px-4 py-2 sm:py-3 text-white border border-gray-300 rounded-full`} >
 
                                 <FaPlus size={10} />
                                 Add to cart

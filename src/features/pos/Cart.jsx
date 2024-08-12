@@ -6,9 +6,10 @@ import { useAddNewOrderMutation } from "../orders/ordersApiSlice";
 import { toast } from "react-toastify";
 import useAuth from "../../hooks/useAuth";
 import Order from "./Order"
+import { MdClose } from "react-icons/md";
 
 
-export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, setOrdersItems }) => {
+export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, setOrdersItems, toggleCartMobile, setToggleCartMobile }) => {
 
     const { formatDate, generateOR } = Order()
 
@@ -61,6 +62,7 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
                     theme: "dark",
                 })
 
+                setToggleCartMobile(false)
                 setPlaceOrder(false)
                 setEnableSaveOrder(false)
                 setOrdersItems([])
@@ -111,20 +113,32 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
 
 
     const classToggleCart = toggleCart ? ' ease-in-out duration-300 right-0 top-0 bottom-0' : ' right-[-100%]  ease-in-out duration-300'
+    const classToggleCartMobile = toggleCartMobile ? `flex` : `hidden sm:flex`
 
     const content = (
         <>
-
-
-            <div className={`hidden sm:flex h-full bg-white fixed w-80 border ${classToggleCart} z-20 px-5  flex-col justify-between border-e bg-white `}>
+            <div className={` ${classToggleCartMobile}  h-full bg-white fixed w-80 border ${classToggleCart} z-20 px-5  flex-col justify-between border-e bg-white `}>
                 <div className={`py-5 flex flex-col  gap-5`}>
-                    <div className="flex justify-between items-center">
+                    <div className="flex sm:hidden justify-between">
                         <h1 className={`text-3xl text-gray-700`}
 
                         >
                             Cart
                         </h1>
-                        <p className="text-sm text-gray-400 font-normal">
+                        <div
+                            onClick={() => setToggleCartMobile(false)}
+                            className="p-1 text-gray-400">
+                            <MdClose size={30} />
+                        </div>
+                    </div>
+                    <div className="hidden sm:flex justify-between items-center">
+                        <h1 className={`text-3xl text-gray-700`}
+
+                        >
+                            Cart
+                        </h1>
+
+                        <p className="flex text-sm text-gray-400 font-normal">
                             {orderTransac.orderNo}
                         </p>
                     </div>
@@ -259,6 +273,8 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
                 </div>
 
             </div>
+
+
 
         </>
     )

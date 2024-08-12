@@ -7,19 +7,23 @@ import Order from "./Order"
 import { Cart } from './Cart';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { MdOutlineShoppingCart } from 'react-icons/md';
 
 const POS = () => {
 
     const { orderTransac, setOrderTransac, orderItems, setOrdersItems } = Order()
-    
+    const [toggleCartMobile, setToggleCartMobile] = useState(false)
+
+  
+
 
     const item = {
-        id:'',
-        name:'',
-        desc:'',
-        avatar:'',
-        qty:'',
-        price:''
+        id: '',
+        name: '',
+        desc: '',
+        avatar: '',
+        qty: '',
+        price: ''
     }
 
     const [search, setsearch] = useState("Coffee");
@@ -52,55 +56,67 @@ const POS = () => {
     if (isSuccess) {
         const { ids } = items;
 
-        const menuContent = ids?.length && ids.map((itemId) => <MenuItem key={itemId} itemId={itemId} search={search} orderItems={orderItems} setOrderTransac={setOrderTransac}  orderTransac={orderTransac} setOrdersItems={setOrdersItems} />)
-
-
+        const menuContent = ids?.length && ids.map((itemId) => <MenuItem key={itemId} itemId={itemId} search={search} orderItems={orderItems} setOrderTransac={setOrderTransac} orderTransac={orderTransac} setOrdersItems={setOrdersItems} />)
 
 
         content = (
             <>
-                <>
-                <ToastContainer />
-                <Cart toggleCart={location.pathname == '/dashboard/pos'} orderTransac={orderTransac} setOrderTransac={setOrderTransac} orderItems={orderItems} setOrdersItems={setOrdersItems}/>
-                </>
 
-                <div aria-label="Page Header" className="bg-[#F1F1F1] h-full">
-                    <div className="mx-auto max-w-screen-xl px-4 h-full py-5 sm:px-6 lg:px-5">
-                        <div className="mt-2 ">
 
-                            <div className='flex items-center gap-5'>
+                <div aria-label="Page Header" className="">
+                    <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8">
+                        <div className=" sm:mt-2 ">
+                            <div className='fixed flex-row sm:flex-col sm:flex top-24 sm:top-40 z-20 bg-[#f1f1f1] sm:bg-transparent rounded-md'>
+                                <div>
+                                    <ToastContainer />
+                                    <Cart toggleCart={location.pathname == '/pos'} orderTransac={orderTransac} setOrderTransac={setOrderTransac} orderItems={orderItems} setOrdersItems={setOrdersItems} toggleCartMobile={toggleCartMobile} setToggleCartMobile={setToggleCartMobile} />
+                                </div>
+                                <div className='flex w-[294px]  sm:w-full overflow-auto text-xs sm:text-base gap-5 py-5 sm:py-0'>
 
-                                <button
-                                    title="Coffee"
-                                    onClick={() => setsearch('Coffee')}
-                                    className={`${search === 'Coffee' ? 'bg-[#242424] text-white hover:bg-gray-700' : 'hover:bg-gray-200 text-black'} flex px-7  py-3   border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
-                                    Coffee
-                                </button>
-                                <button
-                                    title="Non Coffee"
-                                    onClick={() => setsearch('Non Coffee')}
-                                    className={`${search === 'Non Coffee' ? 'bg-[#242424] text-white hover:bg-gray-700' : 'hover:bg-gray-200 text-black'} flex px-7  py-3   border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
-                                    Non Coffee
-                                </button>
-                                <button
-                                    title="Food"
-                                    onClick={() => setsearch('Food')}
-                                    className={`${search === 'Food' ? 'bg-[#242424] text-white hover:bg-gray-700' : 'hover:bg-gray-200 text-black'} flex px-7  py-3   border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
-                                    Food
-                                </button>
-                                <button
-                                    title="Other"
-                                    onClick={() => setsearch('Other')}
-                                    className={`${search === 'Other' ? 'bg-[#242424] text-white hover:bg-gray-700' : 'hover:bg-gray-200 text-black'} flex px-7  py-3   border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
-                                    Other
-                                </button>
+                                    <button
+                                        title="Coffee"
+                                        onClick={() => setsearch('Coffee')}
+                                        className={`${search === 'Coffee' ? 'bg-[#242424] text-white hover:bg-gray-700' : 'hover:bg-gray-200 text-black'} flex items-center px-5 sm:px-7 py-1 sm:py-3   border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
+                                        Coffee
+                                    </button>
+                                    <button
+                                        title="Non Coffee"
+                                        onClick={() => setsearch('Non Coffee')}
+                                        className={`${search === 'Non Coffee' ? 'bg-[#242424] text-white hover:bg-gray-700' : 'hover:bg-gray-200 text-black'} flex items-center px-5 sm:px-7 py-1 sm:py-3   border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
+                                        Non Coffee
+                                    </button>
+                                    <button
+                                        title="Food"
+                                        onClick={() => setsearch('Food')}
+                                        className={`${search === 'Food' ? 'bg-[#242424] text-white hover:bg-gray-700' : 'hover:bg-gray-200 text-black'} flex items-center px-5 sm:px-7 py-1 sm:py-3   border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
+                                        Food
+                                    </button>
+                                    <button
+                                        title="Other"
+                                        onClick={() => setsearch('Other')}
+                                        className={`${search === 'Other' ? 'bg-[#242424] text-white hover:bg-gray-700' : 'hover:bg-gray-200 text-black'} flex items-center px-5 sm:px-7 py-1 sm:py-3   border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
+                                        Other
+                                    </button>
+                                </div>
+                                <div className='flex justify-between items-center mt-9 mb-4 '>
+                                    <h1 className="text-xl  font-medium  text-gray-700 sm:text-2xl dark:text-gray-200">
+                                        {search} menu
+                                    </h1>
+                                    <div onClick={() => setToggleCartMobile(true)} className='flex sm:hidden justify-between items-center  relative'>
+                                        <div className='absolute p-1 w-6 h-6 rounded-full bg-black top-[-70%] right-[-20%] '>
+                                            <h1 className='text-white text-xs text-center '>
+                                                {orderItems?.reduce((total, item)=> total + item.qty,0)}
+                                            </h1>
+                                        </div>
+
+                                        <MdOutlineShoppingCart size={30} className='text-gray-700' />
+                                    </div>
+
+                                </div>
                             </div>
 
-                            <p className="text-xl mt-10 font-medium  text-gray-700 sm:text-2xl dark:text-gray-200">
-                                {search} menu
-                            </p>
 
-                            <div className="mx-auto max-w-screen-xl mt-8">
+                            <div className="mx-auto max-w-screen-xl mt-36 sm:mt-36">
                                 <div className="mt-4 sm:mt-4">
                                     <div className="font-normal grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 xl:gap-6 2xl:grid-cols-4 2xl:gap-6 ">
                                         {menuContent}
