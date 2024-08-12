@@ -66,12 +66,12 @@ const POS = () => {
                 <div aria-label="Page Header" className="">
                     <div className="mx-auto max-w-screen-xl px-0 py-8 sm:px-6 lg:px-8">
                         <div className=" sm:mt-2 ">
-                            <div className='fixed z-10 mx-auto max-w-screen-xl shadow sm:shadow-transparent px-4 flex-row sm:flex-col sm:flex top-24 sm:top-32  bg-[#f1f1f1] '>
+                            <div className='fixed z-10 mx-auto max-w-screen-xl border sm:border-transparent px-4 sm:px-0 flex-row sm:flex-col sm:flex top-24 sm:top-32  bg-[#f1f1f1] '>
                                 <div>
                                     <ToastContainer />
                                     <Cart toggleCart={location.pathname == '/pos'} orderTransac={orderTransac} setOrderTransac={setOrderTransac} orderItems={orderItems} setOrdersItems={setOrdersItems} toggleCartMobile={toggleCartMobile} setToggleCartMobile={setToggleCartMobile} />
                                 </div>
-                                <div className='mt-5 sm:mt-10 overflow-auto grid gap-1 sm:gap-4 grid-cols-4 text-xs sm:text-base  py-5 sm:py-0'>
+                                <div className='mt-2 sm:mt-10 overflow-auto  grid gap-1 sm:gap-4 grid-cols-4 text-xs sm:text-base  py-5 sm:py-0'>
 
                                     <button
                                         title="Coffee"
@@ -98,27 +98,27 @@ const POS = () => {
                                         Other
                                     </button>
                                 </div>
-                                <div className='flex justify-between items-center mt-5 mb-5 '>
-                                    <h1 className="text-xl  font-medium  text-gray-700 sm:text-2xl dark:text-gray-200">
+                                <div className='flex justify-between items-center mt-2 sm:mt-5 mb-5 '>
+                                    <h1 className="text-lg  font-medium  text-gray-700 sm:text-2xl dark:text-gray-200">
                                         {search} menu
                                     </h1>
                                     <div onClick={() => setToggleCartMobile(true)} className='flex sm:hidden justify-between items-center  relative'>
-                                        <div className='absolute p-1 w-6 h-6 rounded-full bg-black top-[-0%] left-[-90%] '>
+                                        <div className='absolute p-1 w-6 h-6 rounded-full bg-[#242424] top-[-0%] left-[-100%] '>
                                             <h1 className='text-white text-xs text-center '>
                                                 {orderItems?.reduce((total, item)=> total + item.qty,0)}
                                             </h1>
                                         </div>
 
-                                        <MdOutlineShoppingCart size={30} className='text-gray-700' />
+                                        <MdOutlineShoppingCart size={25} className='text-gray-700' />
                                     </div>
 
                                 </div>
                             </div>
 
 
-                            <div className="mx-auto max-w-screen-xl mt-36 sm:mt-36">
+                            <div className="mx-auto max-w-screen-xl mt-36 ">
                                 <div className="mt-4 sm:mt-4">
-                                    <div className="font-normal px-4 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 xl:gap-6 2xl:grid-cols-4 2xl:gap-6 ">
+                                    <div className="font-normal px-6 sm:px-0 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 xl:gap-6 2xl:grid-cols-4 2xl:gap-6 ">
                                         {menuContent}
                                     </div>
                                 </div>

@@ -59,7 +59,6 @@ const DashHeader = ({ headerName }) => {
 
         <div className="flex items-center">
           <p className="flex">
-            <Link to={'/dashboard'} >
               <span className="sr-only">Logo</span>
               <span className="inline-block text-gray-700 dark:text-gray-200 text-2xl  sm:text-4xl font-semibold">
                 {headerName === `/dashboard`
@@ -73,7 +72,6 @@ const DashHeader = ({ headerName }) => {
                         : `Settings`
                 }
               </span>
-            </Link>
           </p>
         </div>
         {/* Navbar here */}
