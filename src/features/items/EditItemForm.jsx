@@ -464,7 +464,7 @@ const EditItemForm = ({ item }) => {
               </div>
 
               {/*footer mobile screen */}
-              <div className={`flex sm:hidden gap-2  flex-col sm:flex-row sm:hidden  sm:justify-end text-sm bg-gray-50 dark:bg-slate-800 px-4 py-3 text-center sm:px-6 dark:border-t dark:border-slate-700 ${btnClass}`}>
+              <div className={`flex  gap-2  flex-col sm:flex-row sm:hidden  sm:justify-end text-sm bg-gray-50 dark:bg-slate-800 px-4 py-3 text-center sm:px-6 dark:border-t dark:border-slate-700 ${btnClass}`}>
 
 
 

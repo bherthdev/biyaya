@@ -11,9 +11,11 @@ import PageLoader from "../../components/PageLoader";
 import biyayaLogo from "../../assets/biyaya_logo.png";
 import biyayaShop from "../../assets/biyaya_shop.png";
 import biyayaSmile from "../../assets/biyaya_smile.jpg";
+import biyayaSmile2 from "../../assets/biyaya_smile2.jpg";
 import { FaRegUser } from "react-icons/fa";
 import Spenner from "../../components/Spenner";
 import { motion as m } from "framer-motion"
+import Carousel from "../../components/Carousel";
 
 const Login = () => {
   const userRef = useRef();
@@ -69,6 +71,12 @@ const Login = () => {
   const handleToggle = () => setPersist((prev) => !prev);
 
   const errClass = errMsg ? "list-disc mt-8 text-red-600 dark:text-red-300 text-xs tracking-wide" : null;
+
+  let slides = [
+    biyayaSmile,
+    biyayaSmile2,
+    biyayaShop,
+  ];
 
   if (isLoading) return (
 
@@ -158,12 +166,15 @@ const Login = () => {
     <>
       <div className="bg-white">
         <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
-          <div className="relative flex h-48 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
-            <img
+          <div className="relative  flex h-48 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
+            {/* <img
               alt="Logo"
               src={biyayaSmile}
               className="absolute inset-0 h-full w-full object-cover opacity-80"
-            />
+            /> */}
+          
+
+              <Carousel slides={slides} />
 
             <div className="hidden lg:relative lg:block lg:p-12">
               <div className="block text-white">
