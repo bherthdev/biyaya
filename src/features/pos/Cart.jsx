@@ -113,11 +113,11 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
 
 
     const classToggleCart = toggleCart ? ' ease-in-out duration-300 right-0 top-0 bottom-0' : ' right-[-100%]  ease-in-out duration-300'
-    const classToggleCartMobile = toggleCartMobile ? `flex` : `hidden sm:flex`
+    const classToggleCartMobile = toggleCartMobile ? `block` : `hidden sm:flex`
 
     const content = (
         <>
-            <div className={` ${classToggleCartMobile} shadow-2xl sm:shadow-transparent  h-full bg-white fixed w-80 border ${classToggleCart} z-20 px-5  flex-col justify-between border-e bg-white `}>
+            <div className={` ${classToggleCartMobile} shadow-2xl sm:shadow-transparent  h-full bg-white fixed w-80 border ${classToggleCart} z-50 px-5  flex-col justify-between border-e bg-white `}>
                 <div className={`py-5 flex flex-col  gap-5`}>
                     <div className="flex sm:hidden justify-between">
                         <h1 className={`text-3xl text-gray-700`}

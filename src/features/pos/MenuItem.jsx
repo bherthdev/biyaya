@@ -110,7 +110,7 @@ const MenuItem = ({ itemId, search, orderTransac, setOrderTransac, orderItems, s
                                 title="Add to cart"
                                 onClick={() => addToCart(item)}
 
-                                className={`cursor-pointer w-full bg-[#242424] active:bg-gray-900 text-sx sm:text-base flex justify-center items-center gap-2 px-4 py-2 sm:py-3 text-white border border-gray-300 rounded-full`} >
+                                className={`cursor-pointer w-full bg-[#242424] active:bg-gray-600 hover:bg-gray-700 text-sx sm:text-base flex justify-center items-center gap-2 px-4 py-2 sm:py-3 text-white border border-gray-300 rounded-full`} >
 
                                 <FaPlus size={10} />
                                 Add to cart

@@ -48,8 +48,8 @@ export default function Carousel({ slides }) {
           transform: `translateX(-${current * 100}%)`,
         }}
       >
-        {slides.map((s) => {
-          return <img src={s} />;
+        {slides.map((s, idx) => {
+          return <img key={idx} src={s} />;
         })}
       </div>
 
