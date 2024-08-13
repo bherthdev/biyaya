@@ -9,7 +9,8 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import Switcher from "../../components/Switcher";
 import PageLoader from "../../components/PageLoader";
 import biyayaLogo from "../../assets/biyaya_logo.png";
-import biyayaShop1 from "../../assets/biyaya_shop.png";
+import biyayaShop from "../../assets/biyaya_shop.png";
+import biyayaSmile from "../../assets/biyaya_smile.jpg";
 import { FaRegUser } from "react-icons/fa";
 import Spenner from "../../components/Spenner";
 import { motion as m } from "framer-motion"
@@ -76,7 +77,7 @@ const Login = () => {
         <div ref={userRef} className="relative flex h-48 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
           <img
             alt="Logo"
-            src={biyayaShop1}
+            src={biyayaSmile}
             className="absolute inset-0 h-full w-full object-cover opacity-80"
           />
 
@@ -160,7 +161,7 @@ const Login = () => {
           <div className="relative flex h-48 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
             <img
               alt="Logo"
-              src={biyayaShop1}
+              src={biyayaSmile}
               className="absolute inset-0 h-full w-full object-cover opacity-80"
             />
 
