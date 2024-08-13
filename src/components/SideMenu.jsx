@@ -5,7 +5,7 @@ import { BsFillMenuButtonWideFill } from "react-icons/bs";
 import { MdOutlineInventory } from "react-icons/md";
 import { IoReceiptOutline } from "react-icons/io5";
 import { IoSettingsOutline } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { IoIosLogOut } from "react-icons/io";
 import { useSendLogoutMutation } from "../features/auth/authApiSlice";
 import { useEffect } from "react";
@@ -13,6 +13,7 @@ import useAuth from "../hooks/useAuth";
 import Spenner from "./Spenner";
 
 export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, setToggleCart }) => {
+  const location = useLocation()
 
   const { isAdmin } = useAuth(); //current user id
   const navigate = useNavigate();
@@ -26,8 +27,6 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
 
     menuName === '/pos' ? setToggleCart(true) : setToggleCart(false)
   }
-
-
 
   if (isLoading) return (
     <div className="flex text-gray-800 dark:text-gray-300 text-sm h-full w-full items-center p-2">
@@ -56,7 +55,7 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
   const content = (
     <>
 
-      <div className={`flex h-full fixed ${classToggleSideMenu}   flex-col justify-between border-e bg-white `}>
+      <div className={`z-40 flex h-full fixed ${classToggleSideMenu}   flex-col justify-between border-e bg-white `}>
         <div className={toggleSideMenu ? `py-7 sm:py-6 ease-in-out duration-300` : `py-12 ease-in-out duration-300`}>
           <div className={toggleSideMenu ? `cursor-pointer mx-auto w-10 sm:w-20 rounded-lg text-xs text-gray-600  ease-in-out duration-300` : ` ease-in-out duration-300 cursor-pointer mx-auto w-10 rounded-lg text-xs text-gray-600`}
             onClick={() => setToggleSideMenu(!toggleSideMenu)}
@@ -115,7 +114,7 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
 
             {isAdmin &&
               <li className={
-                location.pathname === '/inventory'
+                location.pathname === '/inventory' ||  location.pathname === '/inventory/new' ||  /^\/inventory\/.*/.test(location.pathname)
                   ? `border-r-[4px] border-r-gray-800 bg-gray-100 px-4 py-4 cursor-pointer font-sans font-medium  text-gray-700`
                   : ` border-r-gray-800  px-4 py-4 cursor-pointer hover:bg-gray-100 font-sans font-medium  text-gray-700`
               }

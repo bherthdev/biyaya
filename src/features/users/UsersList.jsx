@@ -53,16 +53,16 @@ const UsersList = () => {
     content = (
       <>
 
-        <div className="mx-auto h-screen max-w-screen-xl mr-20 sm:mr-0 px-4 py-8 sm:px-6 lg:px-8">
+        <div className="mx-auto h-screen max-w-screen-xl  px-4 py-8 sm:px-6 lg:px-8">
           <div className="sm:flex justify-between">
             <div className="flex justify-between items-center">
               <h1 className="text-xl font-semibold  text-gray-500  dark:text-gray-400">
                 Manage User
               </h1>
               <span
-                onClick={() => navigate("/dash/users/new")}
-                title='Add Employee'
-                className="ml-4 block sm:hidden cursor-pointer text-sm px-3 py-2 text-white border dark:text-gray-300 font-medium border-gray-200 dark:border-slate-600 bg-gray-600 dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md duration-150"
+                onClick={() => navigate("/dashboard/users/new")}
+                title='Add Item'
+                className="flex text-xs gap-2 sm:hidden items-center cursor-pointer  px-8 py-3 text-black border dark:text-gray-300 font-medium border-gray-300 dark:border-slate-600  hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150"
               >
                 <AiOutlineUserAdd size={20} />
               </span>
@@ -106,16 +106,18 @@ const UsersList = () => {
                 <span
                   onClick={() => navigate("/dashboard/users/new")}
                   title='Add New Item'
-                  className="hidden sm:flex items-center cursor-pointer  px-8 py-3 text-black border dark:text-gray-300 font-medium border-gray-300 dark:border-slate-600  hover:bg-white dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150"
+                  className="hidden sm:flex gap-3 items-center cursor-pointer  px-8 py-3 text-black border dark:text-gray-300 font-medium border-gray-300 dark:border-slate-600  hover:bg-white dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150"
                 >
-                  <IoMdAdd size={19} />
-                  Add Item
+                  <AiOutlineUserAdd size={19} />
+                  Add User
                 </span>
               </div>
             </div>
           </div>
-          <div className="flex flex-col mt-5 text-sm font-medium text-gray-500">
-            {/* <div className="flex">
+          <div className="grid grid-cols-1">
+            <div>
+              <div className="flex flex-col mt-5 text-sm font-medium text-gray-500">
+                {/* <div className="flex">
                 <div className="flex justify-center items-center w-32 h-12 px-10 py-2 rounded-t-lg bg-white">
                   <div>USERS</div>
                 </div>
@@ -124,25 +126,27 @@ const UsersList = () => {
                 </div>
               </div> */}
 
-            <div className="w-full bg-white h-5 rounded-t-lg">
+                <div className="w-full bg-white h-5 rounded-t-lg">
 
 
+                </div>
+              </div>
+              <div className="overflow-x-auto bg-white min-w-full shadow-sm ">
+                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm leading-normal">
+                  <thead className="bg-gray-50 dark:bg-gray-800 ">
+                    <tr>
+                      {columnsArray.map((column, index) => (
+                        <Thead thName={column} key={index} />
+                      ))}
+                      <Thead thName="" />
+                    </tr>
+                  </thead>
+                  <Tbody tbName={tableContent} />
+                </table>
+              </div>
+              <div className="pt-10 bg-slate-100 rounded-b"></div>
             </div>
           </div>
-          <div className="overflow-x-auto bg-white min-w-full shadow-sm ">
-            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm leading-normal">
-              <thead className="bg-gray-50 dark:bg-gray-800 ">
-                <tr>
-                  {columnsArray.map((column, index) => (
-                    <Thead thName={column} key={index} />
-                  ))}
-                  <Thead thName="" />
-                </tr>
-              </thead>
-              <Tbody tbName={tableContent} />
-            </table>
-          </div>
-          <div className="pt-10 bg-slate-100 rounded-b"></div>
         </div>
 
 

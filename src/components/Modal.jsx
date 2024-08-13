@@ -5,7 +5,7 @@ function Modal({ isOpen, onClose, onOk, children }) {
   const showHideClassName = isOpen ? "block" : "hidden";
 
   return (
-    <div className={`fixed z-20 inset-0 overflow-y-auto ${showHideClassName}`}>
+    <div className={`fixed z-50 inset-0 overflow-y-auto ${showHideClassName}`}>
       <div className="flex items-center justify-center h-screen pt-4 px-4 pb-20 text-center  ">
      
         <div className="fixed inset-0 transition-opacity">

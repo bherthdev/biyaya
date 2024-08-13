@@ -11,7 +11,7 @@ function Modal({ isOpen, onClose, orderId }) {
   const showHideClassName = isOpen ? "block" : "hidden";
 
   return (
-    <div className={`fixed z-20 inset-0 overflow-y-auto ${showHideClassName}`}>
+    <div className={`fixed z-50 inset-0 overflow-y-auto ${showHideClassName}`}>
       <div className="flex items-center justify-center h-screen pt-4 px-4 pb-20 text-center  ">
      
         <div className="fixed inset-0 transition-opacity">
@@ -54,13 +54,13 @@ function Modal({ isOpen, onClose, orderId }) {
                   </div>
                   <div className="flex flex-col justify-between gap-2 ">
                     {order && order.items.map((item, idx) =>
-                      <div key={idx} className="text-sm">
+                      <div key={idx} className="text-sm ">
 
-                        <dl className=" divide-gray-100 text-sm text-left whitespace-nowrap">
-                          <div className="grid  gap-1  sm:grid-cols-5 sm:gap-4 whitespace-nowrap">
-                            <dt className="font-medium text-gray-900 ">{item.name}</dt>
-                            <dd className="text-gray-700 sm:col-span-2 text-center">{item.qty}</dd>
-                            <dd className="text-gray-700 font-semibold sm:col-span-2 text-right">{item.total}</dd>
+                        <dl className=" divide-gray-100 text-sm ">
+                          <div className="grid  gap-1 grid-cols-3 sm:gap-4 ">
+                            <dt className="font-medium text-gray-900 text-left ">{item.name}</dt>
+                            <dd className="text-gray-700  text-center">{item.qty}</dd>
+                            <dd className="text-gray-700 font-semibold text-right ">{item.total}</dd>
                           </div>
 
                         </dl>

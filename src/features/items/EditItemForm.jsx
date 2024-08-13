@@ -212,7 +212,7 @@ const EditItemForm = ({ item }) => {
       </Modal>
 
       <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8 ">
-        <h1 className="mb-2 text-2xl font-bold text-gray-900 sm:text-2xl dark:text-gray-200 ">
+        <h1 className="mb-2 text-xl font-semibold  text-gray-500 sm:text-2xl dark:text-gray-200 ">
           {id === item._id ? 'Account Setting' : 'Edit Item'}
         </h1>
         <p className={errClass}>{error?.data?.message}</p>
@@ -263,25 +263,25 @@ const EditItemForm = ({ item }) => {
 
 
 
-                    <div className="mt-10">
-                      <label className="block text-base text-gray-500 dark:text-gray-200">
+                    <div className="mb-10 sm:mb-0 mt-10">
+                      <label className="block text-base text-center sm:text-left text-gray-500 dark:text-gray-200">
                         Item Photo
                       </label>
-                      <div className="mt-1 flex items-center">
+                      <div className="mt-1 flex flex-col gap-4 sm:gap-0 sm:flex-row items-center">
                         {imageView
-                          ? <Image data={imageView} size="h-20 w-20" rounded="rounded-md" />
-                          : <span className="inline-block h-20 w-20 overflow-hidden rounded-md bg-gray-100">
+                          ? <Image data={imageView} size="h-40 w-40" rounded="rounded-md" />
+                          : <span className="inline-block h-40 w-40 overflow-hidden rounded-md bg-gray-100">
                             <img
                               alt="Item Photo"
                               src={item.avatar}
-                              className="h-20 w-20 rounded-md object-cover border border-slate-300  dark:border-slate-600"
+                              className="h-40 w-40 rounded-md object-cover border border-slate-300  dark:border-slate-600"
                             />
                           </span>
                         }
 
                         <label
                           htmlFor="file-upload"
-                          className="ml-5 cursor-pointer text-[10px]  px-4 py-2 text-black border dark:text-gray-300 font-medium border-gray-300 dark:border-slate-600  dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150"
+                          className="sm:ml-5 cursor-pointer text-[10px]  px-4 py-2 text-black border dark:text-gray-300 font-medium border-gray-300 dark:border-slate-600  dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full "
                         >
 
                           <span className="whitespace-nowrap">Replace Photo</span>
@@ -318,9 +318,9 @@ const EditItemForm = ({ item }) => {
                         name="category"
                         value={category}
                         onChange={onCategoryChanged}
-                        className="mt-1 block w-1/2 py-3 px-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md"
+                        className="mt-1 block w-full sm:w-1/2 py-3 px-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md"
                       >
-                        
+
                         <option value="Coffee">
                           Coffee
                         </option>
@@ -344,7 +344,7 @@ const EditItemForm = ({ item }) => {
                         Quantity
                       </label>
                       <input
-                        className={`w-1/2 mt-1 px-3 py-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-300 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
+                        className={`w-full sm:w-1/2 mt-1 px-3 py-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-300 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
                         id="qty"
                         name="qty"
                         type="number"
@@ -362,7 +362,7 @@ const EditItemForm = ({ item }) => {
                         Price
                       </label>
                       <input
-                        className={`w-1/2 mt-1 px-3 py-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-300 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
+                        className={`w-full sm:w-1/2 mt-1 px-3 py-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-300 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
                         id="price"
                         name="price"
                         type="number"
@@ -387,7 +387,7 @@ const EditItemForm = ({ item }) => {
                         name="status"
                         value={status}
                         onChange={onStatusChanged}
-                        className="mt-1 block w-1/2 py-3 px-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-300 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md"
+                        className="mt-1 block w-full sm:w-1/2 py-3 px-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-300 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md"
                       >
                         <option defaultValue value={""}>
                           ---
@@ -415,14 +415,14 @@ const EditItemForm = ({ item }) => {
 
               </div>
 
-              {/*footer  */}
-              <div className={`flex justify-end text-sm bg-gray-50 dark:bg-slate-800 px-4 py-3 text-right sm:px-6 dark:border-t dark:border-slate-700 ${btnClass}`}>
+              {/*footer big screen */}
+              <div className={`hidden sm:flex justify-end text-sm bg-gray-50 dark:bg-slate-800 px-4 py-3 text-right sm:px-6 dark:border-t dark:border-slate-700 ${btnClass}`}>
                 {id !== item._id
                   && <span
                     className={
                       !isLoading || isDelLoading
-                        ? `cursor-pointer flex  px-3 sm:px-6 py-3 text-red-700 border dark:text-red-500 border-red-300 dark:border-red-800  hover:bg-gray-200 dark:hover:bg-gray-900 dark:active:bg-slate-800 rounded-full duration-150`
-                        : "flex  px-3 sm:px-4 py-2 text-white border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md duration-150"
+                        ? `cursor-pointer flex  px-3 sm:px-6 py-3 text-red-700 border dark:text-red-500 border-red-300 dark:border-red-800  hover:bg-gray-200 dark:hover:bg-gray-900 dark:active:bg-slate-800 rounded-full `
+                        : "flex  px-3 sm:px-4 py-2 text-white border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md "
                     }
                     title="Delete User"
                     disabled={!isLoading || !isDelLoading}
@@ -433,7 +433,7 @@ const EditItemForm = ({ item }) => {
                   </span>
                 }
 
-                <div className="flex items-center gap-5">
+                <div className="flex  items-center gap-5">
                   <div>
                     <span
                       title="Cancel"
@@ -453,14 +453,63 @@ const EditItemForm = ({ item }) => {
                     title="Save"
                     onClick={!isDelLoading ? onSaveUserClicked : undefined}
                     className={!isDelLoading
-                      ? `cursor-pointer flex px-3 sm:px-6 py-3 text-white border dark:text-gray-300 border-gray-200 dark:border-slate-600 bg-black dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150`
-                      : `flex px-3 sm:px-4 py-2 text-white border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150`
+                      ? `cursor-pointer flex px-3 sm:px-6 py-3 text-white border dark:text-gray-300 border-gray-200 dark:border-slate-600 bg-black dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full `
+                      : `flex px-3 sm:px-4 py-2 text-white border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full `
                     }
                   >
                     <AiOutlineSave size={20} className="mr-1 sm:mr-2" />
                     Update
                   </span>
                 </div>
+              </div>
+
+              {/*footer mobile screen */}
+              <div className={`flex sm:hidden gap-2  flex-col sm:flex-row sm:hidden  sm:justify-end text-sm bg-gray-50 dark:bg-slate-800 px-4 py-3 text-center sm:px-6 dark:border-t dark:border-slate-700 ${btnClass}`}>
+
+
+
+
+                <div
+                  title="Cancel"
+                  disabled={!isLoading && !isDelLoading}
+                  onClick={() => !isLoading && !isDelLoading ? navigate("/inventory") : undefined}
+                  className={
+                    ` ${!isLoading && !isDelLoading
+                      ? `cursor-pointer  text-black border dark:text-gray-300 border-gray-300 dark:border-slate-600  dark:bg-gray-700 hover:bg-gray-200 `
+                      : `  text-white border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 `
+                    } dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full flex px-6 py-3  justify-center` } >
+                  <BsArrowLeftShort size={20} className='mr-1 sm:mr-2' />
+                  Cancel
+                </div>
+
+                <div
+                  title="Save"
+                  onClick={!isDelLoading ? onSaveUserClicked : undefined}
+                  className={`${!isDelLoading
+                    ? `cursor-pointer flex px-3 sm:px-6 py-3 text-white border dark:text-gray-300 border-gray-200 dark:border-slate-600 bg-black dark:bg-gray-700 hover:bg-gray-700 `
+                    : ` text-white border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 `
+                } flex items-center justify-center  px-3 sm:px-4 py-2 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full ` }
+                >
+                  <AiOutlineSave size={20} className="mr-1 sm:mr-2" />
+                  Update
+                </div>
+
+                {id !== item._id
+                  && <span
+                    className={
+                      `${!isLoading || isDelLoading
+                        ? `cursor-pointer   text-red-700  dark:text-red-500 border-red-300 dark:border-red-800  hover:bg-gray-200 dark:hover:bg-gray-900  `
+                        : " text-white  dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-800 "
+                    }flex justify-center px-3 mt-5 sm:px-6 py-3 border rounded-full dark:active:bg-slate-800`}
+                    title="Delete User"
+                    disabled={!isLoading || !isDelLoading}
+                    onClick={handleModalOpen}
+                  >
+                    <AiOutlineUserDelete size={20} className='mr-1 sm:mr-2' />
+                    Delete
+                  </span>
+                }
+
               </div>
             </div>
           </form>

@@ -16,7 +16,8 @@ const Order = ({ orderId, search, handleModalOpen }) => {
 
     if (order.orderNo.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
       order.barista.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
-      order.dateTime.toLowerCase().indexOf(search.toLowerCase()) > -1
+      order.dateTime.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
+      order.orderType.toLowerCase().indexOf(search.toLowerCase()) > -1
     ) {
 
       // const handleEdit = () => navigate(`/dashboard/orders/${orderId}`);

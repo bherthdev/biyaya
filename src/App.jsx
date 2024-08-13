@@ -77,19 +77,17 @@ function App() {
 
                 </Route>{/* End Dashboard */}
 
+                  <Route path="pos" element={<DashLayout />}>
+                    <Route index element={<POS />} />
+                    <Route path='*' element={<Navigate replace to="/" />} />
+                  </Route>{/* End pos */}
 
-                <Route path="pos" element={<DashLayout />}>
-                  <Route index element={<POS />} />
-                  <Route path='*' element={<Navigate replace to="/" />} />
-                </Route>{/* End pos */}
 
-                <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin, ROLES.Employee]} />}>
-                  <Route path="inventory" element={<DashLayout />}>
-                    <Route index element={<> <ToastContainer /> <ItemsList /></>} />
-                    <Route path=":id" element={<> <ToastContainer /><EditItem /> </>} />
-                    <Route path="new" element={<> <ToastContainer /><NewItemForm /> </>} />
-                  </Route>{/* End inventory */}
-                </Route>
+                <Route path="inventory" element={<DashLayout />}>
+                  <Route index element={<> <ToastContainer /> <ItemsList /></>} />
+                  <Route path=":id" element={<> <ToastContainer /><EditItem /> </>} />
+                  <Route path="new" element={<> <ToastContainer /><NewItemForm /> </>} />
+                </Route>{/* End inventory */}
 
                 <Route path="orders" element={<DashLayout />}>
                   <Route index element={<> <ToastContainer /> <OrdersList /></>} />
