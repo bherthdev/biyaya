@@ -20,7 +20,7 @@ const Item = ({ itemId, search }) => {
       item.status.toLowerCase().indexOf(search.toLowerCase()) > -1
     ) {
 
-      const handleEdit = () => navigate(`/dashboard/items/${itemId}`);
+      const handleEdit = () => navigate(`/inventory/${itemId}`);
 
       return (
         <tr onClick={handleEdit} className="hover:bg-slate-200 text-lg dark:hover:bg-[#151e30] cursor-pointer">

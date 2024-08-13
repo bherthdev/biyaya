@@ -23,7 +23,7 @@ import AccessDenied from "./components/AccessDenied";
 
 function App() {
 
-  
+
   return (
     <div className="h-full w-full  dark:bg-slate-900">
       <Routes>
@@ -38,7 +38,7 @@ function App() {
               <Route element={<Prefetch />}>
                 <Route path="dashboard" element={<DashLayout />}>
                   <Route index element={<Welcome />} />
-                  
+
                   <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin]} />}>
                     <Route path="users">
                       <Route index element={<> <ToastContainer /> <UsersList /></>} />
@@ -60,7 +60,7 @@ function App() {
                       <Route index element={<> <ToastContainer /> <POS /></>} />
                     </Route>
                   </Route>
-                  
+
                   <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin, ROLES.Employee]} />}>
                     <Route path="access-denied">
                       <Route index element={<> <ToastContainer /> <AccessDenied /></>} />
@@ -80,7 +80,26 @@ function App() {
 
                 <Route path="pos" element={<DashLayout />}>
                   <Route index element={<POS />} />
-                  </Route>{/* End pos */}
+                  <Route path='*' element={<Navigate replace to="/" />} />
+                </Route>{/* End pos */}
+
+                <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin, ROLES.Employee]} />}>
+                  <Route path="inventory" element={<DashLayout />}>
+                    <Route index element={<> <ToastContainer /> <ItemsList /></>} />
+                    <Route path=":id" element={<> <ToastContainer /><EditItem /> </>} />
+                    <Route path="new" element={<> <ToastContainer /><NewItemForm /> </>} />
+                  </Route>{/* End inventory */}
+                </Route>
+
+                <Route path="orders" element={<DashLayout />}>
+                  <Route index element={<> <ToastContainer /> <OrdersList /></>} />
+                </Route>{/* End orders */}
+
+                <Route path="settings" element={<DashLayout />}>
+                  <Route index element={<> <ToastContainer /> <UsersList /></>} />
+                  <Route path=":id" element={<> <ToastContainer /><EditUser /> </>} />
+                  <Route path="new" element={<> <ToastContainer /><NewUserForm /> </>} />
+                </Route>{/* End orders */}
 
               </Route>
             </Route>

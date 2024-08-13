@@ -66,7 +66,7 @@ const EditItemForm = ({ item }) => {
       setStatus("")
       setImage("")
       setDataImage()
-      navigate("/dashboard/items")
+      navigate("/inventory")
     }
   }, [isSuccess, isDelSuccess, navigate]);
 

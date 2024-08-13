@@ -9,11 +9,14 @@ import Spenner from "./Spenner";
 const DashHeader = ({ headerName }) => {
 
   const navigate = useNavigate();
+
   
   const [userNav, setUserNav] = useState(false);
   const [colorChange, setColorchange] = useState(false);
   
   const { id, isAdmin, name, status, avatar } = useAuth();
+
+
 
   let menuRef = useRef();
 
@@ -50,7 +53,7 @@ const DashHeader = ({ headerName }) => {
 
   window.addEventListener('scroll', changeNavbarColor);
 
-  const classNav = colorChange ? 'border-b z-10 sticky top-0 w-full dark:border-b-slate-800 ease-in-out duration-300' : 'ease-in-out duration-300'
+  const classNav = colorChange ? 'border-b z-30 sticky top-0 w-full dark:border-b-slate-800 ease-in-out duration-300' : 'ease-in-out duration-300'
 
 
   const content = (
@@ -63,7 +66,7 @@ const DashHeader = ({ headerName }) => {
               <span className="inline-block text-gray-700 dark:text-gray-200 text-2xl  sm:text-4xl font-semibold">
                 {headerName === `/dashboard`
                   ? `Dashboard`
-                  : headerName === `/dashboard/items`
+                  : headerName === `/inventory`
                     ? `Inventory`
                     : headerName === `/dashboard/orders`
                       ? `Orders`
@@ -132,7 +135,7 @@ const DashHeader = ({ headerName }) => {
 
                       {isAdmin && userNav &&(
                         <div
-                          className={` absolute right-0 z-10  origin-top-right bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 mt-2 w-48 rounded-md shadow-lg
+                          className={` absolute right-0 z-50  origin-top-right bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 mt-2 w-48 rounded-md shadow-lg
 `}
                         >
                           <div className="py-1">

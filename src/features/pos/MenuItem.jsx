@@ -53,7 +53,7 @@ const MenuItem = ({ itemId, search, orderTransac, setOrderTransac, orderItems, s
         if (item.category === search) {
             return (
 
-                <div className="gap-3 group relative block overflow-hidden bg-white dark:bg-slate-800 rounded-3xl shadow-sm border-gray-200 dark:border-gray-800 p-4 text-center text-gray-800 dark:text-gray-200 hover:text-gray-500 dark:hover:text-gray-400">
+                <div className="gap-3 group relative block z-10 overflow-hidden bg-white dark:bg-slate-800 rounded-3xl shadow-sm border-gray-200 dark:border-gray-800 p-4 text-center text-gray-800 dark:text-gray-200 hover:text-gray-500 dark:hover:text-gray-400">
                     <div className="text-4xl  font-bold  md:text-5xl flex gap-2">
                         <div className='rounded-lg h-36 w-full lg:h-36 lg:w-full object-cover'>
                             <img

@@ -10,6 +10,7 @@ import { IoIosLogOut } from "react-icons/io";
 import { useSendLogoutMutation } from "../features/auth/authApiSlice";
 import { useEffect } from "react";
 import useAuth from "../hooks/useAuth";
+import Spenner from "./Spenner";
 
 export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, setToggleCart }) => {
 
@@ -26,8 +27,10 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
     menuName === '/pos' ? setToggleCart(true) : setToggleCart(false)
   }
 
+
+
   if (isLoading) return (
-    <div className="flex text-gray-800 dark:text-gray-300 text-sm">
+    <div className="flex text-gray-800 dark:text-gray-300 text-sm h-full w-full items-center p-2">
       <Spenner />
       <p>Logging Out...</p>
     </div>
@@ -36,10 +39,17 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
   if (isError) return <p>Error: {error.data?.message}</p>;
 
 
-  useEffect(() => {
-    if (isSuccess) navigate("/");
+  const logOutUser = async () => {
+    const logout = await sendLogout()
 
-  }, [isSuccess, navigate]);
+    if (logout?.data) navigate("/");
+
+  }
+
+  // useEffect(() => {
+  //   (isSuccess) && navigate("/");
+  // }, [isSuccess, navigate]);
+
 
   const classToggleSideMenu = toggleSideMenu ? 'w-16 sm:w-44 ease-in-out duration-300' : 'w-16 ease-in-out duration-300'
 
@@ -105,11 +115,11 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
 
             {isAdmin &&
               <li className={
-                location.pathname === '/dashboard/items'
+                location.pathname === '/inventory'
                   ? `border-r-[4px] border-r-gray-800 bg-gray-100 px-4 py-4 cursor-pointer font-sans font-medium  text-gray-700`
                   : ` border-r-gray-800  px-4 py-4 cursor-pointer hover:bg-gray-100 font-sans font-medium  text-gray-700`
               }
-                onClick={() => navigateMenu('/dashboard/items')}
+                onClick={() => navigateMenu('/inventory')}
               >
                 <div className={toggleSideMenu ? `flex gap-5` : `t group relative flex gap-5`}>
                   <div className="text-gray-500">
@@ -187,7 +197,7 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
 
         <div className={` border-r-gray-800  px-4 py-4 cursor-pointer hover:bg-gray-100 font-sans font-medium  text-gray-700 sticky inset-x-0 bottom-0 border-t border-gray-100 `
         }
-          onClick={() => navigate('/')}
+          onClick={() => logOutUser()}
         >
           <div className={toggleSideMenu ? `flex gap-5` : `t group relative flex gap-5`}>
             <div className="text-gray-500">
@@ -199,12 +209,11 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
               Logout
 
             </div>
-            <span
-              onClick={sendLogout}
+            <div
               className="invisible absolute start-full top-[48%] ms-2 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
             >
               Logout
-            </span>
+            </div>
           </div>
         </div>
 
