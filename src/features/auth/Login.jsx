@@ -83,11 +83,7 @@ const Login = () => {
     <div className="bg-white">
       <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
         <div ref={userRef} className="relative flex h-48 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
-          <img
-            alt="Logo"
-            src={biyayaSmile}
-            className="absolute inset-0 h-full w-full object-cover opacity-80"
-          />
+          <Carousel slides={slides} />
 
           <div className="hidden lg:relative lg:block lg:p-12">
             <div className="block text-white">
@@ -172,9 +168,9 @@ const Login = () => {
               src={biyayaSmile}
               className="absolute inset-0 h-full w-full object-cover opacity-80"
             /> */}
-          
 
-              <Carousel slides={slides} />
+
+            <Carousel slides={slides} />
 
             <div className="hidden lg:relative lg:block lg:p-12">
               <div className="block text-white">
