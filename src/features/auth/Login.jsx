@@ -244,7 +244,7 @@ const Login = () => {
                 <div className="relative">
                   <label
                     htmlFor="UserEmail"
-                    className="block overflow-hidden bg-white rounded-lg border-2 px-3 pb-2 pt-1"
+                    className="block overflow-hidden bg-white rounded-lg border border-gray-400 px-3 pb-2 pt-1 "
                   >
                     <span className="text-xs font-light tracking-wider text-gray-700"> Username: </span>
 
@@ -271,7 +271,7 @@ const Login = () => {
                 <div className="relative">
                   <label
                     htmlFor="UserEmail"
-                    className="block overflow-hidden bg-white rounded-lg  px-3 pb-2 pt-1 border-2"
+                    className="block overflow-hidden bg-white rounded-lg  px-3 pb-2 pt-1 border border-gray-400"
                   >
                     <span className="text-xs font-light tracking-wider text-gray-700"> Password: </span>
 
