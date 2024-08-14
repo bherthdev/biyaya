@@ -89,13 +89,30 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
         const tempRows = [...orderItems]; // avoid direct state mutation
         const tempObj = orderItems[index]; // copy state object at index to a temporary object
 
-
         if (index !== -1) {
+
             if (Number(tempObj.qty) >= 1) {
-                option ? tempObj.qty = Number(tempObj.qty) + 1 : tempObj.qty = Number(tempObj.qty) - 1
+                
+                //check if + or - the qty
+                if (option) {
+
+                    //check if item stock mgt and current qty is greater than qty
+                    if (tempObj?.stock && Number(tempObj?.currentStock) > Number(tempObj?.qty)) {
+                        tempObj.qty = Number(tempObj.qty) + 1
+                    } else {
+                        //check if item is not stock mgt
+                      if(!tempObj?.stock) tempObj.qty = Number(tempObj.qty) + 1
+                    }
+
+                } else {
+                    tempObj.qty = Number(tempObj.qty) - 1
+                }
+
                 tempObj.total = Number(tempObj.qty) * Number(tempObj.price)
                 tempRows[index] = tempObj;
             }
+
+
             tempObj.qty === 0 && tempRows.splice(index, 1)
         }
 
@@ -163,14 +180,14 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
                         ? orderItems.map((item, idx) => (
                             <div key={idx} className="flex mt-5 gap-3  border-b dark:bg-slate-800 py-5 border-gray-300 dark:border-gray-800 text-center text-gray-800 dark:text-gray-200 hover:text-gray-500 dark:hover:text-gray-400">
                                 <div className="text-4xl  font-bold  md:text-5xl   flex flex-col gap-2">
-                                    <div className='h-24 w-20 object-cover'>
+                                    <div className='h-24 w-20 object-cover bg-gray-600 rounded-2xl'>
                                         <img
                                             alt="Man"
                                             src={item.avatar
                                                 ? item.avatar
                                                 : iconItem
                                             }
-                                            className="h-24 w-20 rounded-2xl  dark:border-slate-600 object-cover"
+                                            className="h-24 w-20 rounded-2xl opacity-60 dark:border-slate-600 object-cover"
                                         />
                                     </div>
                                 </div>
@@ -179,6 +196,7 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
                                         <h1 className='font-semibold'>{item.name}
                                         </h1>
                                         <h1 className='text-gray-500 text-sm font-semibold'>₱ {Number(item.price).toFixed(2)}</h1>
+                                        {item.stock && <h1 className='text-green-700 text-xs mt-2'> {Number(item.currentStock)} in stock</h1>}
                                     </div>
                                     <div className="flex justify-center items-center">
                                         <div className=''>

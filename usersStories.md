@@ -8,3 +8,4 @@
 8. [x] responsive in mobile
 9. [x] refactor the url and folder structure should be /pos /items
 10. [x] make all the table small 
+11. [] print receipt

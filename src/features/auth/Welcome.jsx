@@ -601,19 +601,19 @@ const Welcome = () => {
 
 
 
-                            <td className={`font-medium  px-6 py-3  text-gray-600 dark:text-gray-500 `}>
-                              <div className="flex gap-1 justify-start font-normal ">
+                            <td className={`whitespace-nowrap  font-medium  px-6 py-3  text-gray-600 dark:text-gray-500 `}>
+                              <div className="flex gap-1 justify-start text-xs font-semibold ">
                                 <div
                                   className={` ${item.status === "In Stock"
-                                    ? "bg-green-200 text-green-900  dark:bg-green-900 dark:text-green-200"
-                                    : "bg-red-200 text-red-900  dark:bg-red-900 dark:text-red-200"
-                                    }  inline-flex items-center justify-center px-3 py-1 text-[11px] font-normal leading-none  rounded-full`}
+                                    ? " text-green-600  "
+                                    : " text-red-600  "
+                                    }  inline-flex items-center justify-center leading-none  rounded-full`}
                                 >
                                   {item.status === "In Stock" ? "In Stock" : "Out of Stock"}
                                 </div>
-                                <h2 className="text-xs font-no flex items-center">
+                                <span className="text-xs font-normal flex items-center">
                                   {item.stock_mgt && `(${item.qty})`}
-                                </h2>
+                                </span>
                               </div>
                             </td>
                           </tr>

@@ -6,14 +6,13 @@ import Tbody from "../../components/Tbody";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import PageLoader from "../../components/PageLoader";
-import { AiOutlineUserAdd } from 'react-icons/ai';
 import { IoMdAdd } from "react-icons/io";
 
 
 const ItemsList = () => {
 
   const [search, setsearch] = useState("");
-  const columnsArray = ["ITEM NAME", "DESCRIPTION", "PRICE", "CATEGORY", "Stock"];
+  const columnsArray = ["ITEM NAME", "DESCRIPTION", "Stock", "PRICE", "CATEGORY"];
 
 
   const navigate = useNavigate();

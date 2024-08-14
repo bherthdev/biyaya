@@ -2,8 +2,7 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { useSelector } from "react-redux";
 import { selectItemById } from "./itemsApiSlice";
-import { MdEditNote } from 'react-icons/md';
-import { SlOptionsVertical } from "react-icons/sl";
+import iconPicture from "../../assets/icon-item.svg"
 
 const Item = ({ itemId, search }) => {
 
@@ -31,11 +30,11 @@ const Item = ({ itemId, search }) => {
             <div className="flex items-center">
               <div className="flex-shrink-0 h-12 w-12">
                 <img
-                  alt="Man"
+                  alt="img"
                   src={
                     item.avatar
                       ? item.avatar
-                      : `https://images.unsplash.com/photo-1600486913747-55e5470d6f40?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80`
+                      : iconPicture
                   }
                   className="h-12 w-12 rounded-full border border-slate-300  dark:border-slate-600 object-cover"
                 />
@@ -50,15 +49,32 @@ const Item = ({ itemId, search }) => {
 
           <td className={`whitespace-pre-wrap  px-8 py-3  text-gray-900 dark:text-gray-300`}>
             <div className="flex-wrap">
-              <p className=" text-base text-gray-700 dark:text-gray-500"
+              <p className=" text-sm text-gray-700 dark:text-gray-500"
                 title={item.description}
               >
                 {item.description.slice(0, 30)}...
               </p>
             </div>
           </td>
+          <td className={`whitespace-nowrap px-8 py-3  font-medium text-gray-600 dark:text-gray-500 `}>
+           <div className="flex gap-1 justify-start text-sm">
 
-          <td className={`whitespace-nowrap px-8 py-3 font-semibold  text-gray-900 dark:text-gray-300`}>
+            <h1
+              className={` ${item.status === "In Stock"
+                ? " text-green-600"
+                : " text-red-600"
+                }  inline-flex items-center justify-center leading-none`}
+            >
+              {item.status === "In Stock" ? "In Stock" : "Out of Stock"}
+              
+            </h1>
+            <h2 className="flex items-center">
+              {item.stock_mgt && ` (${item.qty})`}
+            </h2>
+           </div>
+          </td>
+
+          <td className={`whitespace-nowrap px-8 py-3  text-sm text-gray-900 dark:text-gray-300`}>
             <div className="flex-nowrap">
               <p className="capitalize">₱ {Number(item.price).toFixed(2)} </p>
 
@@ -69,22 +85,7 @@ const Item = ({ itemId, search }) => {
             {item.category}
           </td>
 
-          <td className={`whitespace-nowrap px-8 py-3  font-medium text-gray-600 dark:text-gray-500 `}>
-           <div className="flex gap-1 justify-start">
-
-            <h1
-              className={` ${item.status === "In Stock"
-                ? "bg-green-200 text-green-900 font-semibold dark:bg-green-900 dark:text-green-200"
-                : "bg-red-200 text-red-900 font-semibold dark:bg-red-900 dark:text-red-200"
-                }  inline-flex items-center justify-center px-3 py-2 text-xs font-normal leading-none  rounded-full`}
-            >
-              {item.status === "In Stock" ? "In Stock" : "Out of Stock"}
-            </h1>
-            <h2 className="text-sm flex items-center">
-              {item.stock_mgt && `(${item.qty})`}
-            </h2>
-           </div>
-          </td>
+        
         </tr>
       );
     }

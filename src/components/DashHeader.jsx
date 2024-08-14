@@ -14,7 +14,7 @@ const DashHeader = ({ headerName }) => {
   const [userNav, setUserNav] = useState(false);
   const [colorChange, setColorchange] = useState(false);
   
-  const { id, isAdmin, name, status, avatar } = useAuth();
+  const { id, isAdmin, name, status, position, avatar } = useAuth();
 
 
 
@@ -109,7 +109,7 @@ const DashHeader = ({ headerName }) => {
                             {name}
                           </h1>
 
-                          <p className="text-gray-500 font-normal text-sm"> {status} </p>
+                          <p className="text-gray-500 font-normal text-sm"> {position} </p>
                         </div>
 
 
