@@ -13,7 +13,7 @@ import { IoMdAdd } from "react-icons/io";
 const ItemsList = () => {
 
   const [search, setsearch] = useState("");
-  const columnsArray = ["ITEM NAME", "DESCRIPTION", "QTY", "PRICE", "CATEGORY", "STATUS"];
+  const columnsArray = ["ITEM NAME", "DESCRIPTION", "PRICE", "CATEGORY", "Stock"];
 
 
   const navigate = useNavigate();

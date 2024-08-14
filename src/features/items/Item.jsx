@@ -24,7 +24,7 @@ const Item = ({ itemId, search }) => {
 
       return (
         <tr onClick={handleEdit} className="hover:bg-slate-200 text-lg dark:hover:bg-[#151e30] cursor-pointer">
-         
+
           <td
             className={`sm:flex gap-4 whitespace-nowrap px-8 py-3 font-medium text-gray-900 dark:text-gray-300`}
           >
@@ -58,12 +58,6 @@ const Item = ({ itemId, search }) => {
             </div>
           </td>
 
-          <td className={`whitespace-nowrap px-8 py-3  text-gray-900 dark:text-gray-300`}>
-            <div className="flex-nowrap">
-              <p className="capitalize">{item.qty} </p>
-
-            </div>
-          </td>
           <td className={`whitespace-nowrap px-8 py-3 font-semibold  text-gray-900 dark:text-gray-300`}>
             <div className="flex-nowrap">
               <p className="capitalize">₱ {Number(item.price).toFixed(2)} </p>
@@ -75,15 +69,21 @@ const Item = ({ itemId, search }) => {
             {item.category}
           </td>
 
-          <td className={`whitespace-nowrap px-8 py-3 font-medium text-gray-600 dark:text-gray-500 `}>
-            <span
+          <td className={`whitespace-nowrap px-8 py-3  font-medium text-gray-600 dark:text-gray-500 `}>
+           <div className="flex gap-1 justify-start">
+
+            <h1
               className={` ${item.status === "In Stock"
                 ? "bg-green-200 text-green-900 font-semibold dark:bg-green-900 dark:text-green-200"
                 : "bg-red-200 text-red-900 font-semibold dark:bg-red-900 dark:text-red-200"
                 }  inline-flex items-center justify-center px-3 py-2 text-xs font-normal leading-none  rounded-full`}
             >
               {item.status === "In Stock" ? "In Stock" : "Out of Stock"}
-            </span>
+            </h1>
+            <h2 className="text-sm flex items-center">
+              {item.stock_mgt && `(${item.qty})`}
+            </h2>
+           </div>
           </td>
         </tr>
       );

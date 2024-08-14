@@ -65,32 +65,6 @@ const MenuItem = ({ itemId, search, orderTransac, setOrderTransac, orderItems, s
                                 className="h-20 w-full lg:h-36 lg:w-full rounded-3xl  dark:border-slate-600 object-cover"
                             />
                         </div>
-
-                        {/* <div className="flex justify-center gap-8 items-center">
-                            <div className=''>
-                                <label htmlFor="Quantity" className="sr-only"> Quantity </label>
-
-                                <div className="flex items-center">
-                                    <span className="cursor-pointer border border-gray-300 hover:bg-gray-100 rounded-full  p-3 text-black transition hover:opacity-75">
-                                        <FaMinus size={8} />
-
-                                    </span>
-
-                                    <input
-                                        type="number"
-                                        id="Quantity"
-                                        value={0}
-                                        readOnly
-                                        className="h-10 w-9 rounded border-gray-200 text-center sm:text-sm text-black [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none "
-                                    />
-
-                                    <span className="cursor-pointer border border-gray-300 hover:bg-gray-100 rounded-full p-3 text-black transition hover:opacity-75">
-                                        <FaPlus size={8} />
-                                    </span>
-                                </div>
-                            </div>
-                        </div> */}
-
                         <div className="w-full  text-sm font-normal mt-3 gap-4 flex flex-col items-start justify-between text-gray-500 dark:text-gray-400">
                             <div className='mx-auto text-black text-sm sm:text-lg text-center '>
 
@@ -112,10 +86,8 @@ const MenuItem = ({ itemId, search, orderTransac, setOrderTransac, orderItems, s
                             onClick={() => addToCart(item)}
 
                             className={`cursor-pointer w-full bg-[#242424] active:bg-gray-600 hover:bg-gray-700 text-[11px] sm:text-base flex justify-center items-center gap-2 px-4 py-2 sm:py-3 text-white border border-gray-300 rounded-full`} >
-                            <span className='hidden sm:flex'>
 
-                                <FaPlus size={10} />
-                            </span>
+                            <FaPlus size={10} />
                             Add to cart
                         </span>
                     </div>

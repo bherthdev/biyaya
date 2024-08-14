@@ -14,7 +14,7 @@ import ReceiptModal from "../../components/ReceiptModal"
 const Welcome = () => {
 
   const columnsOrders = ["Order#/Type", "Date/Time", "ITEMS", "Amount", "Barista"];
-  const columnsItems = ["Item Name", "QTY", "Status"];
+  const columnsItems = ["Item Name", "Stock"];
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [orderId, setOderID] = useState('');
@@ -423,7 +423,7 @@ const Welcome = () => {
     //   const orderQty = order.items.reduce((sum, item) => sum + Number(item.qty), 0);
     //   return total + orderQty;
     // }, 0);
-   
+
     const totalSales = orders.reduce((total, order) => total + Number(order.total), 0);
 
 
@@ -599,21 +599,22 @@ const Welcome = () => {
                               </div>
                             </td>
 
-                            <td className={`whitespace-pre-wrap px-6 py-3 text-gray-900 dark:text-gray-300`}>
-                              <p className=" text-gray-700 dark:text-gray-500">
-                                {item.qty}
-                              </p>
-                            </td>
 
-                            <td className={`whitespace-nowrap font-medium flex justify-center  text-gray-600 dark:text-gray-500 `}>
-                              <span
-                                className={` ${item.status === "In Stock"
-                                  ? "bg-green-200 text-green-900 font-semibold dark:bg-green-900 dark:text-green-200"
-                                  : "bg-red-200 text-red-900 font-semibold dark:bg-red-900 dark:text-red-200"
-                                  }  inline-flex items-center justify-center px-3 py-1 text-[11px] font-normal leading-none  rounded-full`}
-                              >
-                                {item.status === "In Stock" ? "In Stock" : "Out of Stock"}
-                              </span>
+
+                            <td className={`font-medium  px-6 py-3  text-gray-600 dark:text-gray-500 `}>
+                              <div className="flex gap-1 justify-start font-normal ">
+                                <div
+                                  className={` ${item.status === "In Stock"
+                                    ? "bg-green-200 text-green-900  dark:bg-green-900 dark:text-green-200"
+                                    : "bg-red-200 text-red-900  dark:bg-red-900 dark:text-red-200"
+                                    }  inline-flex items-center justify-center px-3 py-1 text-[11px] font-normal leading-none  rounded-full`}
+                                >
+                                  {item.status === "In Stock" ? "In Stock" : "Out of Stock"}
+                                </div>
+                                <h2 className="text-xs font-no flex items-center">
+                                  {item.stock_mgt && `(${item.qty})`}
+                                </h2>
+                              </div>
                             </td>
                           </tr>
                         ))

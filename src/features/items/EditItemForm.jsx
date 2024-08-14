@@ -3,19 +3,14 @@ import { useState, useEffect } from "react";
 import { useUpdateItemMutation, useDeleteItemMutation } from "./itemsApiSlice";
 import { useNavigate } from "react-router-dom";
 import { ROLES } from "../../config/roles";
-import { AiOutlineCloseCircle, AiOutlineEye, AiOutlineEyeInvisible, AiOutlineSave, AiOutlineWarning } from "react-icons/ai";
+import { AiOutlineSave, AiOutlineWarning } from "react-icons/ai";
 import Image from "../../components/Image";
 import Spenner from "../../components/Spenner";
 import useAuth from "../../hooks/useAuth";
 import { AiOutlineUserDelete } from 'react-icons/ai';
 import { BsArrowLeftShort } from 'react-icons/bs';
-import { MdDelete } from 'react-icons/md';
-import { RiAddFill } from 'react-icons/ri';
-import { RiAttachment2 } from 'react-icons/ri';
-import Thead from "../../components/Thead"
 import { toast } from 'react-toastify';
 import Modal from "../../components/Modal";
-import iconPicture from "../../assets/icon-item.svg"
 
 
 const EditItemForm = ({ item }) => {
@@ -38,8 +33,8 @@ const EditItemForm = ({ item }) => {
   const [category, setCategory] = useState(item.category)
   const [qty, setQTY] = useState(item.qty)
   const [price, setPrice] = useState(item.price)
+  const [stockMGT, setStockMGT] = useState(item?.stock_mgt)
   const [status, setStatus] = useState(item.status)
-  const [roles, setRoles] = useState(item.roles)
   const [imageView, setImage] = useState("")
   const [image, setDataImage] = useState();
   const [spinText, setSpinText] = useState('')
@@ -63,6 +58,7 @@ const EditItemForm = ({ item }) => {
       setCategory("")
       setQTY("")
       setPrice("")
+      setStockMGT(false)
       setStatus("")
       setImage("")
       setDataImage()
@@ -74,7 +70,17 @@ const EditItemForm = ({ item }) => {
   const onNameChanged = (e) => setName(e.target.value);
   const onDescriptionChanged = (e) => setDescription(e.target.value)
   const onCategoryChanged = (e) => setCategory(e.target.value)
-  const onQTYChanged = (e) => setQTY(e.target.value)
+  const onQTYChanged = (e) => {
+    const qty = e.target.value
+
+    if (stockMGT && qty > 0) {
+      setStatus("In Stock")
+    } else {
+      setStatus("Out of Stock")
+    }
+    setQTY(qty)
+  }
+  const onStockMGTChanged = (e) => setStockMGT(stock => !stock)
   const onPriceChanged = (e) => setPrice(e.target.value)
   const onStatusChanged = (e) => setStatus(e.target.value)
 
@@ -100,6 +106,7 @@ const EditItemForm = ({ item }) => {
         id: item.id,
         name,
         description,
+        stockMGT,
         category,
         qty,
         price,
@@ -308,6 +315,24 @@ const EditItemForm = ({ item }) => {
                   <div className=" col-span-2 sm:col-span-1">
                     <div className="">
                       <label
+                        className="block text-base text-gray-500 dark:text-gray-200"
+                        htmlFor="position"
+                      >
+                        Price
+                      </label>
+                      <input
+                        className={`w-full sm:w-1/2 mt-1 px-3 py-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-300 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
+                        id="price"
+                        name="price"
+                        type="number"
+                        autoComplete="off"
+                        required
+                        value={price}
+                        onChange={onPriceChanged}
+                      />
+                    </div>
+                    <div className="mt-5">
+                      <label
                         htmlFor="country"
                         className="block text-base text-gray-500 dark:text-gray-200"
                       >
@@ -336,70 +361,77 @@ const EditItemForm = ({ item }) => {
                       </select>
                     </div>
 
-                    <div className="mt-5">
+                    <div className="mt-10 space-y-4">
                       <label
                         className="block text-base text-gray-500 dark:text-gray-200"
                         htmlFor="position"
                       >
-                        Quantity
+                        Stock management
                       </label>
-                      <input
-                        className={`w-full sm:w-1/2 mt-1 px-3 py-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-300 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
-                        id="qty"
-                        name="qty"
-                        type="number"
-                        autoComplete="off"
-                        required
-                        value={qty}
-                        onChange={onQTYChanged}
-                      />
-                    </div>
-                    <div className="mt-5">
-                      <label
-                        className="block text-base text-gray-500 dark:text-gray-200"
-                        htmlFor="position"
-                      >
-                        Price
-                      </label>
-                      <input
-                        className={`w-full sm:w-1/2 mt-1 px-3 py-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-300 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
-                        id="price"
-                        name="price"
-                        type="number"
-                        autoComplete="off"
-                        required
-                        value={price}
-                        onChange={onPriceChanged}
-                      />
+                      <div className="flex  items-start ">
+                        <div
+                          className=" flex items-center ">
+                          <input
+                            type="checkbox"
+                            className="accent-slate-200 h-4 w-4 cursor-pointer"
+                            id="stockMGT"
+                            onChange={onStockMGTChanged}
+                            checked={stockMGT}
+                          />
+                          <label htmlFor="stockMGT" className="text-sm pl-4 cursor-pointer  text-black tracking-wide">
+                            Track stock quantity for this item
+                          </label>
+                        </div>
+
+                      </div>
                     </div>
 
+                    {stockMGT &&
+                      <div className="mt-5">
+                        <label
+                          className="block text-base text-gray-500 dark:text-gray-200"
+                          htmlFor="position"
+                        >
+                          Quantity
+                        </label>
+                        <input
+                          className={`w-full sm:w-1/2 mt-1 px-3 py-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-300 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
+                          id="qty"
+                          name="qty"
+                          type="number"
+                          autoComplete="off"
+                          required
+                          value={qty}
+                          onChange={onQTYChanged}
+                        />
+                      </div>}
+
+                    {!stockMGT &&
+                      <div className="mt-5">
+                        <label
+                          htmlFor="country"
+                          className="block text-base text-gray-500 dark:text-gray-200"
+                        >
+                          Status
+                        </label>
+                        <select
+                          id="status"
+                          name="status"
+                          value={status}
+                          onChange={onStatusChanged}
+                          className="mt-1 block w-full sm:w-1/2 py-3 px-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-300 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md"
+                        >
+
+                          <option value="In Stock">
+                            In Stock
+                          </option>
+                          <option defaultValue value="Out of Stock">
+                            Out of Stock
+                          </option>
+                        </select>
+                      </div>}
 
 
-                    <div className="mt-5">
-                      <label
-                        htmlFor="country"
-                        className="block text-base text-gray-500 dark:text-gray-200"
-                      >
-                        Status
-                      </label>
-                      <select
-                        id="status"
-                        name="status"
-                        value={status}
-                        onChange={onStatusChanged}
-                        className="mt-1 block w-full sm:w-1/2 py-3 px-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-300 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md"
-                      >
-                        <option defaultValue value={""}>
-                          ---
-                        </option>
-                        <option value="In Stock">
-                          In Stock
-                        </option>
-                        <option value="Out of Stock">
-                          Out of Stock
-                        </option>
-                      </select>
-                    </div>
                   </div>
 
                 </div>
@@ -477,7 +509,7 @@ const EditItemForm = ({ item }) => {
                     ` ${!isLoading && !isDelLoading
                       ? `cursor-pointer  text-black border dark:text-gray-300 border-gray-300 dark:border-slate-600  dark:bg-gray-700 hover:bg-gray-200 `
                       : `  text-white border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 `
-                    } dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full flex px-6 py-3  justify-center` } >
+                    } dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full flex px-6 py-3  justify-center`} >
                   <BsArrowLeftShort size={20} className='mr-1 sm:mr-2' />
                   Cancel
                 </div>
@@ -488,7 +520,7 @@ const EditItemForm = ({ item }) => {
                   className={`${!isDelLoading
                     ? `cursor-pointer flex px-3 sm:px-6 py-3 text-white border dark:text-gray-300 border-gray-200 dark:border-slate-600 bg-black dark:bg-gray-700 hover:bg-gray-700 `
                     : ` text-white border dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 `
-                } flex items-center justify-center  px-3 sm:px-4 py-2 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full ` }
+                    } flex items-center justify-center  px-3 sm:px-4 py-2 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full `}
                 >
                   <AiOutlineSave size={20} className="mr-1 sm:mr-2" />
                   Update
@@ -500,7 +532,7 @@ const EditItemForm = ({ item }) => {
                       `${!isLoading || isDelLoading
                         ? `cursor-pointer   text-red-700  dark:text-red-500 border-red-300 dark:border-red-800  hover:bg-gray-200 dark:hover:bg-gray-900  `
                         : " text-white  dark:text-slate-600 border-gray-200 dark:border-slate-700 bg-gray-400 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-800 "
-                    }flex justify-center px-3 mt-5 sm:px-6 py-3 border rounded-full dark:active:bg-slate-800`}
+                      }flex justify-center px-3 mt-5 sm:px-6 py-3 border rounded-full dark:active:bg-slate-800`}
                     title="Delete User"
                     disabled={!isLoading || !isDelLoading}
                     onClick={handleModalOpen}
