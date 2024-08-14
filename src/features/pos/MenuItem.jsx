@@ -92,11 +92,11 @@ const MenuItem = ({ itemId, search, orderTransac, setOrderTransac, orderItems, s
                         </div> */}
 
                         <div className="w-full  text-sm font-normal mt-3 gap-4 flex flex-col items-start justify-between text-gray-500 dark:text-gray-400">
-                            <div className='mx-auto text-black text-base sm:text-lg text-center '>
+                            <div className='mx-auto text-black text-sm sm:text-lg text-center '>
 
                                 <h1 className='font-bold'>{item.name}
                                 </h1>
-                                <p className='mb-3 text-base text-gray-500 font-semibold'>₱ {Number(item.price).toFixed(2)}</p>
+                                <p className='mb-3 text-xs sm:text-base text-gray-500 font-semibold'>₱ {Number(item.price).toFixed(2)}</p>
                                 <p className='hidden sm:block text-left text-xs text-gray-400'
                                     title={item.description}
                                 >
@@ -111,7 +111,7 @@ const MenuItem = ({ itemId, search, orderTransac, setOrderTransac, orderItems, s
                             title="Add to cart"
                             onClick={() => addToCart(item)}
 
-                            className={`cursor-pointer w-full bg-[#242424] active:bg-gray-600 hover:bg-gray-700 text-sx sm:text-base flex justify-center items-center gap-2 px-4 py-2 sm:py-3 text-white border border-gray-300 rounded-full`} >
+                            className={`cursor-pointer w-full bg-[#242424] active:bg-gray-600 hover:bg-gray-700 text-[11px] sm:text-base flex justify-center items-center gap-2 px-4 py-2 sm:py-3 text-white border border-gray-300 rounded-full`} >
                             <span className='hidden sm:flex'>
 
                                 <FaPlus size={10} />
