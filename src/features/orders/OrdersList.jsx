@@ -76,7 +76,7 @@ const OrdersList = () => {
 
         <ReceiptModal isOpen={isModalOpen} onClose={handleModalClose} orderId={orderId} />
 
-        <div className="mx-auto h-screen max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="sm:flex justify-between">
             <div className="flex justify-between items-center">
               <h1 className="text-xl font-semibold  text-gray-500  dark:text-gray-400">

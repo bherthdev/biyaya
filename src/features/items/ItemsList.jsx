@@ -126,7 +126,6 @@ const ItemsList = () => {
                     </tr>
                   </thead>
                   <Tbody tbName={tableContent} />
-
                 </table>
               </div>
               <div className="pt-10 bg-slate-100 rounded-b"></div>

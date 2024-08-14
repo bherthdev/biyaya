@@ -36,7 +36,7 @@ const POS = () => {
         isError,
         error,
     } = useGetItemsQuery("itemsList", {
-        pollingInterval: 10000, // refresh data every 15 seconds
+        pollingInterval: 15000, // refresh data every 15 seconds
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
     });
