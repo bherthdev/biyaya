@@ -139,11 +139,11 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
 
             {isAdmin &&
               <li className={
-                location.pathname === '/dashboard/orders'
+                location.pathname === '/orders' ||  location.pathname === '/orders/new' ||  /^\/orders\/.*/.test(location.pathname)
                   ? `border-r-[4px] border-r-gray-800 bg-gray-100 px-4 py-4 cursor-pointer font-sans font-medium  text-gray-700`
                   : ` border-r-gray-800  px-4 py-4 cursor-pointer hover:bg-gray-100 font-sans font-medium  text-gray-700`
               }
-                onClick={() => navigateMenu("/dashboard/orders")}
+                onClick={() => navigateMenu("/orders")}
               ><div className={toggleSideMenu ? `flex gap-5` : `t group relative flex gap-5`}>
                   <div className="text-gray-500">
                     <IoReceiptOutline size={25} />
@@ -165,11 +165,11 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
 
             {isAdmin &&
               <li className={
-                location.pathname === '/dashboard/users'
+                location.pathname === '/settings' ||  location.pathname === '/settings/new' ||  /^\/settings\/.*/.test(location.pathname)
                   ? `border-r-[4px] border-r-gray-800 bg-gray-100 px-4 py-4 cursor-pointer font-sans font-medium  text-gray-700`
                   : ` border-r-gray-800  px-4 py-4 cursor-pointer hover:bg-gray-100 font-sans font-medium  text-gray-700`
               }
-                onClick={() => navigateMenu("/dashboard/users")}
+                onClick={() => navigateMenu("/settings")}
               >
                 <div className={toggleSideMenu ? `flex gap-5` : `t group relative flex gap-5`}>
                   <div className="text-gray-500">

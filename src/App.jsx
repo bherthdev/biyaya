@@ -46,7 +46,6 @@ function App() {
                       <Route path="new" element={<> <ToastContainer /><NewUserForm /> </>} />
                     </Route>
                   </Route>
-
                   <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin]} />}>
                     <Route path="items">
                       <Route index element={<> <ToastContainer /> <ItemsList /></>} />
@@ -54,19 +53,16 @@ function App() {
                       <Route path="new" element={<> <ToastContainer /><NewItemForm /> </>} />
                     </Route>
                   </Route>
-
                   <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin, ROLES.Employee]} />}>
                     <Route path="pos">
                       <Route index element={<> <ToastContainer /> <POS /></>} />
                     </Route>
                   </Route>
-
                   <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin, ROLES.Employee]} />}>
                     <Route path="access-denied">
                       <Route index element={<> <ToastContainer /> <AccessDenied /></>} />
                     </Route>
                   </Route>
-
                   <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin]} />}>
                     <Route path="orders">
                       <Route index element={<> <ToastContainer /> <OrdersList /></>} />
@@ -74,13 +70,12 @@ function App() {
                       <Route path="new" element={<> <ToastContainer /><NewOrderForm /> </>} /> */}
                     </Route>
                   </Route>
-
                 </Route>{/* End Dashboard */}
 
-                  <Route path="pos" element={<DashLayout />}>
-                    <Route index element={<POS />} />
-                    <Route path='*' element={<Navigate replace to="/" />} />
-                  </Route>{/* End pos */}
+                <Route path="pos" element={<DashLayout />}>
+                  <Route index element={<POS />} />
+                  <Route path='*' element={<Navigate replace to="/" />} />
+                </Route>{/* End pos */}
 
 
                 <Route path="inventory" element={<DashLayout />}>
@@ -95,8 +90,11 @@ function App() {
 
                 <Route path="settings" element={<DashLayout />}>
                   <Route index element={<> <ToastContainer /> <UsersList /></>} />
-                  <Route path=":id" element={<> <ToastContainer /><EditUser /> </>} />
-                  <Route path="new" element={<> <ToastContainer /><NewUserForm /> </>} />
+                  <Route path="users">
+                    <Route path=":id" element={<> <ToastContainer /><EditUser /> </>} />
+                    <Route path="new" element={<> <ToastContainer /><NewUserForm /> </>} />
+                  </Route>{/* End orders */}
+
                 </Route>{/* End orders */}
 
               </Route>

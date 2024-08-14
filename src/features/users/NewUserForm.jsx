@@ -59,7 +59,7 @@ const NewUserForm = () => {
       setRoles("")
       setImage("")
       setDataImage()
-      navigate("/dashboard/users")
+      navigate("/settings")
     }
   }, [isSuccess, navigate]);
 
@@ -355,7 +355,7 @@ const NewUserForm = () => {
               <div className="flex flex-col sm:flex-row gap-3 text-base justify-end bg-gray-50 dark:bg-slate-800 px-4 py-3 text-right sm:px-6 dark:border-t dark:border-slate-700">
                 <button
                   title="Cancel"
-                  onClick={() => !btnCancel && navigate("/inventory")}
+                  onClick={() => !btnCancel && navigate("/settings")}
                   className={
                     `${!btnCancel
                       ? `cursor-pointer text-black  dark:text-gray-300 border-gray-400 dark:border-slate-600 dark:bg-gray-700 hover:bg-gray-200 `

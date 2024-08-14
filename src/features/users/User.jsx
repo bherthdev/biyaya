@@ -20,7 +20,7 @@ const User = ({ userId, search }) => {
       user.position.toLowerCase().indexOf(search.toLowerCase()) > -1 
     ) {
 
-      const handleEdit = () => navigate(`/dashboard/users/${userId}`);
+      const handleEdit = () => navigate(`/settings/users/${userId}`);
 
       return (
         <tr onClick={handleEdit} className="hover:bg-slate-200 text-xl dark:hover:bg-[#151e30] cursor-pointer">

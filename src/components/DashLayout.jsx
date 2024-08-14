@@ -12,7 +12,7 @@ const DashLayout = () => {
 
 
   const [toggleSideMenu, setToggleSideMenu] = useState(true)
-  const [toggleCart, setToggleCart] = useState(location.pathname == '/dashboard/pos')
+  const [toggleCart, setToggleCart] = useState(location.pathname == '/pos')
   const [headerName, setHeaderName] = useState(location.pathname)
 
 

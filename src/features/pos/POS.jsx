@@ -14,7 +14,7 @@ const POS = () => {
     const { orderTransac, setOrderTransac, orderItems, setOrdersItems } = Order()
     const [toggleCartMobile, setToggleCartMobile] = useState(false)
 
-  
+
 
 
     const item = {
@@ -63,14 +63,14 @@ const POS = () => {
             <>
 
 
+                <div>
+                    <ToastContainer />
+                    <Cart toggleCart={location.pathname == '/pos'} orderTransac={orderTransac} setOrderTransac={setOrderTransac} orderItems={orderItems} setOrdersItems={setOrdersItems} toggleCartMobile={toggleCartMobile} setToggleCartMobile={setToggleCartMobile} />
+                </div>
                 <div aria-label="Page Header" className="">
                     <div className="mx-auto max-w-screen-xl px-0 py-8 sm:px-6 lg:px-8">
                         <div className=" sm:mt-2 ">
                             <div className='fixed z-20 mx-auto max-w-screen-xl border sm:border-transparent px-4 sm:px-0 flex-row sm:flex-col sm:flex top-24 sm:top-32  bg-[#f1f1f1] '>
-                                <div>
-                                    <ToastContainer />
-                                    <Cart toggleCart={location.pathname == '/pos'} orderTransac={orderTransac} setOrderTransac={setOrderTransac} orderItems={orderItems} setOrdersItems={setOrdersItems} toggleCartMobile={toggleCartMobile} setToggleCartMobile={setToggleCartMobile} />
-                                </div>
                                 <div className='mt-2 sm:mt-10 overflow-auto  grid gap-1 sm:gap-4 grid-cols-4 text-xs sm:text-base  py-5 sm:py-0'>
 
                                     <button
@@ -105,7 +105,7 @@ const POS = () => {
                                     <div onClick={() => setToggleCartMobile(true)} className='flex sm:hidden justify-between items-center  relative'>
                                         <div className='absolute p-1 w-6 h-6 rounded-full bg-[#242424] top-[-0%] left-[-100%] '>
                                             <h1 className='text-white text-xs text-center '>
-                                                {orderItems?.reduce((total, item)=> total + item.qty,0)}
+                                                {orderItems?.reduce((total, item) => total + item.qty, 0)}
                                             </h1>
                                         </div>
 

@@ -79,7 +79,7 @@ const EditUserForm = ({ user }) => {
       setPassword("");
       setRoles("");
       setDataImage();
-      navigate("/dashboard/users");
+      navigate("/settings");
     }
   }, [isSuccess, isDelSuccess, navigate]);
 
@@ -474,7 +474,7 @@ const EditUserForm = ({ user }) => {
                     <span
                       title="Cancel"
                       disabled={!isLoading && !isDelLoading}
-                      onClick={() => !isLoading && !isDelLoading ? navigate("/dashboard/users") : undefined}
+                      onClick={() => !isLoading && !isDelLoading ? navigate("/settings") : undefined}
                       className={
                         !isLoading && !isDelLoading
                           ? `cursor-pointer flex px-6 py-3 text-black border dark:text-gray-300 border-gray-300 dark:border-slate-600  dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`
@@ -507,7 +507,7 @@ const EditUserForm = ({ user }) => {
                 <div
                   title="Cancel"
                   disabled={!isLoading && !isDelLoading}
-                  onClick={() => !isLoading && !isDelLoading ? navigate("/dashboard/users") : undefined}
+                  onClick={() => !isLoading && !isDelLoading ? navigate("/settings") : undefined}
                   className={
                     ` ${!isLoading && !isDelLoading
                       ? `cursor-pointer  text-black border dark:text-gray-300 border-gray-300 dark:border-slate-600  dark:bg-gray-700 hover:bg-gray-200 `
