@@ -48,7 +48,7 @@ const MenuItem = ({ itemId, search, orderTransac, setOrderTransac, orderItems, s
 
 
 
-    if (item && item.status === "In Stock" && item.qty > 0) {
+    if (item && item.status === "In Stock") {
 
         if (item.category === search) {
             return (
@@ -63,7 +63,7 @@ const MenuItem = ({ itemId, search, orderTransac, setOrderTransac, orderItems, s
                                         ? item.avatar
                                         : iconItem
                                 }
-                                className="h-20 w-full lg:h-36 lg:w-full rounded-3xl opacity-60 dark:border-slate-600 object-cover"
+                                className="h-20 w-full lg:h-36 lg:w-full rounded-3xl opacity-80 dark:border-slate-600 object-cover"
                             />
                         </div>
                         <div className="w-full  text-sm font-normal mt-3 gap-4 flex flex-col items-start justify-between text-gray-500 dark:text-gray-400">
