@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useGetItemsQuery } from '../items/itemsApiSlice';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import PageLoader from "../../components/PageLoader";
 import MenuItem from './MenuItem';
 import Order from "./Order"
@@ -8,23 +8,13 @@ import { Cart } from './Cart';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { MdOutlineShoppingCart } from 'react-icons/md';
+import PageError from '../../components/PageError';
 
 const POS = () => {
 
     const { orderTransac, setOrderTransac, orderItems, setOrdersItems } = Order()
     const [toggleCartMobile, setToggleCartMobile] = useState(false)
 
-
-
-
-    const item = {
-        id: '',
-        name: '',
-        desc: '',
-        avatar: '',
-        qty: '',
-        price: ''
-    }
 
     const [search, setsearch] = useState("Coffee");
 
@@ -48,7 +38,7 @@ const POS = () => {
     if (isLoading) content = <PageLoader />
 
     if (isError) {
-        content = <p className="text-red-600">{error?.data?.message}</p>;
+        content = <PageError error={error?.data?.message}/>
     }
 
 

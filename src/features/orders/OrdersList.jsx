@@ -9,6 +9,7 @@ import PageLoader from "../../components/PageLoader";
 import { AiOutlineUserAdd, AiOutlineWarning } from 'react-icons/ai';
 import { IoMdAdd } from "react-icons/io";
 import ReceiptModal from "../../components/ReceiptModal"
+import PageError from "../../components/PageError";
 
 
 
@@ -51,7 +52,7 @@ const OrdersList = () => {
   if (isLoading) content = <PageLoader />
 
   if (isError) {
-    content = <p className="text-red-600">{error?.data?.message}</p>;
+    content = <PageError error={error?.data?.message}/>
 
     
   }

@@ -11,6 +11,7 @@ import { useSendLogoutMutation } from "../features/auth/authApiSlice";
 import { useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import Spenner from "./Spenner";
+import PageError from "./PageError";
 
 export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, setToggleCart }) => {
   const location = useLocation()
@@ -28,14 +29,14 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
     menuName === '/pos' ? setToggleCart(true) : setToggleCart(false)
   }
 
-  if (isLoading) return (
-    <div className="flex text-gray-800 dark:text-gray-300 text-sm h-full w-full items-center p-2">
-      <Spenner />
-      <p>Logging Out...</p>
-    </div>
-  )
+  // if (isLoading) return (
+  //   <div className="flex text-gray-800 dark:text-gray-300 text-sm h-full w-full items-center p-2">
+  //     <Spenner />
+  //     <p>Logging Out...</p>
+  //   </div>
+  // )
 
-  if (isError) return <p>Error: {error.data?.message}</p>;
+  if (isError) return <PageError error={error?.data?.message} />
 
 
   const logOutUser = async () => {
@@ -114,7 +115,7 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
 
             {isAdmin &&
               <li className={
-                location.pathname === '/inventory' ||  location.pathname === '/inventory/new' ||  /^\/inventory\/.*/.test(location.pathname)
+                location.pathname === '/inventory' || location.pathname === '/inventory/new' || /^\/inventory\/.*/.test(location.pathname)
                   ? `border-r-[4px] border-r-gray-800 bg-gray-100 px-4 py-4 cursor-pointer font-sans font-medium  text-gray-700`
                   : ` border-r-gray-800  px-4 py-4 cursor-pointer hover:bg-gray-100 font-sans font-medium  text-gray-700`
               }
@@ -139,7 +140,7 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
 
             {isAdmin &&
               <li className={
-                location.pathname === '/orders' ||  location.pathname === '/orders/new' ||  /^\/orders\/.*/.test(location.pathname)
+                location.pathname === '/orders' || location.pathname === '/orders/new' || /^\/orders\/.*/.test(location.pathname)
                   ? `border-r-[4px] border-r-gray-800 bg-gray-100 px-4 py-4 cursor-pointer font-sans font-medium  text-gray-700`
                   : ` border-r-gray-800  px-4 py-4 cursor-pointer hover:bg-gray-100 font-sans font-medium  text-gray-700`
               }
@@ -165,7 +166,7 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
 
             {isAdmin &&
               <li className={
-                location.pathname === '/settings' ||  location.pathname === '/settings/new' ||  /^\/settings\/.*/.test(location.pathname)
+                location.pathname === '/settings' || location.pathname === '/settings/new' || /^\/settings\/.*/.test(location.pathname)
                   ? `border-r-[4px] border-r-gray-800 bg-gray-100 px-4 py-4 cursor-pointer font-sans font-medium  text-gray-700`
                   : ` border-r-gray-800  px-4 py-4 cursor-pointer hover:bg-gray-100 font-sans font-medium  text-gray-700`
               }
@@ -198,22 +199,27 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
         }
           onClick={() => logOutUser()}
         >
-          <div className={toggleSideMenu ? `flex gap-5` : `t group relative flex gap-5`}>
-            <div className="text-gray-500">
-              <IoIosLogOut size={25} />
+          {isLoading
+            ? <div className="flex text-gray-800 dark:text-gray-300 text-sm h-full w-full items-center p-2">
+              <Spenner />
+              <p>Logging Out...</p>
             </div>
-            <div
-              className={toggleSideMenu ? `hidden sm:flex text-md tracking-wide  ease-in-out duration-300` : `group text-[0px] tracking-wide  ease-in-out duration-300`}
-            >
-              Logout
-
+            : <div className={toggleSideMenu ? `flex gap-5` : `t group relative flex gap-5`}>
+              <div className="text-gray-500">
+                <IoIosLogOut size={25} />
+              </div>
+              <div
+                className={toggleSideMenu ? `hidden sm:flex text-md tracking-wide  ease-in-out duration-300` : `group text-[0px] tracking-wide  ease-in-out duration-300`}
+              >
+                Logout
+              </div>
+              <div
+                className="invisible absolute start-full top-[48%] ms-2 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
+              >
+                Logout
+              </div>
             </div>
-            <div
-              className="invisible absolute start-full top-[48%] ms-2 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
-            >
-              Logout
-            </div>
-          </div>
+          }
         </div>
 
       </div>

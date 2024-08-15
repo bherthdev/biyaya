@@ -8,6 +8,7 @@ import { useState } from "react";
 import PageLoader from "../../components/PageLoader";
 import { AiOutlineUserAdd } from 'react-icons/ai';
 import { IoMdAdd } from "react-icons/io";
+import PageError from "../../components/PageError";
 
 const UsersList = () => {
 
@@ -36,7 +37,7 @@ const UsersList = () => {
   if (isLoading) content = <PageLoader />
 
   if (isError) {
-    content = <p className="errmsg">{error?.data?.message}</p>;
+    content = <PageError error={error?.data?.message}/>
   }
 
 

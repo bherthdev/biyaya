@@ -1,5 +1,4 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { useState } from "react";
 import { CiViewList } from "react-icons/ci";
@@ -35,7 +34,7 @@ const Welcome = () => {
     isError: isOrdersError,
     error: ordersError,
   } = useGetOrdersQuery("ordersList", {
-    pollingInterval: 10000, // refresh data every 15 seconds
+    pollingInterval: 10000, // refresh data every 10 seconds
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   });
@@ -47,7 +46,7 @@ const Welcome = () => {
     isError: isItemsError,
     error: itemsError,
   } = useGetItemsQuery("itemsList", {
-    pollingInterval: 10000, // refresh data every 15 seconds
+    pollingInterval: 10000, // refresh data every 10 seconds
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   });
@@ -305,6 +304,7 @@ const Welcome = () => {
                       </div>
                     </div>
                     <div className='m-auto text-center'>{error?.data?.message}</div>
+                    
                   </div>
                 </article>
               </dl>
@@ -373,7 +373,6 @@ const Welcome = () => {
       </div>
     );
   }
-
 
   if (isSuccess) {
 

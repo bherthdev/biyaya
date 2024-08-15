@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import iconItem from "../../assets/icon-item.svg"
 import { useAddNewOrderMutation } from "../orders/ordersApiSlice";
@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 import useAuth from "../../hooks/useAuth";
 import Order from "./Order"
 import { MdClose } from "react-icons/md";
+import { useUpdateItemMutation } from "../items/itemsApiSlice";
+import Spenner from "../../components/Spenner";
 
 
 export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, setOrdersItems, toggleCartMobile, setToggleCartMobile }) => {
@@ -14,11 +16,32 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
     const { formatDate, generateOR } = Order()
 
     const { id, name } = useAuth(); //current user id
-    const [addNewOrder, { isLoading, isSuccess, isError, error }] =
-        useAddNewOrderMutation();
 
     const [placeOrder, setPlaceOrder] = useState(false)
     const [enableSaveOrder, setEnableSaveOrder] = useState(false)
+    const [itemToBeUpdate, setItemToBeUpdate] = useState([]);
+
+
+    // Utility to combine states
+    const combineMutationStates = (...mutations) => {
+        return {
+            isLoading: mutations.some(({ isLoading }) => isLoading),
+            isSuccess: mutations.every(({ isSuccess }) => isSuccess),
+            isError: mutations.some(({ isError }) => isError),
+            error: mutations.reduce((acc, { error }) => acc || error, null),
+        };
+    };
+
+    // Use mutations
+    const [addNewOrder, addNewOrderState] = useAddNewOrderMutation();
+    const [updateItem, updateItemState] = useUpdateItemMutation();
+
+    // Combined states
+    const { isLoading, isSuccess, isError, error } = combineMutationStates(addNewOrderState, updateItemState);
+
+    // Use `isLoading`, `isSuccess`, `isError`, and `error` as needed when saving the order and updating the items
+
+
 
     const inputChange = (e) => {
         setOrderTransac({ ...orderTransac, dateTime: formatDate(), cash: e.target.value, change: Number(e.target.value) - Number(orderTransac.total) })
@@ -26,62 +49,138 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
 
     }
 
+    useEffect(() => {
+        if (orderTransac?.items) {
+            const updatedItems = orderTransac.items
+                .filter(data => data?.stock)  // Filter out items without stock
+                .map(data => ({
+                    id: data.id,
+                    name: data.name,
+                    description: data.description,
+                    stockMGT: data.stock,
+                    category: data.category,
+                    price: data.price,
+                    qty: Number(data.currentStock) - Number(data.qty),
+                    status: Number(data.currentStock) - Number(data.qty) === 0 ? 'Out of Stock' : 'In Stock',
+                }));
+
+            setItemToBeUpdate(updatedItems);
+        }
+    }, [orderTransac]);
+
     const computeTotal = () => {
         if (orderItems.length) {
             setPlaceOrder(placeOrder => !placeOrder)
             setOrderTransac({ ...orderTransac, items: orderItems })
         }
-
     }
 
+  
     const saveOrder = async () => {
 
-        if (enableSaveOrder) {
-            const result = await addNewOrder(orderTransac)
-            if (result?.error) {
-                toast.error(result.error.error, {
-                    position: "bottom-right",
-                    autoClose: 5000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "dark",
-                })
+        if (!enableSaveOrder) return;
 
-            } else {
-                toast.success(result.data.message, {
-                    position: "bottom-right",
-                    autoClose: 5000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "dark",
-                })
+        console.log(itemToBeUpdate)
 
-                setToggleCartMobile(false)
-                setPlaceOrder(false)
-                setEnableSaveOrder(false)
-                setOrdersItems([])
-                setOrderTransac({
-                    user: id,
-                    orderNo: generateOR(),
-                    dateTime: formatDate(),
-                    barista: name,
-                    orderType: 'Dine in',
-                    items: [],
-                    total: 0,
-                    cash: 0,
-                    change: 0
-                })
+        try {
+            const result = await addNewOrder(orderTransac);
+
+            if (result?.data?.message) {
+                handleSuccess(result.data.message);
+
+                if (itemToBeUpdate.length) { 
+                    // Update each item after the order is successfully saved
+                    const updatePromises = itemToBeUpdate.map(item => updateItem({ ...item }));
+
+                    // Wait for all updateItem mutations to complete
+                    const updateResults = await Promise.allSettled(updatePromises);
+
+                    // Handle the results of the item updates
+                    handleUpdateResults(updateResults);
+                }
             }
+        } catch (error) {
+            handleError(error);
         }
+    };
 
+    const handleUpdateResults = (results) => {
+        const hasErrors = results.some(result => result.status === 'rejected');
 
-    }
+        if (hasErrors) {
+            toast.error("Some items failed to update.", {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+        } else {
+            toast.success("All items updated successfully.", {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+
+            resetOrderState();
+        }
+    };
+
+    const handleSuccess = (message) => {
+        toast.success(message, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+        });
+        resetOrderState();
+    };
+
+    // Helper function to handle error
+    const handleError = (error) => {
+        toast.error(error?.error?.error || "An unexpected error occurred", {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+        });
+    };
+
+    // Helper function to reset order state
+    const resetOrderState = () => {
+        setToggleCartMobile(false);
+        setPlaceOrder(false);
+        setEnableSaveOrder(false);
+        setOrdersItems([]);
+        setOrderTransac({
+            user: id,
+            orderNo: generateOR(),
+            dateTime: formatDate(),
+            barista: name,
+            orderType: 'Dine in',
+            items: [],
+            total: 0,
+            cash: 0,
+            change: 0
+        });
+    };
+
 
 
     const updateItems = (id, option) => {
@@ -92,7 +191,7 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
         if (index !== -1) {
 
             if (Number(tempObj.qty) >= 1) {
-                
+
                 //check if + or - the qty
                 if (option) {
 
@@ -101,7 +200,7 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
                         tempObj.qty = Number(tempObj.qty) + 1
                     } else {
                         //check if item is not stock mgt
-                      if(!tempObj?.stock) tempObj.qty = Number(tempObj.qty) + 1
+                        if (!tempObj?.stock) tempObj.qty = Number(tempObj.qty) + 1
                     }
 
                 } else {
@@ -111,7 +210,6 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
                 tempObj.total = Number(tempObj.qty) * Number(tempObj.price)
                 tempRows[index] = tempObj;
             }
-
 
             tempObj.qty === 0 && tempRows.splice(index, 1)
         }
@@ -131,6 +229,7 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
 
     const classToggleCart = toggleCart ? ' ease-in-out duration-300 right-0 top-0 bottom-0' : ' right-[-100%]  ease-in-out duration-300'
     const classToggleCartMobile = toggleCartMobile ? `flex` : `hidden sm:flex`
+
 
     const content = (
         <>
@@ -176,6 +275,7 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
 
                 </div>
                 <div className="h-2/3 overflow-x-auto">
+
                     {orderItems.length
                         ? orderItems.map((item, idx) => (
                             <div key={idx} className="flex mt-5 gap-3  border-b dark:bg-slate-800 py-5 border-gray-300 dark:border-gray-800 text-center text-gray-800 dark:text-gray-200 hover:text-gray-500 dark:hover:text-gray-400">
@@ -272,7 +372,17 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
                                     title="Place an order"
                                     disabled={enableSaveOrder}
                                     className={`${enableSaveOrder ? 'bg-green-900 hover:bg-green-700 ' : 'bg-gray-300'}  cursor-pointer flex font-medium text-xl justify-center  text-white w-full py-3 border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
-                                    Save Order
+
+                                    {isLoading
+                                        ?
+                                        <div className=" text-sm flex text-gray-400 justify-end">
+                                            <Spenner />
+                                            <p>Saving order.... </p>
+                                        </div>
+                                        : `Save Order`
+                                    }
+
+
                                 </span>
                             </>
                             :
@@ -282,6 +392,7 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
                                     title="Place an order"
                                     className={`${orderItems.length ? `bg-[#242424] hover:bg-gray-700` : `bg-gray-300`} cursor-pointer flex font-medium text-xl justify-center  text-white  w-full py-3 border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
                                     Place an order
+
                                 </div>
 
                             </>
@@ -296,5 +407,6 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
 
         </>
     )
+
     return content
 }
