@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { useUpdateItemMutation, useDeleteItemMutation } from "./itemsApiSlice";
 import { useNavigate } from "react-router-dom";
-import { ROLES } from "../../config/roles";
 import { AiOutlineSave, AiOutlineWarning } from "react-icons/ai";
 import Image from "../../components/Image";
 import Spenner from "../../components/Spenner";
@@ -14,18 +13,7 @@ import Modal from "../../components/Modal";
 
 
 const EditItemForm = ({ item }) => {
-
-
   const { id } = useAuth(); //current user id
-
-  const [updateItem, { isLoading, isSuccess, isError, error }] =
-    useUpdateItemMutation();
-
-  const [
-    deleteItem,
-    { isSuccess: isDelSuccess, isLoading: isDelLoading, },
-  ] = useDeleteItemMutation();
-
   const navigate = useNavigate();
 
   const [name, setName] = useState(item.name);
@@ -41,6 +29,18 @@ const EditItemForm = ({ item }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
 
+  const [updateItem, { isLoading, isSuccess, isError, error }] =
+    useUpdateItemMutation();
+
+  const [
+    deleteItem,
+    { isSuccess: isDelSuccess, isLoading: isDelLoading, },
+  ] = useDeleteItemMutation();
+
+
+
+
+
   const handleModalOpen = () => {
     setIsModalOpen(true)
   }
@@ -53,49 +53,61 @@ const EditItemForm = ({ item }) => {
 
   useEffect(() => {
     if (isSuccess || isDelSuccess) {
-      setName("")
-      setDescription("")
-      setCategory("")
-      setQTY("")
-      setPrice("")
-      setStockMGT(false)
-      setStatus("")
-      setImage("")
-      setDataImage()
+      resetForm()
       navigate("/inventory")
     }
   }, [isSuccess, isDelSuccess, navigate]);
 
 
-  const onNameChanged = (e) => setName(e.target.value);
-  const onDescriptionChanged = (e) => setDescription(e.target.value)
-  const onCategoryChanged = (e) => setCategory(e.target.value)
-  const onQTYChanged = (e) => {
-    const qty = e.target.value
-
-    if (stockMGT && qty > 0) {
-      setStatus("In Stock")
-    } else {
-      setStatus("Out of Stock")
-    }
-    setQTY(qty)
-  }
-  const onStockMGTChanged = (e) => setStockMGT(stock => !stock)
-  const onPriceChanged = (e) => setPrice(e.target.value)
-  const onStatusChanged = (e) => setStatus(e.target.value)
-
-  const onImageChanged = (e) => {
-    const file = e.target.files[0];
-    setFileToBase(file);
+  const resetForm = () => {
+    setName("")
+    setDescription("")
+    setCategory("")
+    setQTY("")
+    setPrice("")
+    setStockMGT(false)
+    setStatus("")
+    setImage("")
+    setDataImage()
   };
 
-  const setFileToBase = (file) => {
+
+  const handleInputChange = (setter) => (e) => setter(e.target.value);
+
+  const handleQtyChange = (e) => {
+    const value = e.target.value;
+    setStatus(stockMGT && value > 0 ? "In Stock" : "Out of Stock");
+    setQTY(value);
+  };
+
+  const handleStockMGTChange = () => {
+    setStockMGT((prev) => !prev);
+    setStatus("Out of Stock");
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
     const reader = new FileReader();
-    reader.readAsDataURL(file);
     reader.onloadend = () => {
+      setImage(reader.result);
       setDataImage(reader.result);
     };
+    reader.readAsDataURL(file);
   };
+
+  const categoryOptions = [
+    { value: "--", label: "--" },
+    { value: "Coffee", label: "Coffee" },
+    { value: "Non Coffee", label: "Non Coffee" },
+    { value: "Food", label: "Food" },
+    { value: "Other", label: "Other" },
+  ];
+
+  const statusOptions = [
+    { value: "In Stock", label: "In Stock" },
+    { value: "Out of Stock", label: "Out of Stock" },
+  ];
+
 
 
   const onSaveUserClicked = async () => {
@@ -178,33 +190,11 @@ const EditItemForm = ({ item }) => {
 
   };
 
-  const options = Object.values(ROLES).map((role) => {
-    return (
-      <option key={role} value={role}>
-        {" "}
-        {role}
-      </option>
-    );
-  });
-
-
 
   const errClass = isError
     ? "text-gray-900 sm:text-2xl dark:text-gray-200"
     : "offscreen";
 
-
-  async function readImage(e, func) {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      let binaryData = e.target.result;
-      let base64String = window.btoa(binaryData);
-      func(base64String);
-    };
-    let image = reader.readAsBinaryString(file);
-    return image;
-  }
 
   const btnClass = id !== item._id ? 'flex justify-between' : null;
 
@@ -227,213 +217,23 @@ const EditItemForm = ({ item }) => {
         <div className="mt-5 md:col-span-2 ">
           <form onSubmit={(e) => e.preventDefault()}>
             <div className="border overflow-hidden rounded-md">
-              <div className="space-y-6 bg-white dark:bg-slate-800 px-4 py-5 sm:p-6">
-                <div className="grid grid-cols-2 gap-4">
-
+              <div className="space-y-6 bg-white dark:bg-slate-800 px-4 py-5 sm:p-10">
+                <div className="grid grid-cols-2 gap-20">
                   <div className="col-span-2 sm:col-span-1 ">
-                    <div className="">
-                      <label
-                        className="block text-base text-gray-500 dark:text-gray-200"
-                        htmlFor="name"
-                      >
-                        Item name
-                      </label>
-                      <input
-                        className={`w-full mt-1 px-3 py-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
-                        id="name"
-                        name="name"
-                        type="text"
-                        autoComplete="off"
-                        required
-                        value={name}
-                        onChange={onNameChanged}
-                      />
-                    </div>
-
-                    <div className="mt-5">
-                      <div>
-                        <label htmlFor="OrderNotes" className="block text-base  text-gray-500"> Description </label>
-
-                        <textarea
-                          id="description"
-                          name="description"
-                          required
-                          value={description}
-                          className="w-full mt-1 px-3 py-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md"
-                          rows="4"
-                          onChange={onDescriptionChanged}
-
-                        // placeholder="Enter any additional order notes..."
-                        >{description}</textarea>
-                      </div>
-                    </div>
-
-
-
-                    <div className="mb-10 sm:mb-0 mt-10">
-                      <label className="block text-base text-center sm:text-left text-gray-500 dark:text-gray-200">
-                        Item Photo
-                      </label>
-                      <div className="mt-1 flex flex-col gap-4 sm:gap-0 sm:flex-row items-center">
-                        {imageView
-                          ? <Image data={imageView} size="h-40 w-40" rounded="rounded-md" />
-                          : <span className="inline-block h-40 w-40 overflow-hidden rounded-md bg-gray-100">
-                            <img
-                              alt="Item Photo"
-                              src={item.avatar}
-                              className="h-40 w-40 rounded-md object-cover border border-slate-300  dark:border-slate-600"
-                            />
-                          </span>
-                        }
-
-                        <label
-                          htmlFor="file-upload"
-                          className="sm:ml-5 cursor-pointer text-[10px]  px-4 py-2 text-black border dark:text-gray-300 font-medium border-gray-300 dark:border-slate-600  dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full "
-                        >
-
-                          <span className="whitespace-nowrap">Replace Photo</span>
-
-                          <input
-                            id="file-upload"
-                            name="image"
-                            type="file"
-                            className="sr-only"
-                            accept="image/png, image/jpeg"
-                            onChange={event => {
-                              readImage(event, setImage)
-                              onImageChanged(event)
-                            }}
-                          />
-                        </label>
-                        <p className="text-xs text-gray-500 ml-3">
-                          JPG, JPEG, PNG up to 10MB
-                        </p>
-                      </div>
-                    </div>
+                    <InputField label="Item name" value={name} onChange={handleInputChange(setName)} />
+                    <TextAreaField label="Description" value={description} onChange={handleInputChange(setDescription)} />
+                    <ImageUploadField imageView={imageView} value={item.avatar} onChange={handleImageChange} />
                   </div>
-
                   <div className=" col-span-2 sm:col-span-1">
-                    <div className="">
-                      <label
-                        className="block text-base text-gray-500 dark:text-gray-200"
-                        htmlFor="position"
-                      >
-                        Price
-                      </label>
-                      <input
-                        className={`w-full sm:w-1/2 mt-1 px-3 py-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-300 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
-                        id="price"
-                        name="price"
-                        type="number"
-                        autoComplete="off"
-                        required
-                        value={price}
-                        onChange={onPriceChanged}
-                      />
-                    </div>
-                    <div className="mt-5">
-                      <label
-                        htmlFor="country"
-                        className="block text-base text-gray-500 dark:text-gray-200"
-                      >
-                        Category
-                      </label>
-                      <select
-                        id="category"
-                        name="category"
-                        value={category}
-                        onChange={onCategoryChanged}
-                        className="mt-1 block w-full sm:w-1/2 py-3 px-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md"
-                      >
-
-                        <option value="Coffee">
-                          Coffee
-                        </option>
-                        <option value="Non Coffee">
-                          Non Coffee
-                        </option>
-                        <option value="Food">
-                          Food
-                        </option>
-                        <option value="Other">
-                          Other
-                        </option>
-                      </select>
-                    </div>
-
-                    <div className="mt-10 space-y-4">
-                      <label
-                        className="block text-base text-gray-500 dark:text-gray-200"
-                        htmlFor="position"
-                      >
-                        Stock management
-                      </label>
-                      <div className="flex  items-start ">
-                        <div
-                          className=" flex items-center ">
-                          <input
-                            type="checkbox"
-                            className="accent-slate-200 h-4 w-4 cursor-pointer"
-                            id="stockMGT"
-                            onChange={onStockMGTChanged}
-                            checked={stockMGT}
-                          />
-                          <label htmlFor="stockMGT" className="text-sm pl-4 cursor-pointer  text-black tracking-wide">
-                            Track stock quantity for this item
-                          </label>
-                        </div>
-
-                      </div>
-                    </div>
-
-                    {stockMGT &&
-                      <div className="mt-5">
-                        <label
-                          className="block text-base text-gray-500 dark:text-gray-200"
-                          htmlFor="position"
-                        >
-                          Quantity
-                        </label>
-                        <input
-                          className={`w-full sm:w-1/2 mt-1 px-3 py-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-300 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
-                          id="qty"
-                          name="qty"
-                          type="number"
-                          autoComplete="off"
-                          required
-                          value={qty}
-                          onChange={onQTYChanged}
-                        />
-                      </div>}
-
-                    {!stockMGT &&
-                      <div className="mt-5">
-                        <label
-                          htmlFor="country"
-                          className="block text-base text-gray-500 dark:text-gray-200"
-                        >
-                          Status
-                        </label>
-                        <select
-                          id="status"
-                          name="status"
-                          value={status}
-                          onChange={onStatusChanged}
-                          className="mt-1 block w-full sm:w-1/2 py-3 px-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-300 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md"
-                        >
-
-                          <option value="In Stock">
-                            In Stock
-                          </option>
-                          <option defaultValue value="Out of Stock">
-                            Out of Stock
-                          </option>
-                        </select>
-                      </div>}
-
-
+                    <InputField label="Price" value={price} onChange={handleInputChange(setPrice)} />
+                    <SelectField label="Category" value={category} onChange={handleInputChange(setCategory)} options={categoryOptions} />
+                    <CheckboxField label="Stock management" checked={stockMGT} onChange={handleStockMGTChange} />
+                    {stockMGT ? (
+                      <InputField label="Quantity" value={qty} onChange={handleQtyChange} />
+                    ) : (
+                      <SelectField label="Status" value={status} onChange={handleInputChange(setStatus)} options={statusOptions} />
+                    )}
                   </div>
-
                 </div>
 
                 {isDelLoading || isLoading
@@ -498,9 +298,6 @@ const EditItemForm = ({ item }) => {
               {/*footer mobile screen */}
               <div className={`flex  gap-2  flex-col sm:flex-row sm:hidden  sm:justify-end text-sm bg-gray-50 dark:bg-slate-800 px-4 py-3 text-center sm:px-6 dark:border-t dark:border-slate-700 ${btnClass}`}>
 
-
-
-
                 <div
                   title="Cancel"
                   disabled={!isLoading && !isDelLoading}
@@ -553,4 +350,84 @@ const EditItemForm = ({ item }) => {
 
   return content;
 };
+
+const InputField = ({ label, value, onChange }) => (
+  <div className="mt-5">
+    <label className="block text-base text-gray-500 dark:text-gray-200">{label}</label>
+    <input
+      className={`${label == `Item name` ? `w-full` : `w-full sm:w-1/2`} mt-1 px-3 py-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border-gray-700 dark:bg-slate-900 outline-none focus:border-gray-300 focus:shadow-sm rounded-md`}
+      type="text"
+      value={value}
+      onChange={onChange}
+    />
+  </div>
+);
+
+const TextAreaField = ({ label, value, onChange }) => (
+  <div className="mt-5">
+    <label className="block text-base text-gray-500 dark:text-gray-200">{label}</label>
+    <textarea
+      className="w-full mt-1 px-3 py-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border-gray-700 dark:bg-slate-900 outline-none focus:border-gray-300 focus:shadow-sm rounded-md"
+      rows="4"
+      value={value}
+      onChange={onChange}
+    />
+  </div>
+);
+
+const ImageUploadField = ({ imageView, value, onChange }) => (
+  <div className="mt-10">
+    <label className="block text-base text-center sm:text-left text-gray-500 dark:text-gray-200">Item Photo</label>
+    <div className="mt-1 flex flex-col gap-4 sm:gap-0 sm:flex-row items-center">
+      {imageView ? (
+        <Image data={imageView} size="h-40 w-40" rounded="rounded-md" />
+      ) : (
+        <span className="inline-block h-40 w-40 overflow-hidden rounded-md bg-gray-100">
+          <img src={value} className="h-40 w-40 object-cover" />
+        </span>
+      )}
+      <label
+        htmlFor="file-upload"
+        className="sm:ml-5 cursor-pointer text-[10px] px-4 py-2 text-black border dark:text-gray-300 font-medium border-gray-300 dark:border-slate-600 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150"
+      >
+        <span className="whitespace-nowrap">Upload Photo</span>
+        <input id="file-upload" name="image" type="file" className="sr-only" accept="image/png, image/jpeg" onChange={onChange} />
+      </label>
+      <p className="text-xs text-gray-500 ml-3">JPG, JPEG, PNG up to 10MB</p>
+    </div>
+  </div>
+);
+
+const CheckboxField = ({ label, checked, onChange }) => (
+  <div className="mt-10 space-y-4">
+    <label className="block text-base text-gray-500 dark:text-gray-200">{label}</label>
+    <div className="mt-4">
+      <label className="relative inline-flex items-center cursor-pointer">
+        <input type="checkbox" className="sr-only peer" checked={checked} onChange={onChange} />
+        <div className="w-[33px] h-[18px] bg-gray-200 flex-nowrap peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] sm:after:top-[5px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-[14px] after:w-[14px] after:transition-all peer-checked:bg-gray-600"></div>
+        <span className="ml-3 text-xs sm:text-base text-gray-900 dark:text-gray-200">Track stock quantity for this item</span>
+      </label>
+    </div>
+  </div>
+);
+
+const SelectField = ({ label, value, onChange, options }) => (
+  <div className="mt-5">
+    <label className="block text-base text-gray-500 dark:text-gray-200">{label}</label>
+    <select
+      className="mt-1 block w-full sm:w-1/2 py-3 px-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border-gray-700 dark:bg-slate-900 outline-none focus:border-gray-300 focus:shadow-sm rounded-md"
+      value={value}
+      onChange={onChange}
+    >
+      {options.map((option) => (
+        <option key={option.value} value={option.value}>
+          {option.label}
+        </option>
+      ))}
+    </select>
+  </div>
+);
+
+
+
 export default EditItemForm;

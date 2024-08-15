@@ -36,3 +36,10 @@
     margin: 0;
   }
 }
+
+@media print {
+  /* Hide the print button */
+  .no-print {
+    display: none;
+  }
+}

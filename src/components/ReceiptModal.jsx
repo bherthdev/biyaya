@@ -15,7 +15,7 @@ function Modal({ isOpen, onClose, orderId }) {
       <div className="flex items-center justify-center h-screen pt-4 px-4 pb-20 text-center  ">
      
         <div className="fixed inset-0 transition-opacity">
-          <div className="absolute inset-0 bg-gray-400  dark:bg-gray-900 opacity-80"></div>
+          <div className="absolute inset-0 bg-gray-400  no-print dark:bg-gray-900 opacity-80"></div>
         </div>
      
         <div
@@ -25,8 +25,8 @@ function Modal({ isOpen, onClose, orderId }) {
           aria-labelledby="modal-headline"
         >
          <div className="flex justify-between border-b-2">
-          <h1 className="py-2 px-4 text-lg uppercase font-medium">Receipt</h1>
-           <button  onClick={onClose} className=" w-12 h-12 m-0 p-1 text-gray-300 hover:text-gray-600 dark:text-gray-500 hover:dark:text-gray-400 ">
+          <h1 onClick={()=>  window.print()} className="py-2 px-4 text-lg uppercase font-medium">Receipt</h1>
+           <button  onClick={onClose} className=" w-12 h-12 m-0 p-1 no-print text-gray-300 hover:text-gray-600 dark:text-gray-500 hover:dark:text-gray-400 ">
            <IoIosClose size={35}/>
            </button>
          </div> 

@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import PageLoader from "../../components/PageLoader";
 import { IoMdAdd } from "react-icons/io";
-import PageError from "../../components/PageError";
 
 
 const ItemsList = () => {
@@ -35,7 +34,7 @@ const ItemsList = () => {
   if (isLoading) content = <PageLoader />
 
   if (isError) {
-    content = <PageError error={error?.data?.message}/>
+   content = <PageError error={error?.data?.message}/>
   }
 
 

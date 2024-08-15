@@ -305,19 +305,15 @@ const Login = () => {
 
                   </label>
                 </div>
-                <div
-                  className="pb-3">
-                  <input
-                    type="checkbox"
-                    className="accent-slate-200"
-                    id="persist"
-                    onChange={handleToggle}
-                    checked={persist}
-                  />
-                  <label htmlFor="persist" className="pl-2 text-black font-thin tracking-wide">
-                    Trust this device
-                  </label>
-                </div>
+
+
+                  <div className="pb-3">
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input type="checkbox" className="sr-only peer" checked={persist} onChange={handleToggle} />
+                      <div className="w-[33px] h-[18px] bg-gray-200 flex-nowrap peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[3px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-[14px] after:w-[14px] after:transition-all peer-checked:bg-gray-600"></div>
+                      <span className="ml-3 text-sm font-medium text-gray-700 dark:text-gray-200"> Trust this device</span>
+                    </label>
+                  </div>
 
                 <button
                   className="w-full px-4 py-3  font-sans text-white bg-[#1E1E1E] hover:bg-slate-700 active:bg-slate-800 rounded-full duration-150">
