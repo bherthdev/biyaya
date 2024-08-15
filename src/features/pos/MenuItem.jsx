@@ -39,7 +39,7 @@ const MenuItem = ({ itemId, search, orderTransac, setOrderTransac, orderItems, s
                 }
             }
         } else {
-            setOrdersItems([...orderItems, { id: item.id, name: item.name, avatar: item.avatar, stock: item.stock_mgt, currentStock: qty, qty: 1, price: item.price, total: Number(item.price) }])
+            setOrdersItems([...orderItems, { id: item.id, name: item.name, avatar: item.avatar, stock: item.stock_mgt, currentStock: item.qty, qty: 1, price: item.price, total: Number(item.price) }])
             setOrderTransac({ ...orderTransac, total: orderTransac.total + Number(item.price) })
         }
     }
