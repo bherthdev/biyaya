@@ -83,11 +83,11 @@ const DashHeader = ({ headerName }) => {
                     className="group flex shrink-0 items-center rounded-lg transition"
                   >
                     <span className="sr-only">Menu</span>
-                    <div className="mr-2 hidden sm:flex flex-col tracking-wide gap-0 text-right">
-                      <h1 className="font-medium text-md text-gray-800 dark:text-gray-200 capitalize">
+                    <div className="mr-1 sm:mr-2 flex flex-col tracking-wide text-right">
+                      <h1 className="font-medium text-xs sm:text-md text-gray-800 dark:text-gray-200 capitalize">
                         {name}
                       </h1>
-                      <p className="text-gray-400 font-normal text-sm">{position}</p>
+                      <p className="text-gray-400 font-light text-[10px] sm:text-sm">{position}</p>
                     </div>
                     <img
                       alt="Profile"
