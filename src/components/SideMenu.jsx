@@ -92,7 +92,6 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
           )}
         </ul>
       </div>
-
       <div
         className={`border-r-gray-800 sm:px-4 sm:py-4 cursor-pointer hover:bg-gray-100 font-sans font-medium text-gray-700 sticky inset-x-0 bottom-0 border-t border-gray-100`}
         onClick={logOutUser}
