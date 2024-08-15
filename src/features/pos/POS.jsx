@@ -60,7 +60,7 @@ const POS = () => {
                 <div aria-label="Page Header" className="">
                     <div className="mx-auto max-w-screen-xl px-0 py-8 sm:px-6 lg:px-8">
                         <div className=" sm:mt-2 ">
-                            <div className='fixed z-20 mx-auto max-w-screen-xl border sm:border-transparent px-4 sm:px-0 flex-row sm:flex-col sm:flex top-24 sm:top-32  sm:bg-[#f1f1f1] bg-white '>
+                            <div className='fixed z-20 mx-auto max-w-screen-xl border sm:border-transparent px-4 sm:px-0 flex-row sm:flex-col sm:flex top-20 sm:top-32  sm:bg-[#f1f1f1] bg-white '>
                                 <div className='mt-2 sm:mt-10 overflow-auto  grid gap-1 sm:gap-4 grid-cols-4 text-xs sm:text-base  py-5 sm:py-0'>
 
                                     <button
