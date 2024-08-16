@@ -6,14 +6,12 @@ import { setCredentials } from "./authSlice";
 import { useLoginMutation } from "./authApiSlice";
 import usePersist from "../../hooks/usePersist";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import Switcher from "../../components/Switcher";
 import PageLoader from "../../components/PageLoader";
 import biyayaLogo from "../../assets/biyaya_logo.png";
 import biyayaShop from "../../assets/biyaya_shop.png";
 import biyayaSmile from "../../assets/biyaya_smile.jpg";
 import biyayaSmile2 from "../../assets/biyaya_smile2.jpg";
 import { FaRegUser } from "react-icons/fa";
-import Spenner from "../../components/Spenner";
 import { motion as m } from "framer-motion"
 import Carousel from "../../components/Carousel";
 
@@ -79,90 +77,87 @@ const Login = () => {
   ];
 
   if (isLoading) return (
-
     <div className="bg-white">
-      <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
-        <div ref={userRef} className="relative flex h-48 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
-          <Carousel slides={slides} />
+    <div className="lg:grid h-screen lg:min-h-screen lg:grid-cols-12">
+      <div ref={userRef} className="relative flex h-48 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
+        <Carousel slides={slides} />
 
-          <div className="hidden lg:relative lg:block lg:p-12">
-            <div className="block text-white">
+        <div className="hidden lg:relative lg:block lg:p-12">
+          <div className="block text-white">
+            <span className="sr-only">Home</span>
+
+            <img
+              alt="Logo"
+              src={biyayaLogo}
+              className="h-32 sm:h-32"
+            />
+          </div>
+
+          <h2 className="mt-6 text-2xl font-bold text-white sm:text-3xl md:text-4xl">
+            Welcome to Biyaya 🍵
+          </h2>
+
+          <p className="mt-4 leading-relaxed text-white/90">
+            Welcome to our cozy coffee haven! Whether you're here for your daily brew or a relaxing escape, we're delighted to serve you.
+          </p>
+        </div>
+      </div>
+
+      <div
+        className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6"
+      >
+        <div className="flex flex-col  max-w-xl lg:max-w-3xl">
+          <div className="relative -mt-16 block lg:hidden">
+            <div
+              className="inline-flex size-28 items-center justify-center rounded-full bg-white sm:size-20"
+
+            >
               <span className="sr-only">Home</span>
-
               <img
                 alt="Logo"
                 src={biyayaLogo}
-                className="h-32 sm:h-32"
+
               />
             </div>
 
-            <h2 className="mt-6 text-2xl font-bold text-white sm:text-3xl md:text-4xl">
+            <h1 className="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
               Welcome to Biyaya 🍵
-            </h2>
-
-            <p className="mt-4 leading-relaxed text-white/90">
-              Welcome to our cozy coffee haven! Whether you're here for your daily brew or a relaxing escape, we're delighted to serve you.
-            </p>
+            </h1>
           </div>
-        </div>
+          <div className="flex flex-col items-center  bg-white dark:bg-gray-900 px-10 py-8 sm:py-10 sm:px-28 ease-in-out duration-300">
 
-        <div
-          className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6"
-        >
-          <div className="flex flex-col  max-w-xl lg:max-w-3xl">
-            <div className="relative -mt-16 block lg:hidden">
-              <div
-                className="inline-flex size-28 items-center justify-center rounded-full bg-white sm:size-20"
+            <img src={biyayaLogo} className='hidden sm:block animate-bounce shadow shadow-black  rounded-full h-[100px] xl:h-[100px] mx-auto ease-in-out duration-300' />
+            <div className="flex space-x-2 mt-20 sm:mt-0">
+              <span className='mr-3 border-t-transparent border-solid animate-spin  rounded-full border-slate-600 border-2 h-6 w-6'></span>
 
+              <div className='m-auto text-lg text-black'>Logging in ...</div>
+            </div>
+
+            <div className="flex items-center gap-2 mt-16">
+              <p className="text-xs font-thin text-gray-600 dark:text-gray-400">Designed and developed by: </p>
+
+              <a href='https:www.tyingknotworks.com/'
+                target='_blank' rel='noreferrer noopener'
+                className=" font-normal text-xs text-black"
               >
-                <span className="sr-only">Home</span>
-                <img
-                  alt="Logo"
-                  src={biyayaLogo}
-
-                />
-              </div>
-
-              <h1 className="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
-                Welcome to Biyaya 🍵
-              </h1>
-            </div>
-            <div className="flex flex-col items-center  bg-white dark:bg-gray-900 px-10 py-8 sm:py-10 sm:px-28 ease-in-out duration-300">
-
-              <img src={biyayaLogo} className='hidden sm:block animate-bounce shadow shadow-black  rounded-full h-[100px] xl:h-[100px] mx-auto ease-in-out duration-300' />
-              <div className="flex space-x-2 mt-20 sm:mt-0">
-                <span className='mr-3 border-t-transparent border-solid animate-spin  rounded-full border-slate-600 border-2 h-6 w-6'></span>
-
-                <div className='m-auto text-lg text-black'>Logging in ...</div>
-              </div>
-
-              <div className="flex items-center gap-2 mt-16">
-                <p className="text-xs font-thin text-gray-600 dark:text-gray-400">Designed and developed by: </p>
-
-                <a href='https:www.tyingknotworks.com/'
-                  target='_blank' rel='noreferrer noopener'
-                  className=" font-normal text-xs text-black"
-                >
-                  TyingKnot Works
-                </a>
-              </div>
+                TyingKnot Works
+              </a>
             </div>
           </div>
-
         </div>
-      </div >
 
+      </div>
     </div >
-
-
+  </div >
+    
   )
 
 
   const content = (
     <>
-      <div className="bg-white">
-        <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
-          <div className="relative  flex h-48 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
+    <div className="bg-white ">
+        <div className="lg:grid h-screen lg:grid-cols-12">
+          <div className="relative flex h-48 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
             {/* <img
               alt="Logo"
               src={biyayaSmile}

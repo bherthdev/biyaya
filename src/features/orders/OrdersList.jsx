@@ -52,9 +52,9 @@ const OrdersList = () => {
   if (isLoading) content = <PageLoader />
 
   if (isError) {
-    content = <PageError error={error?.data?.message}/>
+    content = <PageError error={error?.data?.message} />
 
-    
+
   }
 
 
@@ -128,10 +128,10 @@ const OrdersList = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1">
-            <div>
+          <div className="grid grid-cols-1 mt-5">
+            <div className="h-[400px] 2xl:h-[500px] min-w-full rounded bg-white col-span-1 lg:col-span-2">
               <div className="h-5 bg-white mt-5 rounded-t-lg"></div>
-              <div className="overflow-x-auto h-2/3 bg-white min-w-full shadow-sm  ">
+              <div className="overflow-x-auto h-full bg-white min-w-full shadow-sm ">
                 <table className="min-w-full  divide-y divide-gray-200 dark:divide-gray-700 text-sm leading-normal">
                   <thead className="bg-gray-50 dark:bg-gray-800 sticky top-0">
                     <tr className="sticky">
@@ -144,7 +144,7 @@ const OrdersList = () => {
 
                 </table>
               </div>
-              <div className="pt-10 bg-slate-100 rounded-b"></div>
+              <div className="pt-10 bg-gray-50 rounded-b"></div>
             </div>
           </div>
 

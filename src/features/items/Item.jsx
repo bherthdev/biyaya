@@ -28,7 +28,7 @@ const Item = ({ itemId, search }) => {
             className={`sm:flex gap-4 whitespace-nowrap px-8 py-3 font-medium text-gray-900 dark:text-gray-300`}
           >
             <div className="flex items-center">
-              <div className="flex-shrink-0 h-12 w-12">
+              <div className="flex-shrink-0 h-10 w-10 sm:h-12 sm:w-12">
                 <img
                   alt="img"
                   src={
@@ -36,18 +36,18 @@ const Item = ({ itemId, search }) => {
                       ? item.avatar
                       : iconPicture
                   }
-                  className="h-12 w-12 rounded-full border border-slate-300  dark:border-slate-600 object-cover"
+                  className="h-10 w-10 sm:h-12 sm:w-12 rounded-full border border-slate-300  dark:border-slate-600 object-cover"
                 />
               </div>
               <div className="ml-4">
-                <p className="capitalize">{item.name} </p>
+                <p className="capitalize text-base">{item.name} </p>
               </div>
             </div>
 
 
           </td>
 
-          <td className={`whitespace-pre-wrap  px-8 py-3  text-gray-900 dark:text-gray-300`}>
+          <td className={`whitespace-nowrap  px-8 py-3  text-gray-900 dark:text-gray-300`}>
             <div className="flex-wrap">
               <p className=" text-sm text-gray-700 dark:text-gray-500"
                 title={item.description}
@@ -56,7 +56,7 @@ const Item = ({ itemId, search }) => {
               </p>
             </div>
           </td>
-          <td className={`whitespace-nowrap px-8 py-3  font-medium text-gray-600 dark:text-gray-500 `}>
+          <td className={`whitespace-nowrap px-8 py-2  font-medium text-gray-600 dark:text-gray-500 `}>
            <div className="flex gap-1 justify-start text-sm">
 
             <h1
@@ -74,14 +74,14 @@ const Item = ({ itemId, search }) => {
            </div>
           </td>
 
-          <td className={`whitespace-nowrap px-8 py-3  text-sm text-gray-900 dark:text-gray-300`}>
+          <td className={`whitespace-nowrap px-8 py-2  text-sm text-gray-900 dark:text-gray-300`}>
             <div className="flex-nowrap">
               <p className="capitalize">₱ {Number(item.price).toFixed(2)} </p>
 
             </div>
           </td>
 
-          <td className={`whitespace-nowrap px-8 py-3 text-base  text-gray-900 dark:text-gray-300 `}>
+          <td className={`whitespace-nowrap px-8 py- text-sm  text-gray-900 dark:text-gray-300 `}>
             {item.category}
           </td>
 

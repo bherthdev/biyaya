@@ -199,13 +199,13 @@ const SelectField = ({ label, value, onChange, options }) => (
 );
 
 const CheckboxField = ({ label, checked, onChange }) => (
-  <div className="mt-10 space-y-4">
+  <div className="mt-10 space-y-4  whitespace-nowrap">
     <label className="block text-base text-gray-500 dark:text-gray-200">{label}</label>
     <div className="mt-4">
       <label className="relative inline-flex items-center cursor-pointer">
         <input type="checkbox" className="sr-only peer" checked={checked} onChange={onChange} />
         <div className="w-[33px] h-[18px] bg-gray-200 flex-nowrap peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] sm:after:top-[5px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-[14px] after:w-[14px] after:transition-all peer-checked:bg-gray-600"></div>
-        <span className="ml-3 text-xs sm:text-base text-gray-900 dark:text-gray-200">Track stock quantity for this item</span>
+        <span className="ml-3 text-xs lg:text-base text-gray-900 dark:text-gray-200">Track stock quantity for this item</span>
       </label>
     </div>
   </div>

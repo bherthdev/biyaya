@@ -23,9 +23,9 @@ const User = ({ userId, search }) => {
       const handleEdit = () => navigate(`/settings/users/${userId}`);
 
       return (
-        <tr onClick={handleEdit} className="hover:bg-slate-200 text-xl dark:hover:bg-[#151e30] cursor-pointer">
+        <tr onClick={handleEdit} className="hover:bg-slate-200 text-lg dark:hover:bg-[#151e30] cursor-pointer">
           <td
-            className={`sm:flex gap-4 whitespace-nowrap px-6 py-6 font-medium text-gray-900 dark:text-gray-300`}
+            className={`sm:flex gap-4 whitespace-nowrap px-6 py-3 font-medium text-gray-900 dark:text-gray-300`}
           >
             <div className="flex items-center">
               <div className="flex-shrink-0 h-14 w-14">
@@ -48,7 +48,7 @@ const User = ({ userId, search }) => {
           </td>
 
           <td
-            className={`whitespace-nowrap px-6 py-6 font-medium text-gray-600 dark:text-gray-300`}
+            className={`whitespace-nowrap px-6 py-3 font-medium text-gray-600 dark:text-gray-300`}
           >
             <div className="flex-nowrap">
               <p className="capitalize">{user.position} </p>
@@ -57,7 +57,7 @@ const User = ({ userId, search }) => {
           </td>
 
           <td
-            className={`whitespace-nowrap px-6 py-6 font-medium text-gray-900 dark:text-gray-300 `}
+            className={`whitespace-nowrap px-6 py-3 font-medium text-gray-900 dark:text-gray-300 `}
           >
 
             <span
@@ -104,13 +104,13 @@ const User = ({ userId, search }) => {
           </td>
 
           <td
-            className={`whitespace-nowrap px-6 py-6 font-medium text-gray-600 dark:text-gray-500 `}
+            className={`whitespace-nowrap px-6 py-3 font-medium text-gray-600 dark:text-gray-500 `}
           >
             {user.roles}
           </td>
 
           <td
-            className={`whitespace-nowrap px-6 py-6 text-gray-700 dark:text-gray-300`}
+            className={`whitespace-nowrap px-6 py-3 text-gray-700 dark:text-gray-300`}
           >
             <span
               title="Edit User"

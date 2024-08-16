@@ -41,15 +41,15 @@ export default function Carousel({ slides }) {
 
 
   return (
-    <div className="overflow-hidden bg-gray-900 absolute  h-full w-full opacity-80">
+    <div className="overflow-hidden  absolute  h-full w-full opacity-80">
       <div
-        className={`flex transition ease-in-out duration-1000`}
+        className={`flex transition ease-in-out duration-1000 sm:h-full`}
         style={{
           transform: `translateX(-${current * 100}%)`,
         }}
       >
         {slides.map((s, idx) => {
-          return <img key={idx} src={s} />;
+          return <img key={idx} src={s} className="object-cover"/>;
         })}
       </div>
 
@@ -70,7 +70,7 @@ export default function Carousel({ slides }) {
                 setCurrent(i);
               }}
               key={"circle" + i}
-              className={`rounded-full w-2 h-2 cursor-pointer  ${i == current ? "bg-gray-200" : "bg-gray-500"
+              className={`rounded-full w-2 h-2 cursor-pointer  ${i == current ? "bg-gray-200 " : "bg-gray-500 "
                 }`}
             ></div>
           );

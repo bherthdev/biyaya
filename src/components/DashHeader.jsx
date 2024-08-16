@@ -63,7 +63,7 @@ const DashHeader = ({ headerName }) => {
       <div className="flex items-center">
         <p className="flex">
           <span className="sr-only">Logo</span>
-          <span className="inline-block text-gray-700 dark:text-gray-200 text-2xl sm:text-4xl font-semibold">
+          <span className="inline-block text-gray-700 dark:text-gray-200 text-2xl sm:text-3xl font-semibold">
             {getHeaderName()}
           </span>
         </p>

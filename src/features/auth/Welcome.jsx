@@ -257,7 +257,7 @@ const Welcome = () => {
       <div aria-label="Page Header" className="">
         <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="mt-2">
-            <p className="text-xl font-bold text-gray-900 sm:text-2xl dark:text-gray-200">
+            <p className="text-xl font-bold text-gray-700 sm:text-2xl dark:text-gray-200">
               Welcome Back, {name}!
             </p>
 
@@ -433,7 +433,7 @@ const Welcome = () => {
 
         <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="mt-2">
-            <p className="text-xl font-bold text-gray-900 sm:text-2xl dark:text-gray-200">
+            <p className="text-xl font-bold text-gray-700 sm:text-2xl dark:text-gray-200">
               Welcome Back, {name}!
             </p>
 
@@ -518,6 +518,7 @@ const Welcome = () => {
               <div className=" h-96 min-w-full rounded bg-white col-span-1 lg:col-span-2">
                 <h1 className="py-4 px-6 text-sm font-medium text-gray-700 ">Recent Orders</h1>
                 <div className="overflow-x-auto h-full bg-white min-w-full shadow-sm ">
+                 
                   <table className="min-w-full  divide-y divide-gray-200 dark:divide-gray-700 text-sm leading-normal">
                     <thead className="bg-gray-50 dark:bg-gray-800 sticky top-0">
                       <tr className="sticky">
@@ -558,16 +559,11 @@ const Welcome = () => {
                             {order.barista}
                           </td>
                         </tr>
-
                       ))}
-
-
                     </tbody>
-
-
                   </table>
                 </div>
-                <div className="pt-8 bg-gray-200 rounded-b"></div>
+                <div className="pt-8 bg-gray-50 rounded-b"></div>
               </div>
 
               <div className="h-96 mt-20 lg:mt-0 min-w-full rounded bg-white">
@@ -629,7 +625,7 @@ const Welcome = () => {
                     </tbody>
                   </table>
                 </div>
-                <div className="pt-8 bg-gray-200 rounded-b"></div>
+                <div className="pt-8 bg-gray-50 rounded-b"></div>
               </div>
             </div>
           </div>

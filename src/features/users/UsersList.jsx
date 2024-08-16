@@ -13,7 +13,7 @@ import PageError from "../../components/PageError";
 const UsersList = () => {
 
   const [search, setsearch] = useState("");
-  const columnsArray = ["NAME", "POSITION", "STATUS", "ROLES"];
+  const columnsArray = ["NAME", "POSITION", "STATUS", "ROLES", ""];
 
 
 
@@ -115,37 +115,23 @@ const UsersList = () => {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-1">
-            <div>
-              <div className="flex flex-col mt-5 text-sm font-medium text-gray-500">
-                {/* <div className="flex">
-                <div className="flex justify-center items-center w-32 h-12 px-10 py-2 rounded-t-lg bg-white">
-                  <div>USERS</div>
-                </div>
-                <div className="w-40 h-12 px-10 py-2 border rounded-t-lg bg-gray-100">
-                  <div>CATEGORIES</div>
-                </div>
-              </div> */}
-
-                <div className="w-full bg-white h-5 rounded-t-lg">
-
-
-                </div>
-              </div>
-              <div className="overflow-x-auto bg-white min-w-full shadow-sm ">
-                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm leading-normal">
-                  <thead className="bg-gray-50 dark:bg-gray-800 ">
-                    <tr>
+          <div className="grid grid-cols-1 mt-5">
+            <div className="h-[400px] 2xl:h-[500px] min-w-full rounded bg-white col-span-1 lg:col-span-2">
+              <div className="h-5 bg-white mt-5 rounded-t-lg"></div>
+              <div className="overflow-x-auto h-full bg-white min-w-full shadow-sm ">
+                <table className="min-w-full  divide-y divide-gray-200 dark:divide-gray-700 text-sm leading-normal">
+                  <thead className="bg-gray-50 dark:bg-gray-800 sticky top-0">
+                    <tr className="sticky">
                       {columnsArray.map((column, index) => (
                         <Thead thName={column} key={index} />
                       ))}
-                      <Thead thName="" />
                     </tr>
                   </thead>
                   <Tbody tbName={tableContent} />
+
                 </table>
               </div>
-              <div className="pt-10 bg-slate-100 rounded-b"></div>
+              <div className="pt-10 bg-gray-50 rounded-b"></div>
             </div>
           </div>
         </div>
