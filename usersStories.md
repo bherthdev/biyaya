@@ -9,3 +9,6 @@
 9. [x] refactor the url and folder structure should be /pos /items
 10. [x] make all the table small 
 11. [] print receipt
+12. [] refactor users orders and items
+12. [] settings add the category
+14. [] reports

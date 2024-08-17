@@ -97,9 +97,9 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
         onClick={logOutUser}
       >
         {isLoading ? (
-          <div className="flex text-gray-800 dark:text-gray-300 text-sm h-full w-full items-center p-2">
+          <div className="flex text-gray-500 justify-center py-4 font-normal dark:text-gray-300 text-xs h-full w-full items-center p-2">
             <Spinner />
-            <p>Logging Out...</p>
+            <p className="hidden sm:flex">Logging Out...</p>
           </div>
         ) : (
           <MenuItem
