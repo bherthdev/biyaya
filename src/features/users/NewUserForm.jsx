@@ -10,6 +10,8 @@ import { MdDelete } from 'react-icons/md';
 import { RiAddFill } from 'react-icons/ri';
 import Thead from "../../components/Thead";
 import { toast } from 'react-toastify';
+import iconPicture from "../../assets/icon-item.svg";
+
 
 
 const USER_REGEX = /^[A-z]{3,20}$/;
@@ -69,20 +71,15 @@ const NewUserForm = () => {
   const onRolesChanged = (e) => setRoles(e.target.value)
   const onPasswordChanged = (e) => setPassword(e.target.value)
 
-  const onImageChanged = (e) => {
-    const file = e.target.files[0]
-    setFileToBase(file);
-  };
-
-  const setFileToBase = (file) => {
-    const reader = new FileReader()
-    reader.readAsDataURL(file);
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
     reader.onloadend = () => {
-      setDataImage(reader.result)
-    }
-
-  }
-
+      setImage(reader.result);
+      setDataImage(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
 
 
   const canSave =
@@ -140,22 +137,6 @@ const NewUserForm = () => {
   const validPwdClass = !validPassword
     ? "text-red-600 dark:text-red-600"
     : "text-blue-700 dark:text-blue-400";
-
-  async function readImage(e, func) {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      let binaryData = e.target.result;
-      let base64String = window.btoa(binaryData);
-      func(base64String);
-    };
-
-    let image = reader.readAsBinaryString(file);
-
-    return image;
-  }
-
-
 
   return (
     <>
@@ -233,7 +214,7 @@ const NewUserForm = () => {
 
 
                     <div className="mt-10">
-                      <label className="block text-base  text-center sm:text-left text-gray-500 dark:text-gray-200">
+                      {/* <label className="block text-base  text-center sm:text-left text-gray-500 dark:text-gray-200">
                         Photo
                       </label>
                       <div className="mt-1 flex flex-col gap-4 sm:gap-0 sm:flex-row items-center">
@@ -272,8 +253,10 @@ const NewUserForm = () => {
                         <p className="text-xs text-gray-500 ml-3">
                           JPG, JPEG, PNG up to 10MB
                         </p>
-                      </div>
+                      </div> */}
+                  <ImageUploadField imageView={imageView} onChange={handleImageChange} />
                     </div>
+
                   </div>
                   <div className=" col-span-2 sm:col-span-1">
                     <div className="">
@@ -389,5 +372,28 @@ const NewUserForm = () => {
     </>
   );
 };
+
+const ImageUploadField = ({ imageView, onChange }) => (
+  <div className="mt-10">
+    <label className="block text-base text-center sm:text-left text-gray-500 dark:text-gray-200">Item Photo</label>
+    <div className="mt-1 flex flex-col gap-4 sm:gap-0 sm:flex-row items-center">
+      {imageView ? (
+        <Image data={imageView} size="h-40 w-40" rounded="rounded-md" />
+      ) : (
+        <span className="inline-block h-40 w-40 overflow-hidden rounded-md bg-gray-100">
+          <img src={iconPicture} className="h-40 w-40" />
+        </span>
+      )}
+      <label
+        htmlFor="file-upload"
+        className="sm:ml-5 cursor-pointer text-[10px] px-4 py-2 text-black border dark:text-gray-300 font-medium border-gray-300 dark:border-slate-600 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150"
+      >
+        <span className="whitespace-nowrap">Upload Photo</span>
+        <input id="file-upload" name="image" type="file" className="sr-only" accept="image/png, image/jpeg" onChange={onChange} />
+      </label>
+      <p className="text-xs text-gray-500 ml-3">JPG, JPEG, PNG up to 10MB</p>
+    </div>
+  </div>
+);
 
 export default NewUserForm;

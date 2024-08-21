@@ -6,7 +6,6 @@ import { setCredentials } from "./authSlice";
 import { useLoginMutation } from "./authApiSlice";
 import usePersist from "../../hooks/usePersist";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import PageLoader from "../../components/PageLoader";
 import biyayaLogo from "../../assets/biyaya_logo.png";
 import biyayaShop from "../../assets/biyaya_shop.png";
 import biyayaSmile from "../../assets/biyaya_smile.jpg";
@@ -34,6 +33,22 @@ const Login = () => {
   };
 
 
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && event.shiftKey && event.key === 'A' && event.altKey) {
+        alert('Keyboard combination Ctrl + Shift + A triggered!');
+      }
+    };
+
+    // Add event listener
+    window.addEventListener('keydown', handleKeyDown);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+  
   useEffect(() => {
     userRef.current.focus();
   }, []);

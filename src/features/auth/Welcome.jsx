@@ -1,9 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import useAuth from "../../hooks/useAuth";
 import { useState } from "react";
-import { CiViewList } from "react-icons/ci";
-import { BsReceipt } from "react-icons/bs";
-import { PiReceiptLight } from "react-icons/pi";
+import { PiMoneyLight, PiReceiptLight } from "react-icons/pi";
 import { useGetOrdersQuery } from "../orders/ordersApiSlice";
 import { useGetItemsQuery } from "../items/itemsApiSlice";
 import Spenner from "../../components/Spenner";
@@ -304,7 +302,7 @@ const Welcome = () => {
                       </div>
                     </div>
                     <div className='m-auto text-center'>{error?.data?.message}</div>
-                    
+
                   </div>
                 </article>
               </dl>
@@ -433,13 +431,23 @@ const Welcome = () => {
 
         <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="mt-2">
-            <p className="text-xl font-bold text-gray-700 sm:text-2xl dark:text-gray-200">
-              Welcome Back, {name}!
-            </p>
+            <div className="flex justify-between">
+              <div>
+                <p className="text-xl font-bold text-gray-700 sm:text-2xl dark:text-gray-200">
+                  Welcome Back, {name}!
+                </p>
+                <p className="mt-1.5 text-sm text-gray-500">
+                  {`Today is  ${dateToday} - ${time} `}
+                </p>
+              </div>
+              {/* <div
+                className="flex  items-center  rounded-lg bg-gray-50 dark:bg-slate-800 p-4 text-gray-800 dark:text-gray-300 hover:text-gray-700"
+              >
+                <span className="sr-only">Notifications</span>
+                <RxActivityLog />
 
-            <p className="mt-1.5 text-sm text-gray-500">
-              {`Today is  ${dateToday} - ${time} `}
-            </p>
+              </div> */}
+            </div>
             <div className="mx-auto max-w-screen-xl  py-3  md:py-5">
               <dl className="font-normal grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
 
@@ -451,8 +459,8 @@ const Welcome = () => {
                       <p className="text-2xl font-medium text-gray-900">₱{Number(totalSales).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
                     </div>
 
-                    <span className="rounded-full bg-green-100 p-3 text-green-600">
-                      <BsReceipt size={25} className="text-green-400 dark:text-gray-500" />
+                    <span className="rounded-xl bg-green-100 p-3 text-green-600">
+                      <PiMoneyLight size={25} className="text-green-600 dark:text-gray-500" />
                     </span>
                   </div>
                   <div className="mt-1 flex gap-1 text-green-600">
@@ -470,7 +478,7 @@ const Welcome = () => {
                       <p className="text-2xl font-medium text-gray-900">{orders.length}</p>
                     </div>
 
-                    <span className="rounded-full bg-gray-100 p-3 text-green-600">
+                    <span className="rounded-xl bg-gray-100 p-3 text-green-600">
                       <PiReceiptLight size={25} className="text-gray-500 dark:text-gray-500" />
                     </span>
                   </div>
@@ -484,8 +492,8 @@ const Welcome = () => {
                       <p className="text-2xl font-medium text-gray-900">₱{Number(salesToday()).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
                     </div>
 
-                    <span className="rounded-full bg-orange-100 p-3 text-orange-600">
-                      <CiViewList size={25} className="text-gray-700 dark:text-gray-500" />
+                    <span className="rounded-xl bg-orange-100 p-3 text-orange-600">
+                      <PiMoneyLight   size={25} className="text-orange-500 dark:text-gray-500" />
 
                     </span>
                   </div>
@@ -504,7 +512,7 @@ const Welcome = () => {
                       <p className="text-2xl font-medium text-gray-900"> {ordersToday()}</p>
                     </div>
 
-                    <span className="rounded-full bg-gray-100 p-3 text-green-600">
+                    <span className="rounded-xl bg-gray-100 p-3 text-green-600">
                       <PiReceiptLight size={25} className="text-gray-500 dark:text-gray-500" />
                     </span>
                   </div>
@@ -518,7 +526,7 @@ const Welcome = () => {
               <div className=" h-96 min-w-full rounded bg-white col-span-1 lg:col-span-2">
                 <h1 className="py-4 px-6 text-sm font-medium text-gray-700 ">Recent Orders</h1>
                 <div className="overflow-x-auto h-full bg-white min-w-full shadow-sm ">
-                 
+
                   <table className="min-w-full  divide-y divide-gray-200 dark:divide-gray-700 text-sm leading-normal">
                     <thead className="bg-gray-50 dark:bg-gray-800 sticky top-0">
                       <tr className="sticky">

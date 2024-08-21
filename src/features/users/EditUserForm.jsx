@@ -415,28 +415,9 @@ const EditUserForm = ({ user }) => {
                       </div>
                     </div>
                     {id !== user._id
-                      && <div className="mt-4 space-y-4">
-                        <div className="flex items-start">
-                          <div className="mr-2 text-sm">
-                            <label
-                              htmlFor="user-active"
-                              className="font-medium text-gray-700 dark:text-gray-300"
-                            >
-                              Active
-                            </label>
-                          </div>
-                          <div className="flex h-5 items-center">
-                            <input
-                              id="user-active"
-                              name="user-active"
-                              type="checkbox"
-                              checked={active}
-                              onChange={onActiveChanged}
-                              className="h-3 w-3 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                            />
-                          </div>
-                        </div>
-                      </div>
+                   
+                      && <CheckboxField label="User active/inactive " checked={active} onChange={onActiveChanged} />
+
                     }
                   </div>
                 </div>
@@ -556,4 +537,18 @@ const EditUserForm = ({ user }) => {
 
   return content;
 };
+
+const CheckboxField = ({ label, checked, onChange }) => (
+  <div className="mt-10 space-y-4">
+    <label className="block text-base text-gray-500 dark:text-gray-200">{label}</label>
+    <div className="mt-4">
+      <label className="relative inline-flex items-center cursor-pointer">
+        <input type="checkbox" className="sr-only peer" checked={checked} onChange={onChange} />
+        <div className="w-[33px] h-[18px] bg-red-200 flex-nowrap peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-green-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] sm:after:top-[5px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-[14px] after:w-[14px] after:transition-all peer-checked:bg-green-600"></div>
+        <span className={`${checked ? 'text-green-700' : 'text-red-700'} ml-3 text-xs sm:text-base  dark:text-gray-200`}>{checked ? 'Active' : 'Inactive'}</span>
+      </label>
+    </div>
+  </div>
+);
+
 export default EditUserForm;

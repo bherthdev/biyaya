@@ -11,6 +11,7 @@ const useAuth = () => {
     if (token) {
         const decoded = jwtDecode(token)
         const { id, name, username, position, roles, avatar } = decoded.UserInfo
+        // console.log(decoded.UserInfo)
 
     
 

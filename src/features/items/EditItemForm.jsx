@@ -390,7 +390,7 @@ const ImageUploadField = ({ imageView, value, onChange }) => (
         htmlFor="file-upload"
         className="sm:ml-5 cursor-pointer text-[10px] px-4 py-2 text-black border dark:text-gray-300 font-medium border-gray-300 dark:border-slate-600 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150"
       >
-        <span className="whitespace-nowrap">Upload Photo</span>
+        <span className="whitespace-nowrap">Replace Photo</span>
         <input id="file-upload" name="image" type="file" className="sr-only" accept="image/png, image/jpeg" onChange={onChange} />
       </label>
       <p className="text-xs text-gray-500 ml-3">JPG, JPEG, PNG up to 10MB</p>

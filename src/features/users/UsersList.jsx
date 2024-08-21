@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import PageLoader from "../../components/PageLoader";
 import { AiOutlineUserAdd } from 'react-icons/ai';
-import { IoMdAdd } from "react-icons/io";
 import PageError from "../../components/PageError";
 
 const UsersList = () => {
@@ -37,7 +36,7 @@ const UsersList = () => {
   if (isLoading) content = <PageLoader />
 
   if (isError) {
-    content = <PageError error={error?.data?.message}/>
+    content = <PageError error={error?.data?.message} />
   }
 
 
@@ -48,7 +47,8 @@ const UsersList = () => {
 
   if (isSuccess) {
     const { ids } = users;
-    const tableContent = ids?.length && ids.map((userId) => <User key={userId} userId={userId} search={search} />)
+    // const tableContent = ids?.length && ids.map((userId) => <User key={userId} userId={userId} search={search} />)
+    const userContent = ids?.length && ids.map((userId) => <User key={userId} userId={userId} search={search} />)
 
 
     content = (
@@ -79,7 +79,6 @@ const UsersList = () => {
                     <svg
                       className="w-4 h-4  text-gray-500 dark:text-gray-400"
                       xmlns="http://www.w3.org/2000/svg"
-                      // className="h-4 w-4"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -115,23 +114,9 @@ const UsersList = () => {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 mt-5">
-            <div className="h-[400px] 2xl:h-[500px] min-w-full rounded bg-white col-span-1 lg:col-span-2">
-              <div className="h-5 bg-white mt-5 rounded-t-lg"></div>
-              <div className="overflow-x-auto h-full bg-white min-w-full shadow-sm ">
-                <table className="min-w-full  divide-y divide-gray-200 dark:divide-gray-700 text-sm leading-normal">
-                  <thead className="bg-gray-50 dark:bg-gray-800 sticky top-0">
-                    <tr className="sticky">
-                      {columnsArray.map((column, index) => (
-                        <Thead thName={column} key={index} />
-                      ))}
-                    </tr>
-                  </thead>
-                  <Tbody tbName={tableContent} />
-
-                </table>
-              </div>
-              <div className="pt-10 bg-gray-50 rounded-b"></div>
+          <div className="grid grid-cols-1 mt-10">
+            <div className="font-normal px-6 sm:px-0 grid grid-cols-2 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 xl:gap-6 2xl:grid-cols-4 2xl:gap-6 ">
+              {userContent}
             </div>
           </div>
         </div>
