@@ -5,6 +5,7 @@ import { itemsApiSlice } from '../items/itemsApiSlice';
 import { ordersApiSlice } from '../orders/ordersApiSlice';
 import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
+import { logsApiSlice } from '../UserLogs/logsApiSlice';
 
 const Prefetch = () => {
     useEffect(() => {
@@ -13,6 +14,7 @@ const Prefetch = () => {
         const users = store.dispatch(usersApiSlice.endpoints.getUsers.initiate())
         const items = store.dispatch(itemsApiSlice.endpoints.getItems.initiate())
         const orders = store.dispatch(ordersApiSlice.endpoints.getOrders.initiate())
+        const logs = store.dispatch(logsApiSlice.endpoints.getLogs.initiate())
 
         return () => {
         //    console.log('unsubscribing')
@@ -20,6 +22,7 @@ const Prefetch = () => {
             users.unsubscribe()
             items.unsubscribe()
             orders.unsubscribe()
+            logs.unsubscribe()
         }
     }, [])
 

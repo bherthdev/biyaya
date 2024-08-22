@@ -3,6 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import useAuth from "../hooks/useAuth";
 import { IoNotificationsOutline } from "react-icons/io5";
+import { useGetLogsQuery } from "../features/UserLogs/logsApiSlice";
+import PageLoader from "./PageLoader";
+import PageError from "./PageError";
+import UserLastLogin from "./UserLastLogin";
+
 
 const DashHeader = ({ headerName }) => {
   const navigate = useNavigate();
@@ -10,15 +15,29 @@ const DashHeader = ({ headerName }) => {
   const [notif, setNotif] = useState(false);
   const [notifAdmin, setNotifAdmin] = useState(false);
   const [colorChange, setColorChange] = useState(false);
-  const { id, isAdmin, name, position, avatar } = useAuth();
+  const { id, isAdmin, name, position, avatar, biyaya_secret } = useAuth();
   const menuRef = useRef();
   const notifRef = useRef();
+
+  const {
+    data: LogsData,
+    isLoading: isLoadingLogs,
+    isSuccess: isLogsSuccess,
+    isError: isLogsError,
+    error: logsError,
+  } = useGetLogsQuery("logsList", {
+    pollingInterval: 10000, // refresh data every 10 seconds
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
+  });
+
+
 
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
         setUserNav(false);
-      }  
+      }
       if (notifRef.current && !notifRef.current.contains(e.target)) {
         setNotif(false)
       }
@@ -44,12 +63,26 @@ const DashHeader = ({ headerName }) => {
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.ctrlKey && event.shiftKey && event.key === import.meta.env.VITE_SOME_KEY && event.altKey) {
-        setNotifAdmin(prev => !prev)
 
-        console.log(import.meta.env.VITE_SOME_NEW_KEY1)
+      if (event.ctrlKey && event.shiftKey && event.key === 'B' && event.altKey) {
+        const userPassword = prompt("Please enter the password:");
+
+        if (userPassword === biyaya_secret) {
+          alert("Access granted!");
+          // Perform the action for authorized users here
+          setNotifAdmin(prev => !prev)
+        } else if (userPassword === null) {
+          alert("Password entry cancelled.");
+        } else {
+          alert("Incorrect password. Access denied!");
+        }
+
       }
     };
+
+
+    // Call the function when needed
+
 
     // Add event listener
     window.addEventListener('keydown', handleKeyDown);
@@ -59,6 +92,7 @@ const DashHeader = ({ headerName }) => {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
+
 
 
   const handleSettingsClick = () => {
@@ -88,149 +122,146 @@ const DashHeader = ({ headerName }) => {
     }
   };
 
-  return (
-    <div className={`bg-white dark:bg-slate-900 sm:px-8 border flex ${navClass} h-20 sm:h-32 items-center justify-between px-4 right-0`}>
-      <div className="flex items-center">
-        <p className="flex">
-          <span className="sr-only">Logo</span>
-          <span className="inline-block text-gray-700 dark:text-gray-200 text-2xl sm:text-3xl font-semibold">
-            {getHeaderName()}
-          </span>
-        </p>
-      </div>
+  if (isLoadingLogs) return <PageLoader />
 
-      <div className="flex items-center justify-end">
-        <nav aria-label="Site Nav" className="hidden lg:flex lg:gap-4  lg:text-gray-300" />
+  if (isLogsError) return <PageError error={logsError?.data?.message} />
 
-        <div className="flex justify-between items-center gap-2">
-         {notifAdmin && <div className="relative">
+  if (isLogsSuccess) {
 
-            <div
-             onClick={() => setNotif(!notif)}
-              ref={notifRef}
-              className="hidden sm:flex cursor-pointer items-center relative rounded-lg border dark:bg-slate-800 p-2 text-gray-800 dark:text-gray-300 hover:text-gray-700"
-            >
-              <span className="sr-only">Notifications</span>
+    const { entities: logsEntities } = LogsData;
+    const logs = Object.values(logsEntities).sort((a, b) => new Date(b.date) - new Date(a.date))
 
-              <div className="absolute p-1 w-2 h-2 rounded-full bg-red-600  top-1 right-1"></div>
-              <span>
-                <IoNotificationsOutline size={20} />
-              </span>
+    return (
+      <div className={`bg-white dark:bg-slate-900 sm:px-8 border flex ${navClass} h-20 sm:h-32 items-center justify-between px-4 right-0`}>
+        <div className="flex items-center">
+          <p className="flex">
+            <span className="sr-only">Logo</span>
+            <span className="inline-block text-gray-700 dark:text-gray-200 text-2xl sm:text-3xl font-semibold">
+              {getHeaderName()}
+            </span>
+          </p>
+        </div>
+
+        <div className="flex items-center justify-end">
+          <nav aria-label="Site Nav" className="hidden lg:flex lg:gap-4  lg:text-gray-300" />
+
+          <div className="flex justify-between items-center gap-2">
+            {notifAdmin && <div className="relative">
+
+              <div
+                onClick={() => setNotif(prev => !prev)}
+              
+                className="hidden sm:flex cursor-pointer items-center relative rounded-lg border dark:bg-slate-800 p-2 text-gray-800 dark:text-gray-300 hover:text-gray-700"
+              >
+                <span className="sr-only">Notifications</span>
+
+                <div className="absolute p-1 w-2 h-2 rounded-full bg-red-600  top-1 right-1"></div>
+                <span>
+                  <IoNotificationsOutline size={20} />
+                </span>
 
 
 
-            </div>
-            {notif &&
-            <div className="absolute right-0 z-50 origin-top-right bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 mt-2 w-auto rounded-md shadow-lg">
-              <div className="block top-[-6px] bg-white h-3 w-3 border-t border-l rotate-45 absolute right-3"></div>
-              <div className="py-2">
-                {/*
-  Heads up! 👋
-
-  This component comes with some `rtl` classes. Please remove them if they are not needed in your project.
-*/}
-
-<div className="overflow-x-auto">
-  <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
-    <thead className="ltr:text-left rtl:text-right">
-      <tr>
-        <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Name</th>
-        <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Date of Birth</th>
-        <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Role</th>
-        <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Salary</th>
-      </tr>
-    </thead>
-
-    <tbody className="divide-y divide-gray-200">
-      <tr className="odd:bg-gray-50">
-        <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">John Doe</td>
-        <td className="whitespace-nowrap px-4 py-2 text-gray-700">24/05/1995</td>
-        <td className="whitespace-nowrap px-4 py-2 text-gray-700">Web Developer</td>
-        <td className="whitespace-nowrap px-4 py-2 text-gray-700">$120,000</td>
-      </tr>
-
-      <tr className="odd:bg-gray-50">
-        <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Jane Doe</td>
-        <td className="whitespace-nowrap px-4 py-2 text-gray-700">04/11/1980</td>
-        <td className="whitespace-nowrap px-4 py-2 text-gray-700">Web Designer</td>
-        <td className="whitespace-nowrap px-4 py-2 text-gray-700">$100,000</td>
-      </tr>
-
-      <tr className="odd:bg-gray-50">
-        <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Gary Barlow</td>
-        <td className="whitespace-nowrap px-4 py-2 text-gray-700">24/05/1995</td>
-        <td className="whitespace-nowrap px-4 py-2 text-gray-700">Singer</td>
-        <td className="whitespace-nowrap px-4 py-2 text-gray-700">$20,000</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
               </div>
-            </div>
-            }
-          </div>}
-          <div className="flex items-center divide-x divide-gray-100 border-gray-200 dark:border-l-gray-900 dark:border-r-gray-900">
+              {notif &&
+                <div   ref={notifRef} className="absolute right-0 z-50 origin-top-right bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 mt-2 w-auto rounded-md shadow-lg">
+                  <div className="block top-[-6px] bg-white h-3 w-3 border-t border-l rotate-45 absolute right-3"></div>
+                  <div className="py-2 h-48 overflow-auto">
+                    <div className="overflow-x-auto">
+                      <table className="min-w-full  divide-y-2 divide-gray-200 bg-white text-sm">
+                        <thead className="ltr:text-left rtl:text-right">
+                          <tr>
+                            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Name</th>
+                            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Login Date</th>
+                            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Device</th>
+                            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Other Details</th>
+                          </tr>
+                        </thead>
 
-            <div className="flex gap-4">
+                        <tbody className="divide-y divide-gray-200">
+                          {logs.map((log, idx) => (
+                            <tr key={idx} className="odd:bg-gray-50">
+                              <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">{log.name}</td>
+                              <td className="whitespace-nowrap px-4 py-2 text-gray-700"><UserLastLogin lastLoginTime={log.date} /></td>
+                              <td className="whitespace-nowrap px-4 py-2 text-gray-700">{log?.deviceInfo?.device}</td>
+                              <td onClick={() => alert(JSON.stringify(log, null, 2))} 
+                              className="cursor-pointer whitespace-nowrap px-4 py-2 text-gray-700">Other Details..</td>
+                            </tr>
+                          ))}
 
-              <div className="inline-flex bg-white dark:bg-slate-900 rounded-full" ref={menuRef}>
-
-                <div className="relative">
-                  <button
-                    onClick={() => setUserNav(!userNav)}
-                    type="button"
-                    className="group flex shrink-0 items-center rounded-lg transition"
-                  >
-                    <span className="sr-only">Menu</span>
-
-                    <img
-                      alt="Profile"
-                      src={avatar}
-                      className="h-12 w-12 sm:h-13 sm:w-13 rounded-full object-cover border border-slate-300 dark:border-slate-600"
-                    />
-                    <div className="ml-1 sm:mr-2 hidden sm:flex flex-col tracking-wide text-left">
-                      <h1 className="font-medium text-xs sm:text-md text-gray-800 dark:text-gray-200 capitalize">
-                        {name}
-                      </h1>
-                      <p className="text-gray-400 font-light text-[10px] sm:text-sm">{position}</p>
+                        </tbody>
+                      </table>
                     </div>
-                    {isAdmin && (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className={`mx-2 hidden h-5 w-5 text-gray-500 transition group-hover:text-gray-700 sm:block ${userNav && "rotate-180"}`}
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    )}
-                  </button>
-                  {isAdmin && userNav && (
-                    <div className="absolute right-0 z-50 origin-top-right bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 mt-2 w-48 rounded-md shadow-lg">
-                    <div className="block top-[-7px] bg-white h-3 w-3 border-t border-l rotate-45 absolute right-3"></div>
+                  </div>
+                </div>
+              }
+            </div>}
+            <div className="flex items-center divide-x divide-gray-100 border-gray-200 dark:border-l-gray-900 dark:border-r-gray-900">
 
-                      <div className="py-2">
-                        <span
-                          onClick={handleSettingsClick}
-                          className="cursor-pointer block px-4 py-2 text-sm text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-gray-900 dark:hover:text-gray-400"
-                        >
-                          Account Setting
-                        </span>
+              <div className="flex gap-4">
+
+                <div className="inline-flex bg-white dark:bg-slate-900 rounded-full" ref={menuRef}>
+
+                  <div className="relative">
+                    <button
+                      onClick={() => setUserNav(!userNav)}
+                      type="button"
+                      className="group flex shrink-0 items-center rounded-lg transition"
+                    >
+                      <span className="sr-only">Menu</span>
+
+                      <img
+                        alt="Profile"
+                        src={avatar}
+                        className="h-12 w-12 sm:h-13 sm:w-13 rounded-full object-cover border border-slate-300 dark:border-slate-600"
+                      />
+                      <div className="ml-1 sm:mr-2 hidden sm:flex flex-col tracking-wide text-left">
+                        <h1 className="font-medium text-xs sm:text-md text-gray-800 dark:text-gray-200 capitalize">
+                          {name}
+                        </h1>
+                        <p className="text-gray-400 font-light text-[10px] sm:text-sm">{position}</p>
                       </div>
-                    </div>
-                  )}
+                      {isAdmin && (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className={`mx-2 hidden h-5 w-5 text-gray-500 transition group-hover:text-gray-700 sm:block ${userNav && "rotate-180"}`}
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      )}
+                    </button>
+                    {isAdmin && userNav && (
+                      <div className="absolute right-0 z-50 origin-top-right bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 mt-2 w-48 rounded-md shadow-lg">
+                        <div className="block top-[-7px] bg-white h-3 w-3 border-t border-l rotate-45 absolute right-3"></div>
+
+                        <div className="py-2">
+                          <span
+                            onClick={handleSettingsClick}
+                            className="cursor-pointer block px-4 py-2 text-sm text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-gray-900 dark:hover:text-gray-400"
+                          >
+                            Account Setting
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
+
+
+
 };
 
 export default DashHeader;
