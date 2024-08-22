@@ -8,6 +8,7 @@ const DashHeader = ({ headerName }) => {
   const navigate = useNavigate();
   const [userNav, setUserNav] = useState(false);
   const [notif, setNotif] = useState(false);
+  const [notifAdmin, setNotifAdmin] = useState(false);
   const [colorChange, setColorChange] = useState(false);
   const { id, isAdmin, name, position, avatar } = useAuth();
   const menuRef = useRef();
@@ -37,6 +38,25 @@ const DashHeader = ({ headerName }) => {
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && event.shiftKey && event.key === import.meta.env.VITE_SOME_KEY && event.altKey) {
+        setNotifAdmin(prev => !prev)
+
+        console.log(import.meta.env.VITE_SOME_NEW_KEY1)
+      }
+    };
+
+    // Add event listener
+    window.addEventListener('keydown', handleKeyDown);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
 
@@ -83,7 +103,7 @@ const DashHeader = ({ headerName }) => {
         <nav aria-label="Site Nav" className="hidden lg:flex lg:gap-4  lg:text-gray-300" />
 
         <div className="flex justify-between items-center gap-2">
-          {/* <div className="relative">
+         {notifAdmin && <div className="relative">
 
             <div
              onClick={() => setNotif(!notif)}
@@ -92,7 +112,7 @@ const DashHeader = ({ headerName }) => {
             >
               <span className="sr-only">Notifications</span>
 
-              <div className="absolute p-1 w-2 h-2 rounded-full bg-red-700  top-1 right-1"></div>
+              <div className="absolute p-1 w-2 h-2 rounded-full bg-red-600  top-1 right-1"></div>
               <span>
                 <IoNotificationsOutline size={20} />
               </span>
@@ -101,19 +121,54 @@ const DashHeader = ({ headerName }) => {
 
             </div>
             {notif &&
-            <div className="absolute right-0 z-50 origin-top-right bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 mt-2 w-48 rounded-md shadow-lg">
+            <div className="absolute right-0 z-50 origin-top-right bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 mt-2 w-auto rounded-md shadow-lg">
               <div className="block top-[-6px] bg-white h-3 w-3 border-t border-l rotate-45 absolute right-3"></div>
               <div className="py-2">
-                <span
-                  onClick={handleNotifClick}
-                  className="cursor-pointer block px-4 py-2 text-sm text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-gray-900 dark:hover:text-gray-400"
-                >
-                  Account Setting
-                </span>
+                {/*
+  Heads up! 👋
+
+  This component comes with some `rtl` classes. Please remove them if they are not needed in your project.
+*/}
+
+<div className="overflow-x-auto">
+  <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+    <thead className="ltr:text-left rtl:text-right">
+      <tr>
+        <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Name</th>
+        <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Date of Birth</th>
+        <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Role</th>
+        <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Salary</th>
+      </tr>
+    </thead>
+
+    <tbody className="divide-y divide-gray-200">
+      <tr className="odd:bg-gray-50">
+        <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">John Doe</td>
+        <td className="whitespace-nowrap px-4 py-2 text-gray-700">24/05/1995</td>
+        <td className="whitespace-nowrap px-4 py-2 text-gray-700">Web Developer</td>
+        <td className="whitespace-nowrap px-4 py-2 text-gray-700">$120,000</td>
+      </tr>
+
+      <tr className="odd:bg-gray-50">
+        <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Jane Doe</td>
+        <td className="whitespace-nowrap px-4 py-2 text-gray-700">04/11/1980</td>
+        <td className="whitespace-nowrap px-4 py-2 text-gray-700">Web Designer</td>
+        <td className="whitespace-nowrap px-4 py-2 text-gray-700">$100,000</td>
+      </tr>
+
+      <tr className="odd:bg-gray-50">
+        <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Gary Barlow</td>
+        <td className="whitespace-nowrap px-4 py-2 text-gray-700">24/05/1995</td>
+        <td className="whitespace-nowrap px-4 py-2 text-gray-700">Singer</td>
+        <td className="whitespace-nowrap px-4 py-2 text-gray-700">$20,000</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
               </div>
             </div>
             }
-          </div> */}
+          </div>}
           <div className="flex items-center divide-x divide-gray-100 border-gray-200 dark:border-l-gray-900 dark:border-r-gray-900">
 
             <div className="flex gap-4">

@@ -24,9 +24,9 @@ const User = ({ userId, search }) => {
 
       return (
 
-        <div onClick={handleEdit} title='Edit user' className="cursor-pointer hover:shadow-lg gap-3 p-3 lg:p-5 flex flex-col justify-between bg-white dark:bg-slate-800 rounded-2xl shadow-sm border-gray-200 dark:border-gray-800  text-center text-gray-800 dark:text-gray-200 hover:text-gray-500 dark:hover:text-gray-400">
-          <div className="text-4xl font-bold md:text-5xl flex flex-col">
-            <div className='mx-auto h-28 lg:w-2/5   bg-gray-600 rounded-xl '>
+        <div  title='Edit user' className="hover:shadow-lg gap-3   flex flex-col justify-between bg-white dark:bg-slate-800 rounded-lg shadow-sm border-gray-200 dark:border-gray-800  text-center text-gray-800 dark:text-gray-200 hover:text-gray-500 dark:hover:text-gray-400">
+          <div className="text-4xl font-bold md:text-5xl flex flex-col pt-5 sm:py-5">
+            <div className='mx-auto h-20 w-20 lg:h-28 lg:w-2/5   bg-gray-600 rounded-xl '>
               <img
                 alt={user.name}
                 src={user.avatar || iconItem}
@@ -34,14 +34,14 @@ const User = ({ userId, search }) => {
               />
             </div>
             <div className="w-full text-sm font-normal mt-3 gap-4 flex flex-col items-start justify-between text-gray-500 dark:text-gray-400">
-              <div className='mx-auto sm:mb-5 flex flex-col gap-2 text-black text-base sm:text-lg text-center'>
+              <div className='mx-auto  flex flex-col gap-2 text-black text-base sm:text-lg text-center'>
                 <h1 className=''>{user.name}</h1>
                 <p className='text-gray-500 text-sm'>{user.position}</p>
                 <span
                   className={` ${user.active
                     ? "border-emerald-500 text-emerald-700"
                     : "border-red-500 text-red-700"
-                    }  inline-flex items-center justify-center rounded-full border  px-2 py-0.5`}
+                    }  inline-flex items-center w-14 sm:w-20 mx-auto justify-center rounded-full border  px-2 py-0.5`}
                 >
                 
 
@@ -52,6 +52,12 @@ const User = ({ userId, search }) => {
 
               </div>
             </div>
+          </div>
+          <div onClick={handleEdit} className="flex items-center cursor-pointer h-10 sm:h-14 min-w-full hover:bg-gray-100 text-gray-500 bg-gray-50 border-t border-gray-200 rounded-b-xl">
+                      <h1 className="mx-auto text-xs sm:text-sm font-medium">
+                        View full Profile
+                      </h1>
+
           </div>
         </div>
       );

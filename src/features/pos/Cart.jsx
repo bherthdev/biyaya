@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import iconItem from "../../assets/icon-item.svg"
 import { useAddNewOrderMutation } from "../orders/ordersApiSlice";
@@ -13,7 +13,8 @@ import Spenner from "../../components/Spenner";
 
 export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, setOrdersItems, toggleCartMobile, setToggleCartMobile }) => {
 
-    const { formatDate, generateOR } = Order()
+  const cashRef = useRef(null);
+  const { formatDate, generateOR } = Order()
 
     const { id, name } = useAuth(); //current user id
 
@@ -21,7 +22,10 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
     const [enableSaveOrder, setEnableSaveOrder] = useState(false)
     const [itemToBeUpdate, setItemToBeUpdate] = useState([]);
 
-
+    useEffect(() => {
+        orderItems.length && cashRef.current ? cashRef.current.focus() : window.focus()
+      }, [placeOrder]);
+      
     // Utility to combine states
     const combineMutationStates = (...mutations) => {
         return {
@@ -70,7 +74,7 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
 
     const computeTotal = () => {
         if (orderItems.length) {
-            setPlaceOrder(placeOrder => !placeOrder)
+            setPlaceOrder(prev => !prev)
             setOrderTransac({ ...orderTransac, items: orderItems })
         }
     }
@@ -79,9 +83,6 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
     const saveOrder = async () => {
 
         if (!enableSaveOrder) return;
-
-        console.log(itemToBeUpdate)
-
         try {
             const result = await addNewOrder(orderTransac);
 
@@ -358,6 +359,7 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
                                         id="cash"
                                         name="cash"
                                         type="number"
+                                        ref={cashRef}
                                         required
                                         value={orderTransac.cash}
                                         onChange={inputChange}

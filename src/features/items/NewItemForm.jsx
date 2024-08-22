@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 import iconPicture from "../../assets/icon-item.svg";
 
 const NewUserForm = () => {
-  const [btnCancel, setBtnCancel] = useState(false);
+  const [btnCancel, setBtnCancel] = useState(true);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
@@ -84,6 +84,7 @@ const NewUserForm = () => {
 
   const handleSaveClick = async (e) => {
     e.preventDefault();
+    setBtnCancel(false)
     if (canSave) {
       const result = await addNewItem({ name, description, stockMGT, category, qty, price, status, image });
       toast[result?.error ? 'error' : 'success'](result?.error?.error || result?.data?.message, {
@@ -224,8 +225,7 @@ const FormFooter = ({ canSave, btnCancel, setBtnCancel, isLoading, navigate }) =
       type="button"
       className="mt-0 inline-flex items-center justify-center rounded-full text-black dark:text-gray-300 dark:bg-gray-700 dark:active:bg-slate-800 dark:hover:bg-gray-800 bg-gray-200 hover:bg-gray-300 px-4 py-2 text-sm font-medium border dark:border-slate-600 sm:w-40"
       onClick={() => {
-        setBtnCancel(true);
-        if (btnCancel) navigate("/inventory");
+        btnCancel && navigate("/inventory");
       }}
     >
       <BsArrowLeftShort className="mr-2 text-[20px]" />

@@ -32,22 +32,6 @@ const Login = () => {
     setPasswordShown(passwordShown ? false : true);
   };
 
-
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.ctrlKey && event.shiftKey && event.key === 'A' && event.altKey) {
-        alert('Keyboard combination Ctrl + Shift + A triggered!');
-      }
-    };
-
-    // Add event listener
-    window.addEventListener('keydown', handleKeyDown);
-
-    // Cleanup event listener on component unmount
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, []);
   
   useEffect(() => {
     userRef.current.focus();
@@ -173,15 +157,7 @@ const Login = () => {
     <div className="bg-white ">
         <div className="lg:grid h-screen lg:grid-cols-12">
           <div className="relative flex h-48 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
-            {/* <img
-              alt="Logo"
-              src={biyayaSmile}
-              className="absolute inset-0 h-full w-full object-cover opacity-80"
-            /> */}
-
-
             <Carousel slides={slides} />
-
             <div className="hidden lg:relative lg:block lg:p-12">
               <div className="block text-white">
                 <span className="sr-only">Home</span>
@@ -223,11 +199,6 @@ const Login = () => {
                 <h1 className="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
                   Welcome to Biyaya 🍵
                 </h1>
-
-                {/* <p className="mt-4 leading-relaxed text-gray-500">
-              Welcome to our cozy coffee haven! Whether you're here for your daily brew or a relaxing escape, we're delighted to serve you.
-
-            </p> */}
               </div>
               <form onSubmit={handleSubmit} className=" space-y-7">
                 <div className=" space-y-2 sm:text-center">

@@ -169,7 +169,7 @@ const EditItemForm = ({ item }) => {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: localStorage.theme,
+          theme: "dark",
         });
 
       } else {
@@ -181,7 +181,7 @@ const EditItemForm = ({ item }) => {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: localStorage.theme,
+          theme: "dark",
         });
       }
 
