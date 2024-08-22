@@ -226,7 +226,7 @@ const DashHeader = ({ headerName }) => {
               <div
                 onClick={() => setNotif(prev => !prev)}
               
-                className="hidden sm:flex cursor-pointer items-center relative rounded-lg border dark:bg-slate-800 p-2 text-gray-800 dark:text-gray-300 hover:text-gray-700"
+                className="flex cursor-pointer items-center relative rounded-lg border dark:bg-slate-800 p-2 text-gray-800 dark:text-gray-300 hover:text-gray-700"
               >
                 <span className="sr-only">Notifications</span>
 
@@ -239,11 +239,11 @@ const DashHeader = ({ headerName }) => {
 
               </div>
               {notif &&
-                <div   ref={notifRef} className="absolute right-0 z-50 origin-top-right bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 mt-2 w-auto rounded-md shadow-lg">
+                <div   ref={notifRef} className="absolute right-[-60px] sm:right-0 z-50 origin-top-right bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 mt-2 w-auto rounded-md shadow-lg">
                   <div className="block top-[-6px] bg-white h-3 w-3 border-t border-l rotate-45 absolute right-3"></div>
                   <div className="py-2 h-48 overflow-auto">
                     <div className="overflow-x-auto">
-                      <table className="min-w-full  divide-y-2 divide-gray-200 bg-white text-sm">
+                      <table className="min-w-full  divide-y-2 divide-gray-200 bg-white text-xs sm:text-sm">
                         <thead className="ltr:text-left rtl:text-right">
                           <tr>
                             <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Name</th>
