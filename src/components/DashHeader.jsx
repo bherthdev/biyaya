@@ -207,7 +207,7 @@ const DashHeader = ({ headerName }) => {
     const logs = Object.values(logsEntities).sort((a, b) => new Date(b.date) - new Date(a.date))
 
     return (
-      <div className={`bg-white dark:bg-slate-900 sm:px-8 border flex ${navClass} h-20 sm:h-32 items-center justify-between px-4 right-0`}>
+      <div className={`bg-white dark:bg-slate-900 no-print sm:px-8 border flex ${navClass} h-20 sm:h-32 items-center justify-between px-4 right-0`}>
         <div className="flex items-center">
           <p className="flex">
             <span className="sr-only">Logo</span>
@@ -225,8 +225,8 @@ const DashHeader = ({ headerName }) => {
 
               <div
                 onClick={() => setNotif(prev => !prev)}
-              
-                className="flex cursor-pointer items-center relative rounded-lg border dark:bg-slate-800 p-2 text-gray-800 dark:text-gray-300 hover:text-gray-700"
+
+                className="flex cursor-pointer items-center relative rounded-lg border border-gray-100 dark:bg-slate-800 p-2 text-gray-800 dark:text-gray-300 hover:text-gray-700"
               >
                 <span className="sr-only">Notifications</span>
 
@@ -234,44 +234,45 @@ const DashHeader = ({ headerName }) => {
                 <span>
                   <IoNotificationsOutline size={20} />
                 </span>
-
-
-
               </div>
               {notif &&
-                <div   ref={notifRef} className="absolute right-[-60px] sm:right-0 z-50 origin-top-right bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 mt-2 w-auto rounded-md shadow-lg">
+                <div ref={notifRef} className="absolute right-[-60px] sm:right-0 z-50 origin-top-right bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 mt-2 w-auto rounded-md shadow-lg">
                   <div className="block top-[-6px] bg-white h-3 w-3 border-t border-l rotate-45 absolute right-3"></div>
-                  <div className="py-2 h-48 overflow-auto">
-                    <div className="overflow-x-auto">
-                      <table className="min-w-full  divide-y-2 divide-gray-200 bg-white text-xs sm:text-sm">
-                        <thead className="ltr:text-left rtl:text-right">
-                          <tr>
-                            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Name</th>
-                            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Login Date</th>
-                            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Device</th>
-                            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Other Details</th>
-                          </tr>
-                        </thead>
+                  <div className="pb-2 w-80 ">
+                    <div className="py-3 border-b ">
+                      <h1 className="px-5 font-semibold">Recent View</h1>
+                    </div>
+                    <div className="h-72 overflow-auto">
+                      {logs.map((log, idx) => (
+                        <div
+                          key={idx}
+                          onClick={() => alert(JSON.stringify(log, null, 2))}
+                          className="flex hover:bg-gray-50 cursor-pointer justify-between items-center gap-3 py-4 px-5 border-b text-sm">
+                          <div className="flex gap-3">
+                            <img
+                              alt="Profile"
+                              src={log.avatar}
+                              className="h-10 w-10 rounded-lg object-cover "
+                            />
+                            <div>
+                              <h2 className="font-semibold">{log.name}</h2>
+                              <p className="text-gray-500 text-xs font-l"><UserLastLogin lastLoginTime={log.date} /></p>
+                            </div>
+                          </div>
+                          <div className="text-xs font-light text-right text-gray-500 w-24">
+                            
+                            <h2 className="text-wrap">{log?.deviceInfo?.device}</h2>
+                            <h2 className="text-wrap">{log?.deviceInfo?.platform}</h2>
+                          </div>
+                        </div>
+                      ))}
 
-                        <tbody className="divide-y divide-gray-200">
-                          {logs.map((log, idx) => (
-                            <tr key={idx} className="odd:bg-gray-50">
-                              <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">{log.name}</td>
-                              <td className="whitespace-nowrap px-4 py-2 text-gray-700"><UserLastLogin lastLoginTime={log.date} /></td>
-                              <td className="whitespace-nowrap px-4 py-2 text-gray-700">{log?.deviceInfo?.device}</td>
-                              <td onClick={() => alert(JSON.stringify(log, null, 2))} 
-                              className="cursor-pointer whitespace-nowrap px-4 py-2 text-gray-700">Other Details..</td>
-                            </tr>
-                          ))}
-
-                        </tbody>
-                      </table>
                     </div>
                   </div>
                 </div>
               }
             </div>}
-            <div className="flex items-center divide-x divide-gray-100 border-gray-200 dark:border-l-gray-900 dark:border-r-gray-900">
+            <div className="flex items-center  rounded-full   divide-x divide-gray-100 dark:border-l-gray-900 dark:border-r-gray-900">
 
               <div className="flex gap-4">
 

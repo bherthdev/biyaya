@@ -34,7 +34,7 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
   const classToggleSideMenu = toggleSideMenu ? "w-16 sm:w-44" : "w-16";
 
   return (
-    <div className={`z-40 flex h-full fixed ${classToggleSideMenu} flex-col justify-between border-e bg-white ease-in-out duration-300`}>
+    <div className={`z-40 flex h-full no-print fixed ${classToggleSideMenu} flex-col justify-between border-e bg-white ease-in-out duration-300`}>
       <div className={`${toggleSideMenu ? "py-7 sm:py-6" : "py-12"} ease-in-out duration-300`}>
         <div
           className={`cursor-pointer mx-auto w-10 ${toggleSideMenu ? "sm:w-20" : ""} rounded-lg text-xs text-gray-600`}

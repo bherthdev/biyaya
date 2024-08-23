@@ -15,11 +15,11 @@ function Modal({ isOpen, onClose, orderId }) {
       <div className="flex items-center justify-center h-screen pt-4 px-4 pb-20 text-center  ">
      
         <div className="fixed inset-0 transition-opacity">
-          <div className="absolute inset-0 bg-gray-400  no-print dark:bg-gray-900 opacity-80"></div>
+          <div className="absolute inset-0  bg-black no-print dark:bg-gray-900 opacity-80"></div>
         </div>
      
         <div
-          className="inline-block bg-white dark:bg-gray-800 rounded-xl text-center overflow-hidden shadow-xl transform transition-all sm:my-8 align-middle  w-10/12 sm:w-4/12"
+          className="inline-block bg-white dark:bg-gray-800 rounded-xl text-center overflow-hidden  transform transition-all sm:my-8 align-middle  w-10/12 sm:w-4/12"
           role="dialog"
           aria-modal="true"
           aria-labelledby="modal-headline"
@@ -33,7 +33,7 @@ function Modal({ isOpen, onClose, orderId }) {
 
           {/* {children} */}
 
-          <div className="bg-white dark:bg-gray-700 py-5 px-7">
+          <div className="bg-white  dark:bg-gray-700 py-5 px-7">
               <div className="flex flex-col justify-between gap-7">
 
                 <div className="flex flex-col gap-5 border-b-2 pb-10">
@@ -60,7 +60,7 @@ function Modal({ isOpen, onClose, orderId }) {
                           <div className="grid  gap-1 grid-cols-3 sm:gap-4 ">
                             <dt className="font-medium text-gray-900 text-left ">{item.name}</dt>
                             <dd className="text-gray-700  text-center">{item.qty}</dd>
-                            <dd className="text-gray-700 font-semibold text-right ">{item.total}</dd>
+                            <dd className="text-gray-700 font-semibold text-right ">{Number(item.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</dd>
                           </div>
 
                         </dl>
@@ -73,15 +73,15 @@ function Modal({ isOpen, onClose, orderId }) {
                   <div className=" text-left text-xl flex flex-col gap-4  ">
                     <div className="flex justify-between">
                       <h1 className=" text-gray-500 dark:text-gray-300">Total</h1>
-                      <h1 className="font-semibold text-gray-600 dark:text-gray-300">{Number(order?.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
+                      <h1 className="font-semibold text-gray-600 dark:text-gray-300"> ₱ {Number(order?.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
                     </div>
                     <div className="flex justify-between text-2xl">
                       <h1 className="font-semibold text-gray-700 dark:text-gray-300">Cash</h1>
-                      <h1 className="font-bold text-gray-800 dark:text-gray-300">{Number(order?.cash).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
+                      <h1 className="font-bold text-gray-800 dark:text-gray-300"> {Number(order?.cash).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
                     </div>
                     <div className="flex justify-between">
                       <h1 className=" text-gray-500 dark:text-gray-300">Change</h1>
-                      <h1 className="font-semibold text-gray-600 dark:text-gray-300">{Number(order?.change).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
+                      <h1 className="font-semibold text-gray-600 dark:text-gray-300"> {Number(order?.change).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
                     </div>
                   </div>
                 </div>
