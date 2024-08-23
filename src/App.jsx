@@ -90,10 +90,10 @@ function App() {
 
                 <Route path="settings" element={<DashLayout />}>
                   <Route index element={<> <ToastContainer /> <UsersList /></>} />
-                  <Route path="users">
+               
                     <Route path=":id" element={<> <ToastContainer /><EditUser /> </>} />
                     <Route path="new" element={<> <ToastContainer /><NewUserForm /> </>} />
-                  </Route>{/* End orders */}
+              
 
                 </Route>{/* End orders */}
 

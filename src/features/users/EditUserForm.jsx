@@ -3,16 +3,12 @@ import { useState, useEffect } from "react";
 import { useUpdateUserMutation, useDeleteUserMutation } from "./usersApiSlice";
 import { useNavigate } from "react-router-dom";
 import { ROLES } from "../../config/roles";
-import { AiOutlineCloseCircle, AiOutlineEye, AiOutlineEyeInvisible, AiOutlineSave, AiOutlineWarning } from "react-icons/ai";
+import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineSave, AiOutlineWarning } from "react-icons/ai";
 import Image from "../../components/Image";
 import Spenner from "../../components/Spenner";
 import useAuth from "../../hooks/useAuth";
 import { AiOutlineUserDelete } from 'react-icons/ai';
 import { BsArrowLeftShort } from 'react-icons/bs';
-import { MdDelete } from 'react-icons/md';
-import { RiAddFill } from 'react-icons/ri';
-import { RiAttachment2 } from 'react-icons/ri';
-import Thead from "../../components/Thead"
 import { toast } from 'react-toastify';
 import Modal from "../../components/Modal";
 
@@ -103,11 +99,11 @@ const EditUserForm = ({ user }) => {
     };
   };
 
-  const onSaveUserClicked = async (e) => {
+  const onSaveUserClicked = async () => {
 
 
     if (password) {
-      setSpinText('Saving...')
+      setSpinText('Updating...')
       const result = await updateUser({
         id: user.id,
         name,
@@ -118,8 +114,21 @@ const EditUserForm = ({ user }) => {
         active,
         image
       });
-      if (result) {
-        toast.success(result.data.message, {
+      if (result?.error) {
+        toast.error(result.error, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+
+
+      } else {
+        toast.success(result?.data.message, {
           position: "bottom-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -132,10 +141,21 @@ const EditUserForm = ({ user }) => {
       }
 
     } else {
-      setSpinText('Saving...')
-      const result = await updateUser({ id: user.id, name, position, username, roles, active, image });
-      if (result) {
-        toast.success(result.data.message, {
+
+      setSpinText('Updating...')
+      const result = await updateUser({
+        id: user.id,
+        name,
+        position,
+        username,
+        roles,
+        active,
+        image
+      });
+
+
+      if (result?.error) {
+        toast.error(result.error, {
           position: "bottom-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -145,6 +165,18 @@ const EditUserForm = ({ user }) => {
           progress: undefined,
           theme: "dark",
         });
+      } else {
+        toast.success(result?.data.message, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+
       }
     }
   };
@@ -164,11 +196,12 @@ const EditUserForm = ({ user }) => {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: localStorage.theme,
+          theme: "dark",
         });
 
       } else {
-        toast.success(result.data, {
+
+        toast.success(result?.data, {
           position: "bottom-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -176,7 +209,7 @@ const EditUserForm = ({ user }) => {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: localStorage.theme,
+          theme: "dark",
         });
       }
 
@@ -415,7 +448,7 @@ const EditUserForm = ({ user }) => {
                       </div>
                     </div>
                     {id !== user._id
-                   
+
                       && <CheckboxField label="User active/inactive " checked={active} onChange={onActiveChanged} />
 
                     }

@@ -20,54 +20,54 @@ export const logsApiSlice = apiSlice.injectEndpoints({
             },
             // keepUnusedDataFor: 5,
             transformResponse: responseData => {
-                const loadedLogs = responseData.map(user => {
-                    user.id = user._id
+                const loadedLogs = responseData.map(log => {
+                    log.id = log._id
                     
-                    return user
+                    return log
                 });
                 return logsAdapter.setAll(initialState, loadedLogs)
             },
             providesTags: (result, error, arg) => {
                 if (result?.ids) {
                     return [
-                        { type: 'User', id: 'LIST' },
-                        ...result.ids.map(id => ({ type: 'User', id }))
+                        { type: 'Log', id: 'LIST' },
+                        ...result.ids.map(id => ({ type: 'Log', id }))
                     ]
-                } else return [{ type: 'User', id: 'LIST' }]
+                } else return [{ type: 'Log', id: 'LIST' }]
             }
         }),
-        addNewUser: builder.mutation({
-            query: initialUserData => ({
+        addNewLog: builder.mutation({
+            query: initialLogData => ({
                 url: '/logs',
                 method: 'POST',
                 body: {
-                    ...initialUserData,
+                    ...initialLogData,
                 }
             }),
             invalidatesTags: [
-                { type: 'User', id: "LIST" }
+                { type: 'Log', id: "LIST" }
             ]
         }),
-        updateUser: builder.mutation({
-            query: initialUserData => ({
+        updateLog: builder.mutation({
+            query: initialLogData => ({
                 url: '/logs',
                 method: 'PATCH',
                 body: {
-                    ...initialUserData,
+                    ...initialLogData,
                 }
             }),
             invalidatesTags: (result, error, arg) => [
-                { type: 'User', id: arg.id }
+                { type: 'Log', id: arg.id }
             ]
         }),
-        deleteUser: builder.mutation({
+        deleteLog: builder.mutation({
             query: ({ id }) => ({
                 url: `/logs`,
                 method: 'DELETE',
                 body: { id }
             }),
             invalidatesTags: (result, error, arg) => [
-                { type: 'User', id: arg.id }
+                { type: 'Log', id: arg.id }
             ]
         }),
     }),
@@ -75,9 +75,9 @@ export const logsApiSlice = apiSlice.injectEndpoints({
 
 export const {
     useGetLogsQuery,
-    useAddNewUserMutation,
-    useUpdateUserMutation,
-    useDeleteUserMutation,
+    useAddNewLogMutation,
+    useUpdateLogMutation,
+    useDeleteLogMutation,
 } = logsApiSlice
 
 // returns the query result object
@@ -92,7 +92,7 @@ const selectLogsData = createSelector(
 //getSelectors creates these selectors and we rename them with aliases using destructuring
 export const {
     selectAll: selectAllLogs,
-    selectById: selectUserById,
-    selectIds: selectUserIds
+    selectById: selectLogById,
+    selectIds: selectLogIds
     // Pass in a selector that returns the Logs slice of state
 } = logsAdapter.getSelectors(state => selectLogsData(state) ?? initialState)
