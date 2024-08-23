@@ -79,13 +79,12 @@ function Modal({ isOpen, onClose, orderId }) {
                         onClick={() => window.print()}
                         className="cursor-pointer block text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-gray-900 dark:hover:text-gray-400"
                       >
-                        Print Receipt
-                      </span>
+                        Print                       </span>
                       <span
                         onClick={handleDownloadPDF}
                         className="cursor-pointer block text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-gray-900 dark:hover:text-gray-400"
                       >
-                        Download Receipt as PDF
+                        Download as PDF
                       </span>
                     </div>
 
