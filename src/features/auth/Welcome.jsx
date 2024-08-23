@@ -10,7 +10,7 @@ import ReceiptModal from "../../components/ReceiptModal"
 
 const Welcome = () => {
 
-  const columnsOrders = ["Order#/Type", "Date/Time", "ITEMS", "Amount", "Barista"];
+  const columnsOrders = ["Order#/Type", "Date/Time", "ITEMS", "Total", "Barista"];
   const columnsItems = ["Item Name", "Stock"];
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -560,7 +560,7 @@ const Welcome = () => {
                             <p className="">{order.items.reduce((totalItem, item) => totalItem + Number(item.qty), 0)} </p>
                           </td>
                           <td className={`whitespace-nowrap px-6 py-3 font-semibold  text-gray-900 dark:text-gray-300`}>
-                            <p className="">₱ {Number(order.total).toFixed(2)} </p>
+                            <p className="">₱{Number(order.total).toFixed(2)} </p>
                           </td>
 
                           <td className={`whitespace-nowrap px-6 py-3 text-gray-900 dark:text-gray-300 `}>

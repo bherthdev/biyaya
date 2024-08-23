@@ -33,7 +33,7 @@ function Modal({ isOpen, onClose, orderId }) {
      // Define custom options
      const opt = {
       margin: 1,
-      filename: `Biyaya_Reciept-${order?.orderNo}.pdf`,
+      filename: `Biyaya_Receipt-${order?.orderNo}.pdf`,
       image: { type: 'jpeg', quality: 0.99 },
       html2canvas: { scale: 5 },
       jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
