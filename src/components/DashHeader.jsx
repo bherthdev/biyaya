@@ -276,7 +276,8 @@ const DashHeader = ({ headerName }) => {
 
               <div className="flex gap-4">
 
-                <div className="inline-flex bg-white dark:bg-slate-900 rounded-full" ref={menuRef}>
+                <div className="inline-flex bg-white dark:bg-slate-900 rounded-full" 
+                ref={menuRef}>
 
                   <div className="relative">
                     <button
