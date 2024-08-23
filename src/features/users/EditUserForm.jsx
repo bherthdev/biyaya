@@ -39,12 +39,11 @@ const EditUserForm = ({ user }) => {
   const [validPassword, setValidPassword] = useState(false)
   const [roles, setRoles] = useState(user.roles)
   const [active, setActive] = useState(user.active)
-  const [imageView, setImage] = useState("")
-  const [image, setDataImage] = useState();
   const [spinText, setSpinText] = useState('')
   const [passwordShown, setPasswordShown] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [imageView, setImageView] = useState("");
+  const [image, setImage] = useState();
 
   const handleModalOpen = () => {
     setIsModalOpen(true)
@@ -73,8 +72,8 @@ const EditUserForm = ({ user }) => {
       setPosition("");
       setUsername("");
       setPassword("");
-      setRoles("");
-      setDataImage();
+      setImageView("");
+      setImage("");
       navigate("/settings");
     }
   }, [isSuccess, isDelSuccess, navigate]);
@@ -95,7 +94,8 @@ const EditUserForm = ({ user }) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
-      setDataImage(reader.result);
+      setImage(reader.result);
+      setImageView(reader.result);
     };
   };
 
