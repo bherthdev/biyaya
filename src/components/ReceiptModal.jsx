@@ -4,13 +4,14 @@ import { useSelector } from "react-redux";
 import { selectOrderById } from "../features/orders/ordersApiSlice";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import biyayaLogo from "../assets/biyaya_logo.png";
-
+import html2pdf from "html2pdf.js";
 
 function Modal({ isOpen, onClose, orderId }) {
 
   const [printNav, setPrintNav] = useState(false);
   const order = useSelector((state) => selectOrderById(state, orderId));
   const optionRef = useRef();
+  const printRef = useRef();
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -25,6 +26,23 @@ function Modal({ isOpen, onClose, orderId }) {
     };
   }, []);
 
+
+  const handleDownloadPDF = () => {
+    const element = printRef.current;
+    
+     // Define custom options
+     const opt = {
+      margin: 1,
+      filename: `Biyaya_Reciept-${order?.orderNo}.pdf`,
+      image: { type: 'jpeg', quality: 0.99 },
+      html2canvas: { scale: 5 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+
+    // Generate and download the PDF with the options
+    html2pdf().set(opt).from(element).save();
+  };
+
   const showHideClassName = isOpen ? "block" : "hidden";
 
   return (
@@ -36,7 +54,7 @@ function Modal({ isOpen, onClose, orderId }) {
         </div>
 
         <div
-          className="inline-block bg-white dark:bg-gray-800 rounded-xl text-center overflow-hidden  transform transition-all  sm:my-8 align-middle  w-full sm:w-1/2"
+          className="inline-block bg-white dark:bg-gray-800 rounded-xl text-center overflow-hidden  transform transition-all  sm:my-8 align-middle  w-full sm:w-4/12"
           role="dialog"
           aria-modal="true"
           aria-labelledby="modal-headline"
@@ -63,6 +81,12 @@ function Modal({ isOpen, onClose, orderId }) {
                       >
                         Print Receipt
                       </span>
+                      <span
+                        onClick={handleDownloadPDF}
+                        className="cursor-pointer block text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-gray-900 dark:hover:text-gray-400"
+                      >
+                        Download Receipt as PDF
+                      </span>
                     </div>
 
                   </div>
@@ -77,14 +101,14 @@ function Modal({ isOpen, onClose, orderId }) {
 
           {/* {children} */}
 
-          <div className="bg-white  dark:bg-gray-700 py-5 px-7">
-            <div className="flex flex-col justify-between gap-7">
+          <div ref={printRef} id="print-area" className="bg-white  dark:bg-gray-700 py-10 px-7">
+            <div  className="flex flex-col justify-between gap-7">
 
               <div className="flex flex-col gap-5 border-dashed border-gray-500 border-b pb-5">
 
-                <div className="flex justify-between py-5 items-center text-left border-dashed border-b border-gray-500">
+                <div className="flex justify-between pb-5 items-center text-left border-dashed border-b border-gray-500">
 
-                  <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
+                  <div className="flex items-center gap-3 text-gray-500 dark:text-gray-400">
                     <img src={biyayaLogo} alt="Logo" className="w-20 " />
                     <div className="font-normal text-xs">
                       <div className="mb-2">
