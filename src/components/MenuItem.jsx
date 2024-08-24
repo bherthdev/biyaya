@@ -7,7 +7,7 @@ const MenuItem = ({ icon: Icon, label, path, toggleSideMenu, isActive, onClick }
                 } px-4 py-4 cursor-pointer font-sans font-medium text-gray-700 hover:bg-gray-100`}
             onClick={onClick}
         >
-            <div className={`flex gap-5 ${toggleSideMenu ? "" : "group relative"}`}>
+            <div className={`flex gap-5 ${toggleSideMenu ? "" : "group relative"} items-center`}>
                 <div className="text-gray-500">
                     <Icon size={25} />
                 </div>
