@@ -13,7 +13,7 @@ const DashHeader = ({ headerName }) => {
   const navigate = useNavigate();
   const [userNav, setUserNav] = useState(false);
   const [notif, setNotif] = useState(false);
-  const [notifAdmin, setNotifAdmin] = useState(false);
+  const [notifAdmin, setNotifAdmin] = useState(true);
   const [colorChange, setColorChange] = useState(false);
   const { id, isAdmin, name, position, avatar, biyaya_secret } = useAuth();
   const menuRef = useRef();
@@ -96,7 +96,7 @@ const DashHeader = ({ headerName }) => {
 
 
   const handleSettingsClick = () => {
-    navigate(`/settings/users/${id}`);
+    navigate(`/settings/${id}`);
     setUserNav(!userNav);
   };
   const handleNotifClick = () => {

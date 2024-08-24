@@ -54,7 +54,7 @@ function Modal({ isOpen, onClose, orderId }) {
         </div>
 
         <div
-          className="inline-block bg-white dark:bg-gray-800 rounded-xl text-center overflow-hidden  transform transition-all  sm:my-8 align-middle  w-full sm:w-4/12"
+          className="inline-block bg-white dark:bg-gray-800 rounded-xl text-center overflow-hidden  transform transition-all  sm:my-8 align-middle  w-full sm:w-8/12 lg:w-4/12"
           role="dialog"
           aria-modal="true"
           aria-labelledby="modal-headline"
@@ -139,10 +139,11 @@ function Modal({ isOpen, onClose, orderId }) {
                 <div className="flex flex-col justify-between gap-2 ">
                   <div className=" mb-5">
                     <dl className=" divide-gray-100 text-xs ">
-                      <div className="grid  gap-1 grid-cols-3 sm:gap-4 ">
+                      <div className="grid  gap-1 grid-cols-4 sm:gap-4 ">
                         <dt className=" text-gray-900 text-left ">Name</dt>
-                        <dd className="text-gray-700  text-center">Qty</dd>
-                        <dd className="text-gray-700  text-right ">Price</dd>
+                        <dd className="text-gray-700  text-right">Qty</dd>
+                        <dd className="text-gray-700  text-right">Price</dd>
+                        <dd className="text-gray-700  text-right ">Sub Total</dd>
                       </div>
                     </dl>
                   </div>
@@ -150,10 +151,11 @@ function Modal({ isOpen, onClose, orderId }) {
                     <div key={idx} className="text-sm ">
 
                       <dl className=" divide-gray-100 text-sm ">
-                        <div className="grid  gap-1 grid-cols-3 sm:gap-4 ">
+                        <div className="grid  gap-1 grid-cols-4 sm:gap-4 ">
                           <dt className="font-medium text-gray-900 text-left ">{item.name}</dt>
-                          <dd className="text-gray-700  text-center">{item.qty}</dd>
-                          <dd className="text-gray-700 font-semibold text-right ">₱{Number(item.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</dd>
+                          <dd className="text-gray-700  text-right">{item.qty}</dd>
+                          <dd className="text-gray-700  text-right">₱ {item.price}</dd>
+                          <dd className="text-gray-700 font-medium text-right ">₱ {Number(item.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</dd>
                         </div>
 
                       </dl>
@@ -165,16 +167,16 @@ function Modal({ isOpen, onClose, orderId }) {
 
                 <div className=" text-left text-base flex flex-col gap-2  ">
                   <div className="flex justify-between">
-                    <h1 className="font-bold text-lg text-gray-800">Total</h1>
-                    <h1 className="font-bold text-lg text-gray-800 "> ₱{Number(order?.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
+                    <h1 className="font-bold text-lg text-gray-800">Grand Total</h1>
+                    <h1 className="font-bold text-lg text-gray-800 "> ₱ {Number(order?.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
                   </div>
                   <div className="flex justify-between">
                     <h1 className="font-semibold text-gray-500 ">Cash</h1>
-                    <h1 className="font-semibold text-gray-600 "> ₱{Number(order?.cash).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
+                    <h1 className="font-semibold text-gray-600 "> ₱ {Number(order?.cash).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
                   </div>
                   <div className="flex justify-between">
                     <h1 className=" text-gray-500 ">Change</h1>
-                    <h1 className="font-semibold text-gray-600 "> ₱{Number(order?.change).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
+                    <h1 className="font-semibold text-gray-600 "> ₱ {Number(order?.change).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
                   </div>
                 </div>
               </div>

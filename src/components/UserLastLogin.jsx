@@ -3,17 +3,23 @@ import React from 'react';
 const UserLastLogin = ({ lastLoginTime }) => {
 
     const getTimeDifference = (lastLoginTime) => {
-        const lastLogin = new Date(Date.parse(lastLoginTime + " UTC"));
-        const now = new Date();
+        // Convert lastLoginTime to a Date object, assuming it's in UTC initially
+        const last = new Date(lastLoginTime).toLocaleString('en-US', { timeZone: 'Asia/Manila' });
+        const lastLogin = new Date(lastLoginTime);
 
-        const diffInMs = now - lastLogin;
+        // Get the current time in PST (Philippine Standard Time)
+        const now = new Date().toLocaleString('en-US', { timeZone: 'Asia/Manila' });
+        const currentPST = new Date(now);
+
+        // Calculate the difference
+        const diffInMs = currentPST - lastLogin; // Difference in milliseconds
         const diffInSeconds = Math.floor(diffInMs / 1000);
         const diffInMinutes = Math.floor(diffInSeconds / 60);
         const diffInHours = Math.floor(diffInMinutes / 60);
         const diffInDays = Math.floor(diffInHours / 24);
-        const diffInMonths = now.getMonth() - lastLogin.getMonth() +
-            (12 * (now.getFullYear() - lastLogin.getFullYear()));
-        const diffInYears = now.getFullYear() - lastLogin.getFullYear();
+        const diffInMonths = currentPST.getMonth() - lastLogin.getMonth() +
+            (12 * (currentPST.getFullYear() - lastLogin.getFullYear()));
+        const diffInYears = currentPST.getFullYear() - lastLogin.getFullYear();
 
         if (diffInSeconds < 60) {
             return `${diffInSeconds} second${diffInSeconds > 1 ? 's' : ''} ago`;
@@ -30,10 +36,8 @@ const UserLastLogin = ({ lastLoginTime }) => {
         }
     };
 
-
-    return (
-        <p>{getTimeDifference(lastLoginTime)}</p>
-    );
+    return getTimeDifference(lastLoginTime)
+    
 };
 
 export default UserLastLogin;
