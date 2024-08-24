@@ -47,7 +47,6 @@ const POS = () => {
 
         const menuContent = ids?.length && ids.map((itemId) => <MenuItem key={itemId} itemId={itemId} search={search} orderItems={orderItems} setOrderTransac={setOrderTransac} orderTransac={orderTransac} setOrdersItems={setOrdersItems} enableSaveOrder={enableSaveOrder} setEnableSaveOrder={setEnableSaveOrder} placeOrder={placeOrder} setPlaceOrder={setPlaceOrder}  />)
 
-
         content = (
             <>
 

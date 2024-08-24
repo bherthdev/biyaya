@@ -237,7 +237,7 @@ const DashHeader = ({ headerName }) => {
               {notif &&
                 <div ref={notifRef} className="absolute right-[-60px] sm:right-0 z-50 origin-top-right bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 mt-2 w-auto rounded-md shadow-lg">
                   <div className="block top-[-6px] bg-white h-3 w-3 border-t border-l rotate-45 absolute right-3"></div>
-                  <div className="pb-2 w-80 ">
+                  <div className="pb-2 w-80">
                     <div className="py-3 border-b ">
                       <h1 className="px-5 font-semibold">Recent View</h1>
                     </div>
@@ -255,7 +255,7 @@ const DashHeader = ({ headerName }) => {
                             />
                             <div>
                               <h2 className="font-semibold">{log.name}</h2>
-                              <p className="text-gray-500 text-xs font-l"><UserLastLogin lastLoginTime={log.date} /></p>
+                              <p title={log.date} className="text-gray-500 text-xs font-l"><UserLastLogin lastLoginTime={log.date} /></p>
                             </div>
                           </div>
                           <div className="text-xs font-light text-right text-gray-500 w-24">

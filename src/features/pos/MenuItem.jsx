@@ -3,8 +3,8 @@ import { selectItemById } from '../items/itemsApiSlice';
 import { FaPlus } from 'react-icons/fa';
 import iconItem from "../../assets/icon-item.svg";
 
-const MenuItem = ({placeOrder, setPlaceOrder, enableSaveOrder, setEnableSaveOrder, itemId, search, orderTransac, setOrderTransac, orderItems, setOrdersItems }) => {
-   
+const MenuItem = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSaveOrder, itemId, search, orderTransac, setOrderTransac, orderItems, setOrdersItems }) => {
+
     const item = useSelector((state) => selectItemById(state, itemId));
 
     const calculateTotal = (items) => {

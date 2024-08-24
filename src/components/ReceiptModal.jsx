@@ -154,8 +154,8 @@ function Modal({ isOpen, onClose, orderId }) {
                         <div className="grid  gap-1 grid-cols-4 sm:gap-4 ">
                           <dt className="font-medium text-gray-900 text-left ">{item.name}</dt>
                           <dd className="text-gray-700  text-right">{item.qty}</dd>
-                          <dd className="text-gray-700  text-right">₱ {Number(item.price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</dd>
-                          <dd className="text-gray-700 font-medium text-right ">₱ {Number(item.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</dd>
+                          <dd className="text-gray-700  text-right">₱{Number(item.price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</dd>
+                          <dd className="text-gray-700 font-medium text-right ">₱{Number(item.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</dd>
                         </div>
 
                       </dl>
@@ -168,15 +168,15 @@ function Modal({ isOpen, onClose, orderId }) {
                 <div className=" text-left text-base flex flex-col gap-2  ">
                   <div className="flex justify-between">
                     <h1 className="font-bold text-lg text-gray-800">Grand Total</h1>
-                    <h1 className="font-bold text-lg text-gray-800 "> ₱ {Number(order?.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
+                    <h1 className="font-bold text-lg text-gray-800 ">₱{Number(order?.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
                   </div>
                   <div className="flex justify-between">
                     <h1 className="font-semibold text-gray-500 ">Cash</h1>
-                    <h1 className="font-semibold text-gray-600 "> ₱ {Number(order?.cash).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
+                    <h1 className="font-semibold text-gray-600 ">₱{Number(order?.cash).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
                   </div>
                   <div className="flex justify-between">
                     <h1 className=" text-gray-500 ">Change</h1>
-                    <h1 className="font-semibold text-gray-600 "> ₱ {Number(order?.change).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
+                    <h1 className="font-semibold text-gray-600 ">₱{Number(order?.change).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
                   </div>
                 </div>
               </div>
