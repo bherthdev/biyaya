@@ -154,7 +154,7 @@ function Modal({ isOpen, onClose, orderId }) {
                         <div className="grid  gap-1 grid-cols-4 sm:gap-4 ">
                           <dt className="font-medium text-gray-900 text-left ">{item.name}</dt>
                           <dd className="text-gray-700  text-right">{item.qty}</dd>
-                          <dd className="text-gray-700  text-right">₱ {item.price}</dd>
+                          <dd className="text-gray-700  text-right">₱ {Number(item.price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</dd>
                           <dd className="text-gray-700 font-medium text-right ">₱ {Number(item.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</dd>
                         </div>
 

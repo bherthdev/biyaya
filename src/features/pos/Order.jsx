@@ -21,7 +21,7 @@ const Order = () => {
 const formatDate = ()=> new Date().toLocaleDateString('en-US', options)
 
 
-const generateOR = ()=> `${new Date().getFullYear()}${new Date().getMonth()+ 1}${new Date().getDate()}${new Date().getHours()}${new Date().getMinutes()}${new Date().getSeconds()}`
+const generateOR = ()=> `#${new Date().getFullYear()}-${new Date().getMonth()+ 1}${new Date().getDate()}${new Date().getHours()}-${new Date().getMinutes()}${new Date().getSeconds()}`
 
 // OR number: YEAR-MONTH/DAY/HOUR/MINUTES/SECONDS
 

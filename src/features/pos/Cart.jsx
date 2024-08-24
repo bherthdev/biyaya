@@ -11,20 +11,18 @@ import { useUpdateItemMutation } from "../items/itemsApiSlice";
 import Spenner from "../../components/Spenner";
 
 
-export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, setOrdersItems, toggleCartMobile, setToggleCartMobile }) => {
+export const Cart = ({placeOrder, setPlaceOrder, enableSaveOrder,setEnableSaveOrder, toggleCart, orderTransac, setOrderTransac, orderItems, setOrdersItems, toggleCartMobile, setToggleCartMobile }) => {
 
   const cashRef = useRef(null);
   const { formatDate, generateOR } = Order()
 
     const { id, name } = useAuth(); //current user id
-
-    const [placeOrder, setPlaceOrder] = useState(false)
-    const [enableSaveOrder, setEnableSaveOrder] = useState(false)
     const [itemToBeUpdate, setItemToBeUpdate] = useState([]);
 
     useEffect(() => {
         orderItems.length && cashRef.current ? cashRef.current.focus() : window.focus()
       }, [placeOrder]);
+    
       
     // Utility to combine states
     const combineMutationStates = (...mutations) => {
@@ -34,7 +32,7 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
             isError: mutations.some(({ isError }) => isError),
             error: mutations.reduce((acc, { error }) => acc || error, null),
         };
-    };
+    };    
 
     // Use mutations
     const [addNewOrder, addNewOrderState] = useAddNewOrderMutation();
@@ -71,6 +69,7 @@ export const Cart = ({ toggleCart, orderTransac, setOrderTransac, orderItems, se
             setItemToBeUpdate(updatedItems);
         }
     }, [orderTransac]);
+
 
     const computeTotal = () => {
         if (orderItems.length) {

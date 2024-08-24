@@ -14,11 +14,10 @@ const POS = () => {
 
     const { orderTransac, setOrderTransac, orderItems, setOrdersItems } = Order()
     const [toggleCartMobile, setToggleCartMobile] = useState(false)
-
+    const [enableSaveOrder, setEnableSaveOrder] = useState(false)
+    const [placeOrder, setPlaceOrder] = useState(false)
 
     const [search, setsearch] = useState("Coffee");
-
-    const navigate = useNavigate();
     const {
         data: items,
         isLoading,
@@ -46,7 +45,7 @@ const POS = () => {
     if (isSuccess) {
         const { ids } = items;
 
-        const menuContent = ids?.length && ids.map((itemId) => <MenuItem key={itemId} itemId={itemId} search={search} orderItems={orderItems} setOrderTransac={setOrderTransac} orderTransac={orderTransac} setOrdersItems={setOrdersItems} />)
+        const menuContent = ids?.length && ids.map((itemId) => <MenuItem key={itemId} itemId={itemId} search={search} orderItems={orderItems} setOrderTransac={setOrderTransac} orderTransac={orderTransac} setOrdersItems={setOrdersItems} enableSaveOrder={enableSaveOrder} setEnableSaveOrder={setEnableSaveOrder} placeOrder={placeOrder} setPlaceOrder={setPlaceOrder}  />)
 
 
         content = (
@@ -55,7 +54,7 @@ const POS = () => {
 
                 <div>
                     <ToastContainer />
-                    <Cart toggleCart={location.pathname == '/pos'} orderTransac={orderTransac} setOrderTransac={setOrderTransac} orderItems={orderItems} setOrdersItems={setOrdersItems} toggleCartMobile={toggleCartMobile} setToggleCartMobile={setToggleCartMobile} />
+                    <Cart toggleCart={location.pathname == '/pos'} orderTransac={orderTransac} setOrderTransac={setOrderTransac} orderItems={orderItems} setOrdersItems={setOrdersItems} toggleCartMobile={toggleCartMobile} setToggleCartMobile={setToggleCartMobile} enableSaveOrder={enableSaveOrder} setEnableSaveOrder={setEnableSaveOrder} placeOrder={placeOrder} setPlaceOrder={setPlaceOrder} />
                 </div>
                 <div aria-label="Page Header" className="">
                     <div className="mx-auto max-w-screen-xl px-0 py-8 sm:px-6 lg:px-8">

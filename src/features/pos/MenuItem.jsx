@@ -3,7 +3,8 @@ import { selectItemById } from '../items/itemsApiSlice';
 import { FaPlus } from 'react-icons/fa';
 import iconItem from "../../assets/icon-item.svg";
 
-const MenuItem = ({ itemId, search, orderTransac, setOrderTransac, orderItems, setOrdersItems }) => {
+const MenuItem = ({placeOrder, setPlaceOrder, enableSaveOrder, setEnableSaveOrder, itemId, search, orderTransac, setOrderTransac, orderItems, setOrdersItems }) => {
+   
     const item = useSelector((state) => selectItemById(state, itemId));
 
     const calculateTotal = (items) => {
@@ -15,8 +16,9 @@ const MenuItem = ({ itemId, search, orderTransac, setOrderTransac, orderItems, s
         tempObj.total = tempObj.qty * tempObj.price;
         tempRows[index] = tempObj;
         setOrdersItems(tempRows);
-        setOrderTransac({ ...orderTransac, total: calculateTotal(tempRows) });
+        setOrderTransac({ ...orderTransac, total: calculateTotal(tempRows), cash: 0, change: 0 });
     };
+
 
     const addItemToCart = () => {
         const index = orderItems.findIndex(items => items.id === item.id);
@@ -44,8 +46,10 @@ const MenuItem = ({ itemId, search, orderTransac, setOrderTransac, orderItems, s
             };
 
             setOrdersItems([...orderItems, newItem]);
-            setOrderTransac({ ...orderTransac, total: orderTransac.total + newItem.price });
+            setOrderTransac({ ...orderTransac, total: orderTransac.total + newItem.price, cash: 0, change: 0 });
         }
+        setPlaceOrder(false)
+        setEnableSaveOrder(false)
     };
 
     if (item && item.status === "In Stock" && item.category === search) {
