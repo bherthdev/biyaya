@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import useAuth from "../hooks/useAuth";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { useGetLogsQuery } from "../features/UserLogs/logsApiSlice";
-import PageLoader from "./PageLoader";
 import PageError from "./PageError";
 import UserLastLogin from "./UserLastLogin";
 
@@ -13,7 +12,7 @@ const DashHeader = ({ headerName }) => {
   const navigate = useNavigate();
   const [userNav, setUserNav] = useState(false);
   const [notif, setNotif] = useState(false);
-  const [notifAdmin, setNotifAdmin] = useState(true);
+  const [notifAdmin, setNotifAdmin] = useState(false);
   const [colorChange, setColorChange] = useState(false);
   const { id, isAdmin, name, position, avatar, biyaya_secret } = useAuth();
   const menuRef = useRef();
