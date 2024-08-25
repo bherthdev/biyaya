@@ -43,7 +43,7 @@ function Modal({ isOpen, onClose, orderId }) {
     html2pdf().set(opt).from(element).save();
   };
 
-  const totalItem = order.items.reduce((sum, item) => sum + Number(item.qty), 0);
+  const totalItem = order?.items.reduce((sum, item) => sum + Number(item.qty), 0);
 
 
   const showHideClassName = isOpen ? "block" : "hidden";
