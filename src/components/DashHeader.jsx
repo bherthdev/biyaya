@@ -239,7 +239,7 @@ const DashHeader = ({ headerName }) => {
                   <div className="block top-[-6px] bg-white h-3 w-3 border-t border-l rotate-45 absolute right-3"></div>
                   <div className="pb-2 w-80">
                     <div className="py-3 border-b ">
-                      <h1 className="px-5 font-semibold">Recent View</h1>
+                      <h1 className="px-5 font-semibold">Last viewed</h1>
                     </div>
                     <div className="h-72 overflow-auto">
                       {logs.map((log, idx) => (

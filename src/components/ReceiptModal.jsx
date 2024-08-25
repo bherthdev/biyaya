@@ -29,9 +29,9 @@ function Modal({ isOpen, onClose, orderId }) {
 
   const handleDownloadPDF = () => {
     const element = printRef.current;
-    
-     // Define custom options
-     const opt = {
+
+    // Define custom options
+    const opt = {
       margin: 1,
       filename: `Biyaya_Receipt-${order?.orderNo}.pdf`,
       image: { type: 'jpeg', quality: 0.99 },
@@ -42,6 +42,9 @@ function Modal({ isOpen, onClose, orderId }) {
     // Generate and download the PDF with the options
     html2pdf().set(opt).from(element).save();
   };
+
+  const totalItem = order.items.reduce((sum, item) => sum + Number(item.qty), 0);
+
 
   const showHideClassName = isOpen ? "block" : "hidden";
 
@@ -101,12 +104,11 @@ function Modal({ isOpen, onClose, orderId }) {
           {/* {children} */}
 
           <div ref={printRef} id="print-area" className="bg-white  dark:bg-gray-700 py-10 px-7">
-            <div  className="flex flex-col justify-between gap-7">
+            <div className="flex flex-col justify-between gap-7">
 
               <div className="flex flex-col gap-5 border-dashed border-gray-500 border-b pb-5">
 
                 <div className="flex justify-between pb-5 items-center text-left border-dashed border-b border-gray-500">
-
                   <div className="flex items-center gap-3 text-gray-500 dark:text-gray-400">
                     <img src={biyayaLogo} alt="Logo" className="w-20 " />
                     <div className="font-normal text-xs">
@@ -118,13 +120,10 @@ function Modal({ isOpen, onClose, orderId }) {
                         <p className="text-[10px] tracking-wider">BARISTA</p>
                         <h2 className="text-black ">{order?.barista}</h2>
                       </div>
-
                     </div>
-
                   </div>
 
                   <div className="text-right w-24 text-xs text-gray-500 dark:text-gray-400">
-
                     <div className="mb-2">
                       <p className="text-[10px] tracking-wider">DATE/TIME</p>
                       <h2 className="text-black ">{order?.dateTime}</h2>
@@ -137,46 +136,44 @@ function Modal({ isOpen, onClose, orderId }) {
 
                 </div>
                 <div className="flex flex-col justify-between gap-2 ">
-                  <div className=" mb-5">
-                    <dl className=" divide-gray-100 text-xs ">
-                      <div className="grid  gap-1 grid-cols-4 sm:gap-4 ">
-                        <dt className=" text-gray-900 text-left ">Name</dt>
-                        <dd className="text-gray-700  text-right">Qty</dd>
-                        <dd className="text-gray-700  text-right">Price</dd>
-                        <dd className="text-gray-700  text-right ">Sub Total</dd>
+                  <dl className=" divide-gray-100 text-xs mb-5">
+                    <div className="grid  gap-1 grid-cols-4 sm:gap-4 text-right text-gray-700">
+                      <dt className=" text-gray-900 text-left ">Name</dt>
+                      <dd>Qty</dd>
+                      <dd>Price</dd>
+                      <dd>Sub Total</dd>
+                    </div>
+                  </dl>
+                  {order && order.items.map((item, idx) =>
+                    <dl key={idx} className=" divide-gray-100 text-sm ">
+                      <div className="grid gap-1 grid-cols-4 text-right sm:gap-4 text-gray-700">
+                        <dt className="font-medium text-gray-900 text-left">{item.name}</dt>
+                        <dd>{item.qty}</dd>
+                        <dd>₱{Number(item.price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</dd>
+                        <dd className="font-medium ">₱{Number(item.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</dd>
                       </div>
                     </dl>
-                  </div>
-                  {order && order.items.map((item, idx) =>
-                    <div key={idx} className="text-sm ">
-
-                      <dl className=" divide-gray-100 text-sm ">
-                        <div className="grid  gap-1 grid-cols-4 sm:gap-4 ">
-                          <dt className="font-medium text-gray-900 text-left ">{item.name}</dt>
-                          <dd className="text-gray-700  text-right">{item.qty}</dd>
-                          <dd className="text-gray-700  text-right">₱{Number(item.price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</dd>
-                          <dd className="text-gray-700 font-medium text-right ">₱{Number(item.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</dd>
-                        </div>
-
-                      </dl>
-                    </div>
                   )}
                 </div>
               </div>
               <div>
 
                 <div className=" text-left text-base flex flex-col gap-2  ">
+                  <div className="flex text-lg justify-between font-semibold mb-2">
+                    <h1 className="text-gray-500 text-base">Item(s)</h1>
+                    <h1 className="  text-gray-600 ">{totalItem}</h1>
+                  </div>
                   <div className="flex justify-between">
                     <h1 className="font-bold text-lg text-gray-800">Grand Total</h1>
                     <h1 className="font-bold text-lg text-gray-800 ">₱{Number(order?.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
                   </div>
-                  <div className="flex justify-between">
-                    <h1 className="font-semibold text-gray-500 ">Cash</h1>
-                    <h1 className="font-semibold text-gray-600 ">₱{Number(order?.cash).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
+                  <div className="flex justify-between font-semibold">
+                    <h1 className=" text-gray-500 ">Cash</h1>
+                    <h1 className=" text-gray-600 ">₱{Number(order?.cash).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
                   </div>
-                  <div className="flex justify-between">
+                  <div className="flex justify-between font-semibold">
                     <h1 className=" text-gray-500 ">Change</h1>
-                    <h1 className="font-semibold text-gray-600 ">₱{Number(order?.change).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
+                    <h1 className=" text-gray-600 ">₱{Number(order?.change).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
                   </div>
                 </div>
               </div>

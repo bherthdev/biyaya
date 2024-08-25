@@ -370,7 +370,7 @@ export const Cart = ({placeOrder, setPlaceOrder, enableSaveOrder,setEnableSaveOr
                                 </div>
                                 <span
                                     onClick={saveOrder}
-                                    title="Place an order"
+                                    title="Save Order"
                                     disabled={enableSaveOrder}
                                     className={`${enableSaveOrder ? 'bg-green-900 hover:bg-green-700 ' : 'bg-gray-300'}  cursor-pointer flex font-medium text-xl justify-center  text-white w-full py-3 border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
 
