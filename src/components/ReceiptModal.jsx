@@ -50,7 +50,7 @@ function Modal({ isOpen, onClose, orderId }) {
 
   return (
     <div className={`fixed z-50 inset-0 overflow-y-auto ${showHideClassName}`}>
-      <div className="flex items-center justify-center h-screen pt-4 px-4 pb-20 text-center  ">
+      <div className="flex items-center justify-center  pt-4 px-4 pb-20 text-center  ">
 
         <div className="fixed inset-0 transition-opacity">
           <div className="absolute inset-0 bg-black  dark:bg-gray-900 opacity-80"></div>
@@ -135,7 +135,7 @@ function Modal({ isOpen, onClose, orderId }) {
                   </div>
 
                 </div>
-                <div className="flex flex-col justify-between gap-2 ">
+                <div className="flex flex-col justify-between gap-2">
                   <dl className=" divide-gray-100 text-xs mb-5">
                     <div className="grid  gap-1 grid-cols-4 sm:gap-4 text-right text-gray-700">
                       <dt className=" text-gray-900 text-left ">Name</dt>
@@ -145,7 +145,7 @@ function Modal({ isOpen, onClose, orderId }) {
                     </div>
                   </dl>
                   {order && order.items.map((item, idx) =>
-                    <dl key={idx} className=" divide-gray-100 text-sm ">
+                    <dl key={idx} className=" divide-gray-100 text-sm">
                       <div className="grid gap-1 grid-cols-4 text-right sm:gap-4 text-gray-700">
                         <dt className="font-medium text-gray-900 text-left">{item.name}</dt>
                         <dd>{item.qty}</dd>
