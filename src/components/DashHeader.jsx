@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import useAuth from "../hooks/useAuth";
 import { IoNotificationsOutline } from "react-icons/io5";
-import { useGetLogsQuery } from "../features/UserLogs/logsApiSlice";
+import { useGetLogsQuery, useUpdateLogMutation } from "../features/UserLogs/logsApiSlice";
 import PageError from "./PageError";
 import UserLastLogin from "./UserLastLogin";
+import LogsComponent from "./LogsComponent";
 
 
 const DashHeader = ({ headerName }) => {
@@ -30,6 +31,8 @@ const DashHeader = ({ headerName }) => {
     refetchOnMountOrArgChange: true,
   });
 
+  const [updateLog, { isLoading, isSuccess, isError, error }] =
+    useUpdateLogMutation();
 
 
   useEffect(() => {
@@ -121,6 +124,21 @@ const DashHeader = ({ headerName }) => {
     }
   };
 
+
+  const onUpdateLog = async (log) => {
+
+    if (log.seen) {
+      alert(JSON.stringify(log, null, 2))
+
+    } else {
+
+      const result = await updateLog({ id: log.id, seen: log.seen })
+
+      if (result) alert(JSON.stringify(log, null, 2))
+    }
+
+  }
+
   if (isLoadingLogs) return (
     <div className={`bg-white dark:bg-slate-900 sm:px-8 border flex ${navClass} h-20 sm:h-32 items-center justify-between px-4 right-0`}>
       <div className="flex items-center">
@@ -198,12 +216,16 @@ const DashHeader = ({ headerName }) => {
     </div>
   );
 
+
+
   if (isLogsError) return <PageError error={logsError?.data?.message} />
 
   if (isLogsSuccess) {
 
     const { entities: logsEntities } = LogsData;
     const logs = Object.values(logsEntities).sort((a, b) => new Date(b.date) - new Date(a.date))
+    const hasSeen = logs.some(log => log?.seen === false);
+
 
     return (
       <div className={`bg-white dark:bg-slate-900 no-print sm:px-8 border flex ${navClass} h-20 sm:h-32 items-center justify-between px-4 right-0`}>
@@ -228,8 +250,9 @@ const DashHeader = ({ headerName }) => {
                 className="flex cursor-pointer items-center relative rounded-lg border border-gray-100 dark:bg-slate-800 p-2 text-gray-800 dark:text-gray-300 hover:text-gray-700"
               >
                 <span className="sr-only">Notifications</span>
-
-                <div className="absolute p-1 w-2 h-2 rounded-full bg-red-600  top-1 right-1"></div>
+                {hasSeen &&
+                  <div className="absolute animate-pulse p-1 w-2 h-2 rounded-full bg-red-600  top-1 right-1"></div>
+                }
                 <span>
                   <IoNotificationsOutline size={20} />
                 </span>
@@ -237,17 +260,17 @@ const DashHeader = ({ headerName }) => {
               {notif &&
                 <div ref={notifRef} className="absolute right-[-60px] sm:right-0 z-50 origin-top-right bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 mt-2 w-auto rounded-md shadow-lg">
                   <div className="block top-[-6px] bg-white h-3 w-3 border-t border-l rotate-45 absolute right-3"></div>
-                  <div className="pb-2 w-80">
+                  <div className="pb-2 w-[21rem]">
                     <div className="py-3 border-b ">
                       <h1 className="px-5 font-semibold">Last viewed</h1>
                     </div>
-                    <div className="h-72 overflow-auto">
+                    {/* <div className="h-72 overflow-auto">
                       {logs.map((log, idx) => (
                         <div
                           key={idx}
-                          onClick={() => alert(JSON.stringify(log, null, 2))}
-                          className="flex hover:bg-gray-50 cursor-pointer justify-between items-center gap-3 py-4 px-5 border-b text-sm">
-                          <div className="flex gap-3">
+                          onClick={() => onUpdateLog(log)}
+                          className={`${!log?.seen && `bg-slate-200`} flex hover:bg-gray-50 cursor-pointer justify-between items-center gap-3 py-4 px-5 border-b text-sm`}>
+                          <div className="flex gap-3 relative ">
                             <img
                               alt="Profile"
                               src={log.avatar}
@@ -258,15 +281,15 @@ const DashHeader = ({ headerName }) => {
                               <p title={log.date} className="text-gray-500 text-xs font-l"><UserLastLogin lastLoginTime={log.date} /></p>
                             </div>
                           </div>
-                          <div className="text-xs font-light text-right text-gray-500 w-24">
-                            
+                          <div className="text-xs font-light text-right text-gray-500 w-24 ">
                             <h2 className="text-wrap">{log?.deviceInfo?.device}</h2>
                             <h2 className="text-wrap">{log?.deviceInfo?.platform}</h2>
                           </div>
                         </div>
                       ))}
 
-                    </div>
+                    </div> */}
+                    <LogsComponent logs={logs}  onUpdateLog={onUpdateLog} />
                   </div>
                 </div>
               }
@@ -275,8 +298,8 @@ const DashHeader = ({ headerName }) => {
 
               <div className="flex gap-4">
 
-                <div className="inline-flex bg-white dark:bg-slate-900 rounded-full" 
-                ref={menuRef}>
+                <div className="inline-flex bg-white dark:bg-slate-900 rounded-full"
+                  ref={menuRef}>
 
                   <div className="relative">
                     <button
