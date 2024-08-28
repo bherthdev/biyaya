@@ -325,13 +325,13 @@ const DashHeader = ({ headerName }) => {
                     </div> */}
                     {logTab === `lastViewed`
                       ? <LogsComponent logs={logs} onUpdateLog={onUpdateLog} />
-                      : <div className="h-72 overflow-auto rounded">
+                      : <div className="h-72 overflow-auto ">
                         {activities.length
                           ? activities.map((activity, idx) => (
                             <div
                               key={idx}
                               onClick={() => onUpdateActivity(activity)}
-                              className={`${!activity?.seen && `border-l-4 border-l-red-400`} flex hover:bg-gray-50 cursor-pointer justify-between items-center gap-3 py-4 px-5 border-b text-sm`}>
+                              className={`${!activity?.seen && `border-l-4 border-l-red-400`} flex rounded-md hover:bg-gray-50 cursor-pointer justify-between items-center gap-3 py-4 px-5 border-b text-sm`}>
 
                               <div className="flex gap-6 relative ">
                                 <div title={activity.date} className="flex gap-1 items-center whitespace-nowrap">
