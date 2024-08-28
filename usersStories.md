@@ -9,7 +9,8 @@
 9. [x] refactor the url and folder structure should be /pos /items
 10. [x] make all the table small 
 11. [x] print receipt
-12. [] refactor users orders and items
-12. [] settings add the category
+12. [x] recent login and activity
+13. [] settings add the category
 14. [] reports
-15. [] recent login and activity
+15. [] refactor users orders and items
+16. [] view receipt in the activity logs
