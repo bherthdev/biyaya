@@ -325,7 +325,7 @@ const DashHeader = ({ headerName }) => {
                     </div> */}
                     {logTab === `lastViewed`
                       ? <LogsComponent logs={logs} onUpdateLog={onUpdateLog} />
-                      : <div className="h-72 overflow-auto rounded-tr-md">
+                      : <div className="h-72 overflow-auto rounded">
                         {activities.length
                           ? activities.map((activity, idx) => (
                             <div
