@@ -5,12 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { ROLES } from "../../config/roles";
 import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineSave, AiOutlineWarning } from "react-icons/ai";
 import Image from "../../components/Image";
-import Spenner from "../../components/Spenner";
+import Spenner from "../../components/Spinner";
 import useAuth from "../../hooks/useAuth";
 import { AiOutlineUserDelete } from 'react-icons/ai';
 import { BsArrowLeftShort } from 'react-icons/bs';
 import { toast } from 'react-toastify';
 import Modal from "../../components/Modal";
+import useActivityLogger from "../../hooks/useActivityLogger";
 
 
 const USER_REGEX = /^[A-z]{3,20}$/;
@@ -18,8 +19,8 @@ const PWD_REGEX = /^[A-z0-9!@#$%]{4,12}$/;
 
 const EditUserForm = ({ user }) => {
 
-
-  const { id } = useAuth(); //current user id
+  const { log } = useActivityLogger();
+  const { id, name: userName } = useAuth(); //current user id
 
   const [updateUser, { isLoading, isSuccess, isError, error }] =
     useUpdateUserMutation();
@@ -138,6 +139,9 @@ const EditUserForm = ({ user }) => {
           progress: undefined,
           theme: "dark",
         });
+
+        log(`UPDATE USER`, `updated existing user data and password of ${name}`)
+
       }
 
     } else {
@@ -177,6 +181,8 @@ const EditUserForm = ({ user }) => {
           theme: "dark",
         });
 
+        log(`UPDATE USER`, `${userName} updated existing user data of ${name}`)
+
       }
     }
   };
@@ -211,6 +217,8 @@ const EditUserForm = ({ user }) => {
           progress: undefined,
           theme: "dark",
         });
+        log(`DELETE USER`, `${userName} deleted user ${name}`)
+
       }
 
 
@@ -236,9 +244,6 @@ const EditUserForm = ({ user }) => {
     canSave = [roles, validUsername].every(Boolean) && !isLoading;
   }
 
-  const errClass = isError
-    ? "text-gray-900 sm:text-2xl dark:text-gray-200"
-    : "offscreen";
   const validUserClass = !validUsername
     ? "text-red-600 dark:text-red-600"
     : "text-blue-700 dark:text-blue-400";
@@ -275,7 +280,7 @@ const EditUserForm = ({ user }) => {
         <h1 className="mb-2 text-xl font-semibold text-gray-500 sm:text-2xl dark:text-gray-200 ">
           {id === user._id ? 'Account Setting' : 'Edit Employee'}
         </h1>
-        <p className={errClass}>{error?.data?.message}</p>
+        <p className="text-red-700 sm:text-xl dark:text-gray-200">{error?.data?.message}</p>
 
         <div className="mt-5 md:col-span-2 ">
           <form onSubmit={(e) => e.preventDefault()}>

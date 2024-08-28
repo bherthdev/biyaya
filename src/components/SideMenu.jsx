@@ -6,7 +6,7 @@ import { IoReceiptOutline, IoSettingsOutline } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSendLogoutMutation } from "../features/auth/authApiSlice";
 import useAuth from "../hooks/useAuth";
-import Spinner from "./Spenner";
+import Spinner from "./Spinner";
 import PageError from "./PageError";
 import MenuItem from "./MenuItem";
 import { IoIosLogOut } from "react-icons/io";

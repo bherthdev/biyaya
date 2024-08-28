@@ -22,17 +22,17 @@ const UserLastLogin = ({ lastLoginTime }) => {
         const diffInYears = currentPST.getFullYear() - lastLogin.getFullYear();
 
         if (diffInSeconds < 60) {
-            return `${diffInSeconds} second${diffInSeconds > 1 ? 's' : ''} ago`;
+            return `just now`;
         } else if (diffInMinutes < 60) {
-            return `${diffInMinutes} minute${diffInMinutes > 1 ? 's' : ''} ago`;
+            return `${diffInMinutes}m`;
         } else if (diffInHours < 24) {
-            return `${diffInHours} hour${diffInHours > 1 ? 's' : ''} ago`;
+            return `${diffInHours}h`;
         } else if (diffInDays < 30) {
-            return `${diffInDays} day${diffInDays > 1 ? 's' : ''} ago`;
+            return `${diffInDays}d`;
         } else if (diffInMonths < 12) {
-            return `${diffInMonths} month${diffInMonths > 1 ? 's' : ''} ago`;
+            return `${diffInMonths}m`;
         } else {
-            return `${diffInYears} year${diffInYears > 1 ? 's' : ''} ago`;
+            return `${diffInYears}y`;
         }
     };
 

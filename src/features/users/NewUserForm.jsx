@@ -4,13 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { ROLES } from "../../config/roles";
 import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineSave } from "react-icons/ai";
 import Image from "../../components/Image";
-import Spenner from "../../components/Spenner";
+import Spenner from "../../components/Spinner";
 import { BsArrowLeftShort } from 'react-icons/bs';
-import { MdDelete } from 'react-icons/md';
-import { RiAddFill } from 'react-icons/ri';
-import Thead from "../../components/Thead";
 import { toast } from 'react-toastify';
 import iconPicture from "../../assets/icon-item.svg";
+import useActivityLogger from "../../hooks/useActivityLogger";
+import useAuth from "../../hooks/useAuth";
 
 
 
@@ -19,7 +18,8 @@ const PWD_REGEX = /^[A-z0-9!@#$%]{4,12}$/;
 
 const NewUserForm = () => {
 
-
+  const { log } = useActivityLogger();
+  const { name: userName } = useAuth()
   const [btnCancel, setBtnCancel] = useState(false)
 
   const [addNewUser, { isLoading, isSuccess, isError, error }] =
@@ -114,6 +114,8 @@ const NewUserForm = () => {
           progress: undefined,
           theme: "dark",
         })
+        log(`ADD USER`, `${userName} added new user ${name}`)
+
       }
     }
   };
@@ -128,9 +130,7 @@ const NewUserForm = () => {
     );
   });
 
-  const errClass = isError
-    ? "text-gray-900 sm:text-2xl dark:text-gray-200"
-    : "offscreen";
+
   const validUserClass = !validUsername
     ? "text-red-600 dark:text-red-600"
     : "text-blue-700 dark:text-blue-400";
@@ -144,7 +144,7 @@ const NewUserForm = () => {
         <h1 className="mb-2 text-xl font-semibold  text-gray-500 sm:text-2xl dark:text-gray-200">
           New User
         </h1>
-        <p className={errClass}>{error?.data?.message}</p>
+        <p className="text-red-700 sm:text-xl dark:text-gray-200">{error?.data?.message}</p>
 
         <div className="mt-5 md:col-span-2">
           <form onSubmit={onSaveUserClicked} >

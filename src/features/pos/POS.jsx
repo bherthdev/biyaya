@@ -49,8 +49,6 @@ const POS = () => {
 
         content = (
             <>
-
-
                 <div>
                     <ToastContainer />
                     <Cart toggleCart={location.pathname == '/pos'} orderTransac={orderTransac} setOrderTransac={setOrderTransac} orderItems={orderItems} setOrdersItems={setOrdersItems} toggleCartMobile={toggleCartMobile} setToggleCartMobile={setToggleCartMobile} enableSaveOrder={enableSaveOrder} setEnableSaveOrder={setEnableSaveOrder} placeOrder={placeOrder} setPlaceOrder={setPlaceOrder} />

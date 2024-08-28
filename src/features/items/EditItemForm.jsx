@@ -4,16 +4,18 @@ import { useUpdateItemMutation, useDeleteItemMutation } from "./itemsApiSlice";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineSave, AiOutlineWarning } from "react-icons/ai";
 import Image from "../../components/Image";
-import Spenner from "../../components/Spenner";
+import Spinner from "../../components/Spinner";
 import useAuth from "../../hooks/useAuth";
 import { AiOutlineUserDelete } from 'react-icons/ai';
 import { BsArrowLeftShort } from 'react-icons/bs';
 import { toast } from 'react-toastify';
 import Modal from "../../components/Modal";
+import useActivityLogger from "../../hooks/useActivityLogger";
 
 
 const EditItemForm = ({ item }) => {
-  const { id } = useAuth(); //current user id
+  const { log } = useActivityLogger();
+  const { id, name: userName } = useAuth(); //current user id
   const navigate = useNavigate();
 
   const [name, setName] = useState(item.name);
@@ -150,6 +152,8 @@ const EditItemForm = ({ item }) => {
           theme: "dark",
         });
       }
+
+      log(`UPDATE INVINTORY`, `${userName} updated existing item data`)
     }
 
   };
@@ -183,6 +187,8 @@ const EditItemForm = ({ item }) => {
           progress: undefined,
           theme: "dark",
         });
+        log(`DELETE INVINTORY`, `${userName} deleted the item ${name}`)
+
       }
 
 
@@ -220,16 +226,16 @@ const EditItemForm = ({ item }) => {
               <div className="space-y-6 bg-white dark:bg-slate-800 px-4 py-5 sm:p-10">
                 <div className="grid grid-cols-2 gap-20">
                   <div className="col-span-2 sm:col-span-1 ">
-                    <InputField label="Item name" value={name} onChange={handleInputChange(setName)} />
+                    <InputField type="text" label="Item name" value={name} onChange={handleInputChange(setName)} />
                     <TextAreaField label="Description" value={description} onChange={handleInputChange(setDescription)} />
                     <ImageUploadField imageView={imageView} value={item.avatar} onChange={handleImageChange} />
                   </div>
                   <div className=" col-span-2 sm:col-span-1">
-                    <InputField label="Price" value={price} onChange={handleInputChange(setPrice)} />
+                    <InputField type="number" label="Price" value={price} onChange={handleInputChange(setPrice)} />
                     <SelectField label="Category" value={category} onChange={handleInputChange(setCategory)} options={categoryOptions} />
                     <CheckboxField label="Stock management" checked={stockMGT} onChange={handleStockMGTChange} />
                     {stockMGT ? (
-                      <InputField label="Quantity" value={qty} onChange={handleQtyChange} />
+                      <InputField type="number" label="Quantity" value={qty} onChange={handleQtyChange} />
                     ) : (
                       <SelectField label="Status" value={status} onChange={handleInputChange(setStatus)} options={statusOptions} />
                     )}
@@ -239,7 +245,7 @@ const EditItemForm = ({ item }) => {
                 {isDelLoading || isLoading
                   ?
                   <div className="mt-6 flex text-gray-400 justify-end">
-                    <Spenner />
+                    <Spinner />
                     <p>{spinText} </p>
                   </div>
                   : null
@@ -351,12 +357,12 @@ const EditItemForm = ({ item }) => {
   return content;
 };
 
-const InputField = ({ label, value, onChange }) => (
+const InputField = ({ label, value, onChange, type }) => (
   <div className="mt-5">
     <label className="block text-base text-gray-500 dark:text-gray-200">{label}</label>
     <input
       className={`${label == `Item name` ? `w-full` : `w-full sm:w-1/2`} mt-1 px-3 py-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border-gray-700 dark:bg-slate-900 outline-none focus:border-gray-300 focus:shadow-sm rounded-md`}
-      type="text"
+      type={type}
       value={value}
       onChange={onChange}
     />

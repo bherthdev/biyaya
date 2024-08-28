@@ -4,7 +4,7 @@ import { useState } from "react";
 import { PiMoneyLight, PiReceiptLight } from "react-icons/pi";
 import { useGetOrdersQuery } from "../orders/ordersApiSlice";
 import { useGetItemsQuery } from "../items/itemsApiSlice";
-import Spenner from "../../components/Spenner";
+import Spenner from "../../components/Spinner";
 import { MdErrorOutline } from "react-icons/md";
 import ReceiptModal from "../../components/ReceiptModal"
 
@@ -493,7 +493,7 @@ const Welcome = () => {
                     </div>
 
                     <span className="rounded-xl bg-orange-100 p-3 text-orange-600">
-                      <PiMoneyLight   size={25} className="text-orange-500 dark:text-gray-500" />
+                      <PiMoneyLight size={25} className="text-orange-500 dark:text-gray-500" />
 
                     </span>
                   </div>
@@ -517,7 +517,6 @@ const Welcome = () => {
                     </span>
                   </div>
                 </article>
-
               </dl>
             </div>
 

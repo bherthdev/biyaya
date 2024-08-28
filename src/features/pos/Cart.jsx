@@ -8,22 +8,24 @@ import useAuth from "../../hooks/useAuth";
 import Order from "./Order"
 import { MdClose } from "react-icons/md";
 import { useUpdateItemMutation } from "../items/itemsApiSlice";
-import Spenner from "../../components/Spenner";
+import Spenner from "../../components/Spinner";
+import useActivityLogger from "../../hooks/useActivityLogger";
 
 
-export const Cart = ({placeOrder, setPlaceOrder, enableSaveOrder,setEnableSaveOrder, toggleCart, orderTransac, setOrderTransac, orderItems, setOrdersItems, toggleCartMobile, setToggleCartMobile }) => {
+export const Cart = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSaveOrder, toggleCart, orderTransac, setOrderTransac, orderItems, setOrdersItems, toggleCartMobile, setToggleCartMobile }) => {
+    const { log } = useActivityLogger();
 
-  const cashRef = useRef(null);
-  const { formatDate, generateOR } = Order()
+    const cashRef = useRef(null);
+    const { formatDate, generateOR } = Order()
 
     const { id, name } = useAuth(); //current user id
     const [itemToBeUpdate, setItemToBeUpdate] = useState([]);
 
     useEffect(() => {
         orderItems.length && cashRef.current ? cashRef.current.focus() : window.focus()
-      }, [placeOrder]);
-    
-      
+    }, [placeOrder]);
+
+
     // Utility to combine states
     const combineMutationStates = (...mutations) => {
         return {
@@ -32,7 +34,7 @@ export const Cart = ({placeOrder, setPlaceOrder, enableSaveOrder,setEnableSaveOr
             isError: mutations.some(({ isError }) => isError),
             error: mutations.reduce((acc, { error }) => acc || error, null),
         };
-    };    
+    };
 
     // Use mutations
     const [addNewOrder, addNewOrderState] = useAddNewOrderMutation();
@@ -78,7 +80,7 @@ export const Cart = ({placeOrder, setPlaceOrder, enableSaveOrder,setEnableSaveOr
         }
     }
 
-  
+
     const saveOrder = async () => {
 
         if (!enableSaveOrder) return;
@@ -88,7 +90,9 @@ export const Cart = ({placeOrder, setPlaceOrder, enableSaveOrder,setEnableSaveOr
             if (result?.data?.message) {
                 handleSuccess(result.data.message);
 
-                if (itemToBeUpdate.length) { 
+                log(`POS ORDER`, `Order No. ${orderTransac?.orderNo} Grand Total: ${orderTransac?.total}`)
+
+                if (itemToBeUpdate.length) {
                     // Update each item after the order is successfully saved
                     const updatePromises = itemToBeUpdate.map(item => updateItem({ ...item }));
 

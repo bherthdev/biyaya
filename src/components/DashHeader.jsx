@@ -5,8 +5,10 @@ import useAuth from "../hooks/useAuth";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { useGetLogsQuery, useUpdateLogMutation } from "../features/UserLogs/logsApiSlice";
 import PageError from "./PageError";
-import UserLastLogin from "./UserLastLogin";
 import LogsComponent from "./LogsComponent";
+import { useGetActivitiesQuery, useUpdateActivityMutation } from "../features/UserLogs/activitiesApiSlice";
+import UserLastLogin from "./UserLastLogin";
+import { LuClock3 } from "react-icons/lu";
 
 
 const DashHeader = ({ headerName }) => {
@@ -14,6 +16,7 @@ const DashHeader = ({ headerName }) => {
   const [userNav, setUserNav] = useState(false);
   const [notif, setNotif] = useState(false);
   const [notifAdmin, setNotifAdmin] = useState(false);
+  const [logTab, setLogTab] = useState("activity");
   const [colorChange, setColorChange] = useState(false);
   const { id, isAdmin, name, position, avatar, biyaya_secret } = useAuth();
   const menuRef = useRef();
@@ -31,8 +34,23 @@ const DashHeader = ({ headerName }) => {
     refetchOnMountOrArgChange: true,
   });
 
-  const [updateLog, { isLoading, isSuccess, isError, error }] =
+  const {
+    data: ActivitiesData,
+    isLoading: isLoadingActivities,
+    isSuccess: isActivitiesSuccess,
+    isError: isActivitiesError,
+    error: activitiesError,
+  } = useGetActivitiesQuery("activitiesList", {
+    pollingInterval: 10000, // refresh data every 10 seconds
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
+  });
+
+  const [updateLog, { isLoading: isLoadingLog, isSuccess: isSuccessLog, isError: isErrorLog, error: errorLog }] =
     useUpdateLogMutation();
+
+  const [updateActivity, { isLoading: isLoadingActivity, isSuccess: isSuccessActivity, isError: isErrorActivity, error: errorActivity }] =
+    useUpdateActivityMutation();
 
 
   useEffect(() => {
@@ -126,20 +144,19 @@ const DashHeader = ({ headerName }) => {
 
 
   const onUpdateLog = async (log) => {
-
     if (log.seen) {
       alert(JSON.stringify(log, null, 2))
-
     } else {
-
       const result = await updateLog({ id: log.id, seen: log.seen })
-
       if (result) alert(JSON.stringify(log, null, 2))
     }
-
   }
 
-  if (isLoadingLogs) return (
+  const onUpdateActivity = async (activity) => {
+    const result = await updateActivity({ id: activity.id, seen: activity.seen })
+  }
+
+  if (isLoadingLogs || isLoadingActivities) return (
     <div className={`bg-white dark:bg-slate-900 sm:px-8 border flex ${navClass} h-20 sm:h-32 items-center justify-between px-4 right-0`}>
       <div className="flex items-center">
         <p className="flex">
@@ -218,13 +235,18 @@ const DashHeader = ({ headerName }) => {
 
 
 
-  if (isLogsError) return <PageError error={logsError?.data?.message} />
+  if (isLogsError || isActivitiesError) return <PageError error={logsError?.data?.message} />
 
-  if (isLogsSuccess) {
+  if (isLogsSuccess && isActivitiesSuccess) {
 
     const { entities: logsEntities } = LogsData;
+    const { entities: activitiesEntities } = ActivitiesData;
+
     const logs = Object.values(logsEntities).sort((a, b) => new Date(b.date) - new Date(a.date))
-    const hasSeen = logs.some(log => log?.seen === false);
+
+    const activities = Object.values(activitiesEntities).sort((a, b) => new Date(b.date) - new Date(a.date))
+
+    const hasSeen = logs.some(log => log?.seen === false) || activities.some(activity => activity?.seen === false);
 
 
     return (
@@ -242,7 +264,8 @@ const DashHeader = ({ headerName }) => {
           <nav aria-label="Site Nav" className="hidden lg:flex lg:gap-4  lg:text-gray-300" />
 
           <div className="flex justify-between items-center gap-2">
-            {notifAdmin && <div className="relative">
+
+            <div className="relative">
 
               <div
                 onClick={() => setNotif(prev => !prev)}
@@ -259,11 +282,22 @@ const DashHeader = ({ headerName }) => {
               </div>
               {notif &&
                 <div ref={notifRef} className="absolute right-[-60px] sm:right-0 z-50 origin-top-right bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 mt-2 w-auto rounded-md shadow-lg">
-                  <div className="block top-[-6px] bg-white h-3 w-3 border-t border-l rotate-45 absolute right-3"></div>
-                  <div className="pb-2 w-[21rem]">
-                    <div className="py-3 border-b ">
-                      <h1 className="px-5 font-semibold">Last viewed</h1>
+                  <div className="pt-3 px-2 flex -mt-[55px]">
+                    <div onClick={() => setLogTab(prev => prev = "activity")}
+                      className={`${logTab === `activity` ? `bg-white` : `bg-gray-100`} px-5 py-2  border rounded-t-md cursor-pointer`}>
+                      Activity
                     </div>
+                    {notifAdmin &&
+                      <div onClick={() => setLogTab(prev => prev = "lastViewed")}
+                        className={`${logTab === `lastViewed` ? `bg-white` : `bg-gray-100`} px-5 py-2  border rounded-t-md cursor-pointer`}>
+                        Last viewed
+                      </div>
+                    }
+                  </div>
+                  <div className="block -top-[7px] bg-white h-3 w-3 border-t border-l rotate-45 absolute right-[71px] sm:right-3 "></div>
+
+                  <div className="w-[20rem]  sm:w-[25rem] z-50">
+
                     {/* <div className="h-72 overflow-auto">
                       {logs.map((log, idx) => (
                         <div
@@ -289,11 +323,49 @@ const DashHeader = ({ headerName }) => {
                       ))}
 
                     </div> */}
-                    <LogsComponent logs={logs}  onUpdateLog={onUpdateLog} />
+                    {logTab === `lastViewed`
+                      ? <LogsComponent logs={logs} onUpdateLog={onUpdateLog} />
+                      : <div className="h-72 overflow-auto rounded-t-md">
+                        {activities.length
+                          ? activities.map((activity, idx) => (
+                            <div
+                              key={idx}
+                              onClick={() => onUpdateActivity(activity)}
+                              className={`${!activity?.seen && `border-l-4 border-l-red-400`} flex hover:bg-gray-50 cursor-pointer justify-between items-center gap-3 py-4 px-5 border-b text-sm`}>
+
+                              <div className="flex gap-6 relative ">
+                                <div title={activity.date} className="flex gap-1 items-center whitespace-nowrap">
+                                  <LuClock3 size={13} className="text-gray-500" />
+                                  <UserLastLogin lastLoginTime={activity.date} />
+
+                                </div>
+                                <div className="text-xs flex gap-2 justify-center items-center">
+                                  <img
+                                    title={activity.name}
+                                    alt="Profile"
+                                    src={activity.avatar}
+                                    className="h-10 w-10 rounded-full object-cover "
+                                  />
+                                  <div className="flex flex-col justify-center">
+                                    <h2 className="text-wrap font-semibold">{activity?.actionType}</h2>
+                                    <h2 className="text-wrap text-gray-600">{activity?.description}</h2>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))
+                          : <div className="flex">
+                            <p className="mx-auto my-5 text-gray-500">No logs found!</p>
+                          </div>
+                        }
+
+                      </div>
+                    }
                   </div>
                 </div>
               }
-            </div>}
+            </div>
+
             <div className="flex items-center  rounded-full   divide-x divide-gray-100 dark:border-l-gray-900 dark:border-r-gray-900">
 
               <div className="flex gap-4">
