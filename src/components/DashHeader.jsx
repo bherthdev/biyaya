@@ -282,7 +282,7 @@ const DashHeader = ({ headerName }) => {
               </div>
               {notif &&
                 <div ref={notifRef} className="absolute right-[-60px] sm:right-0 z-50 origin-top-right bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 mt-2 w-auto rounded-md shadow-lg">
-                  <div className="pt-3 px-2 flex -mt-[55px]">
+                  <div className="pt-3 px-2 flex -mt-[54px]">
                     <div onClick={() => setLogTab(prev => prev = "activity")}
                       className={`${logTab === `activity` ? `bg-white` : `bg-gray-100`} px-5 py-2  border rounded-t-md cursor-pointer`}>
                       Activity
