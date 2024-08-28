@@ -282,7 +282,7 @@ const DashHeader = ({ headerName }) => {
               </div>
               {notif &&
                 <div ref={notifRef} className="absolute right-[-60px] sm:right-0 z-50 origin-top-right bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 mt-2 w-auto rounded-md shadow-lg">
-                  <div className="pt-3 px-2 flex -mt-[53px]">
+                  <div className="pt-3 px-4  flex -mt-[52px]">
                     <div onClick={() => setLogTab(prev => prev = "activity")}
                       className={`${logTab === `activity` ? `bg-white border-t border-l border-r` : `bg-gray-100 border`} px-5 py-2  rounded-t-md cursor-pointer`}>
                       Activity
@@ -325,7 +325,7 @@ const DashHeader = ({ headerName }) => {
                     </div> */}
                     {logTab === `lastViewed`
                       ? <LogsComponent logs={logs} onUpdateLog={onUpdateLog} />
-                      : <div className="h-72 overflow-auto rounded-t-md">
+                      : <div className="h-72 overflow-auto rounded-tr-md">
                         {activities.length
                           ? activities.map((activity, idx) => (
                             <div
