@@ -78,13 +78,14 @@ const EditItemForm = ({ item }) => {
 
   const handleQtyChange = (e) => {
     const value = e.target.value;
-    setStatus(stockMGT && value > 0 ? "In Stock" : "Out of Stock");
     setQTY(value);
+    setStatus(stockMGT && value > 0 ? "In Stock" : "Out of Stock");
   };
-
+  
   const handleStockMGTChange = () => {
     setStockMGT((prev) => !prev);
-    setStatus("Out of Stock");
+    setQTY(0);
+    setStatus((prev)=> prev = stockMGT &&  qty > 0 ? "In Stock" : "Out of Stock");
   };
 
   const handleImageChange = (e) => {

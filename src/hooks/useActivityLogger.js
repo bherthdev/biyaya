@@ -9,14 +9,15 @@ const useActivityLogger = () => {
   const [addNewActivity, { isLoading, isSuccess, isError, error }] = useAddNewActivityMutation();
 
 
-  const log = async (actionType, description) => {
+  const log = async (actionType, description, orderID) => {
 
-    const result = await addNewActivity({
+   await addNewActivity({
         name,
         date: formatDate(),
         avatar,
         actionType,
         description,
+        orderID,
         seen: false
     })
     //  if (result) console.log("result", result)
