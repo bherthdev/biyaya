@@ -236,7 +236,7 @@ export const Cart = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSave
 
     const content = (
         <>
-            <div className={` ${classToggleCartMobile} shadow-2xl sm:shadow-transparent  h-full bg-white fixed w-80 border ${classToggleCart} z-50 px-5  flex-col justify-between border-e bg-white `}>
+            <div className={` ${classToggleCartMobile} shadow-2xl sm:shadow-transparent  h-full bg-white fixed w-80 border ${classToggleCart} z-40 px-5  flex-col justify-between border-e bg-white `}>
                 <div className={`py-5 flex flex-col  gap-5`}>
                     <div className="flex sm:hidden justify-between">
                         <h1 className={`text-3xl text-gray-700`}
