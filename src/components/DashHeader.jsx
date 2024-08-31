@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useContext } from "react";
 import useAuth from "../hooks/useAuth";
 import { IoNotificationsOutline, IoReceiptOutline } from "react-icons/io5";
 import { useGetLogsQuery, useUpdateLogMutation } from "../features/UserLogs/logsApiSlice";
@@ -11,8 +11,8 @@ import UserLastLogin from "./UserLastLogin";
 import { LuClock3 } from "react-icons/lu";
 import ReceiptModal from "./ReceiptModal"
 
-
 const DashHeader = ({ headerName }) => {
+
   const navigate = useNavigate();
   const [userNav, setUserNav] = useState(false);
   const [notif, setNotif] = useState(false);
@@ -35,6 +35,7 @@ const DashHeader = ({ headerName }) => {
     setIsModalOpen(false)
   }
 
+
   const {
     data: LogsData,
     isLoading: isLoadingLogs,
@@ -46,6 +47,7 @@ const DashHeader = ({ headerName }) => {
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   });
+
 
   const {
     data: ActivitiesData,
@@ -327,7 +329,7 @@ const DashHeader = ({ headerName }) => {
                               <div
                                 key={idx}
                                 onClick={() => onUpdateActivity(activity)}
-                                className={`${!activity?.seen && `border-l-4 border-l-red-400`}  flex hover:bg-gray-50 cursor-pointer justify-between items-center gap-3 py-4 px-5 border-b text-sm`}>
+                                className={`${!activity?.seen && `border-l-4 border-l-red-400`}  flex hover:bg-gray-100 cursor-pointer justify-between items-center gap-3 py-4 px-5 border-b text-sm`}>
 
                                 <div className="flex  gap-4">
                                   <div title={activity.date} className="flex gap-1 items-center whitespace-nowrap">

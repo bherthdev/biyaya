@@ -13,4 +13,4 @@
 13. [] settings add the category
 14. [] reports
 15. [] refactor users orders and items
-16. [] view receipt in the activity logs
+16. [x] view receipt in the activity logs

@@ -1,28 +1,30 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import iconItem from "../../assets/icon-item.svg"
 import { useAddNewOrderMutation } from "../orders/ordersApiSlice";
 import { toast } from "react-toastify";
 import useAuth from "../../hooks/useAuth";
-import Order from "./Order"
 import { MdClose } from "react-icons/md";
 import { useUpdateItemMutation } from "../items/itemsApiSlice";
 import Spenner from "../../components/Spinner";
 import useActivityLogger from "../../hooks/useActivityLogger";
+import { OrderContext } from "../../context/OrderContext";
+import useGenerateORDATE from "../../hooks/useGenerateORDATE";
 
 
-export const Cart = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSaveOrder, toggleCart, orderTransac, setOrderTransac, orderItems, setOrdersItems, toggleCartMobile, setToggleCartMobile }) => {
+export const Cart = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSaveOrder, toggleCart, toggleCartMobile, setToggleCartMobile }) => {
+    const { orderTransac, setOrderTransac } = useContext(OrderContext);
     const { log } = useActivityLogger();
 
     const cashRef = useRef(null);
-    const { formatDate, generateOR } = Order()
+    const { formatDate, generateOR } = useGenerateORDATE()
 
     const { id, name } = useAuth(); //current user id
     const [itemToBeUpdate, setItemToBeUpdate] = useState([]);
 
     useEffect(() => {
-        orderItems.length && cashRef.current ? cashRef.current.focus() : window.focus()
+        orderTransac.items.length && cashRef.current ? cashRef.current.focus() : window.focus()
     }, [placeOrder]);
 
 
@@ -44,7 +46,6 @@ export const Cart = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSave
     const { isLoading, isSuccess, isError, error } = combineMutationStates(addNewOrderState, updateItemState);
 
     // Use `isLoading`, `isSuccess`, `isError`, and `error` as needed when saving the order and updating the items
-
 
 
     const inputChange = (e) => {
@@ -74,9 +75,10 @@ export const Cart = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSave
 
 
     const computeTotal = () => {
-        if (orderItems.length) {
+        console.log(orderTransac)
+
+        if (orderTransac.items.length) {
             setPlaceOrder(prev => !prev)
-            setOrderTransac({ ...orderTransac, items: orderItems })
         }
     }
 
@@ -170,7 +172,6 @@ export const Cart = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSave
         setToggleCartMobile(false);
         setPlaceOrder(false);
         setEnableSaveOrder(false);
-        setOrdersItems([]);
         setOrderTransac({
             user: id,
             orderNo: generateOR(),
@@ -187,47 +188,53 @@ export const Cart = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSave
 
 
     const updateItems = (id, option) => {
-        const index = orderItems.findIndex(item => item.id === id)
-        const tempRows = [...orderItems]; // avoid direct state mutation
-        const tempObj = orderItems[index]; // copy state object at index to a temporary object
+        const index = orderTransac.items.findIndex(item => item.id === id);
+        if (index === -1) return; // Exit if item not found
 
-        if (index !== -1) {
+        const tempRows = [...orderTransac.items]; // Avoid direct state mutation
+        const tempObj = { ...tempRows[index] }; // Copy state object at index to a temporary object
 
-            if (Number(tempObj.qty) >= 1) {
+        if (Number(tempObj.qty) >= 1) {
 
-                //check if + or - the qty
-                if (option) {
-
-                    //check if item stock mgt and current qty is greater than qty
-                    if (tempObj?.stock && Number(tempObj?.currentStock) > Number(tempObj?.qty)) {
-                        tempObj.qty = Number(tempObj.qty) + 1
-                    } else {
-                        //check if item is not stock mgt
-                        if (!tempObj?.stock) tempObj.qty = Number(tempObj.qty) + 1
-                    }
-
-                } else {
-                    tempObj.qty = Number(tempObj.qty) - 1
+            if (option) {
+                // Increment qty if stock management allows it
+                if ((tempObj?.stock && Number(tempObj?.currentStock) > Number(tempObj?.qty)) || !tempObj?.stock) {
+                    tempObj.qty = Number(tempObj.qty) + 1;
                 }
-
-                tempObj.total = Number(tempObj.qty) * Number(tempObj.price)
-                tempRows[index] = tempObj;
+            } else {
+                // Decrement qty
+                tempObj.qty = Number(tempObj.qty) - 1;
             }
 
-            tempObj.qty === 0 && tempRows.splice(index, 1)
+            tempObj.total = Number(tempObj.qty) * Number(tempObj.price);
+
+            // Remove item if quantity is zero
+            if (tempObj.qty === 0) {
+                tempRows.splice(index, 1);
+            } else {
+                tempRows[index] = tempObj; // Update item in the array
+            }
         }
 
-        setOrderTransac({ ...orderTransac, total: orderItems.reduce((totalOrder, item) => totalOrder + item.total, 0) })
-        setOrdersItems(tempRows)
+        // Calculate new total
+        const newTotal = tempRows.reduce((totalOrder, item) => totalOrder + item.total, 0);
 
-        // update computation
-        if (orderItems.length > 0) {
-            setPlaceOrder(false)
-            setEnableSaveOrder(false)
-            setOrderTransac({ ...orderTransac, total: orderItems.reduce((totalOrder, item) => totalOrder + item.total, 0), cash: 0, change: 0 })
+        // Set the updated state
+        setOrderTransac({
+            ...orderTransac,
+            items: tempRows,
+            total: newTotal,
+            cash: 0,
+            change: 0
+        });
+
+        // Update other states if there are items in the cart
+        if (tempRows.length > 0) {
+            setPlaceOrder(false);
+            setEnableSaveOrder(false);
         }
+    };
 
-    }
 
 
     const classToggleCart = toggleCart ? ' ease-in-out duration-300 right-0 top-0 bottom-0' : ' right-[-100%]  ease-in-out duration-300'
@@ -279,8 +286,8 @@ export const Cart = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSave
                 </div>
                 <div className="h-2/3 overflow-x-auto">
 
-                    {orderItems.length
-                        ? orderItems.map((item, idx) => (
+                    {orderTransac.items.length
+                        ? orderTransac.items.map((item, idx) => (
                             <div key={idx} className="flex mt-5 gap-3  border-b dark:bg-slate-800 py-5 border-gray-300 dark:border-gray-800 text-center text-gray-800 dark:text-gray-200 hover:text-gray-500 dark:hover:text-gray-400">
                                 <div className="text-4xl  font-bold  md:text-5xl   flex flex-col gap-2">
                                     <div className='h-24 w-20 object-cover bg-gray-600 rounded-2xl'>
@@ -394,7 +401,7 @@ export const Cart = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSave
                                 <div
                                     onClick={computeTotal}
                                     title="Place an order"
-                                    className={`${orderItems.length ? `bg-[#242424] hover:bg-gray-700` : `bg-gray-300`} cursor-pointer flex font-medium text-xl justify-center  text-white  w-full py-3 border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
+                                    className={`${orderTransac.items.length ? `bg-[#242424] hover:bg-gray-700` : `bg-gray-300`} cursor-pointer flex font-medium text-xl justify-center  text-white  w-full py-3 border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
                                     Place an order
 
                                 </div>

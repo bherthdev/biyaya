@@ -3,7 +3,7 @@ import UserLastLogin from "./UserLastLogin";
 import { useState, useEffect, useRef } from 'react';
 
 const LogsComponent = ({ logs, onUpdateLog }) => {
-    const [visibleLogs, setVisibleLogs] = useState(5);
+    const [visibleLogs, setVisibleLogs] = useState(4);
     const [loading, setLoading] = useState(false);
     const containerRef = useRef(null);
 

@@ -2,8 +2,11 @@ import { useSelector } from 'react-redux';
 import { selectItemById } from '../items/itemsApiSlice';
 import { FaPlus } from 'react-icons/fa';
 import iconItem from "../../assets/icon-item.svg";
+import { OrderContext } from '../../context/OrderContext';
+import { useContext } from 'react';
 
-const MenuItem = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSaveOrder, itemId, search, orderTransac, setOrderTransac, orderItems, setOrdersItems }) => {
+const MenuItem = ({ setPlaceOrder, setEnableSaveOrder, itemId, search }) => {
+    const { orderTransac, setOrderTransac } = useContext(OrderContext);
 
     const item = useSelector((state) => selectItemById(state, itemId));
 
@@ -15,21 +18,27 @@ const MenuItem = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSaveOrd
         tempObj.qty += 1;
         tempObj.total = tempObj.qty * tempObj.price;
         tempRows[index] = tempObj;
-        setOrdersItems(tempRows);
+        setOrderTransac({...orderTransac, items: [...orderTransac.items, tempRows]});
         setOrderTransac({ ...orderTransac, total: calculateTotal(tempRows), cash: 0, change: 0 });
     };
 
 
     const addItemToCart = () => {
-        const index = orderItems.findIndex(items => items.id === item.id);
-        const tempRows = [...orderItems]; // Avoid direct state mutation
-
+        const index = orderTransac.items.findIndex(items => items.id === item.id);
+    
+        const tempRows = [...orderTransac.items]; // Avoid direct state mutation
+    
         if (index !== -1) {
-            const tempObj = { ...orderItems[index] }; // Copy state object at index to a temporary object
+            const tempObj = { ...orderTransac.items[index] }; // Copy state object at index to a temporary object
             const canAddToCart = !tempObj.stock || tempObj.currentStock > tempObj.qty;
-
+    
             if (canAddToCart) {
                 updateItemInCart(tempRows, index, tempObj);
+                setOrderTransac({
+                    ...orderTransac,
+                    items: tempRows,
+                    total: orderTransac.total + tempObj.price, // Assuming you're recalculating the total
+                });
             }
         } else {
             const newItem = {
@@ -44,13 +53,24 @@ const MenuItem = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSaveOrd
                 price: Number(item.price),
                 total: Number(item.price),
             };
-
-            setOrdersItems([...orderItems, newItem]);
-            setOrderTransac({ ...orderTransac, total: orderTransac.total + newItem.price, cash: 0, change: 0 });
+    
+            setOrderTransac((prevState) => {
+                const updatedItems = [...prevState.items, newItem];
+                return {
+                    ...prevState,
+                    items: updatedItems,
+                    total: prevState.total + newItem.price,
+                    cash: 0,
+                    change: 0
+                };
+            });
         }
-        setPlaceOrder(false)
-        setEnableSaveOrder(false)
+    
+        setPlaceOrder(false);
+        setEnableSaveOrder(false);
     };
+    
+
 
     if (item && item.status === "In Stock" && item.category === search) {
         return (

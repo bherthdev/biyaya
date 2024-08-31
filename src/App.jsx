@@ -19,6 +19,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Analytics } from "@vercel/analytics/react"
 import POS from "./features/pos/POS";
 import AccessDenied from "./components/AccessDenied";
+import { OrderProvider } from "./context/OrderContext";
 
 
 function App() {
@@ -26,84 +27,86 @@ function App() {
 
   return (
     <div className="h-full  w-full  dark:bg-slate-900">
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Login />} />
+      <OrderProvider >
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Login />} />
 
-          {/* <Route path="login" element={<Login />} /> */}
+            {/* <Route path="login" element={<Login />} /> */}
 
-          {/* Protected Routes */}
-          <Route element={<PersistLogin />}>
-            <Route element={<RequireAuth allowedRoles={[...Object.values(ROLES)]} />}>
-              <Route element={<Prefetch />}>
-                <Route path="dashboard" element={<DashLayout />}>
-                  <Route index element={<Welcome />} />
+            {/* Protected Routes */}
+            <Route element={<PersistLogin />}>
+              <Route element={<RequireAuth allowedRoles={[...Object.values(ROLES)]} />}>
+                <Route element={<Prefetch />}>
+                  <Route path="dashboard" element={<DashLayout />}>
+                    <Route index element={<Welcome />} />
 
-                  <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin]} />}>
-                    <Route path="users">
-                      <Route index element={<> <ToastContainer /> <UsersList /></>} />
-                      <Route path=":id" element={<> <ToastContainer /><EditUser /> </>} />
-                      <Route path="new" element={<> <ToastContainer /><NewUserForm /> </>} />
+                    <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin]} />}>
+                      <Route path="users">
+                        <Route index element={<> <ToastContainer /> <UsersList /></>} />
+                        <Route path=":id" element={<> <ToastContainer /><EditUser /> </>} />
+                        <Route path="new" element={<> <ToastContainer /><NewUserForm /> </>} />
+                      </Route>
                     </Route>
-                  </Route>
-                  <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin]} />}>
-                    <Route path="items">
-                      <Route index element={<> <ToastContainer /> <ItemsList /></>} />
-                      <Route path=":id" element={<> <ToastContainer /><EditItem /> </>} />
-                      <Route path="new" element={<> <ToastContainer /><NewItemForm /> </>} />
+                    <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin]} />}>
+                      <Route path="items">
+                        <Route index element={<> <ToastContainer /> <ItemsList /></>} />
+                        <Route path=":id" element={<> <ToastContainer /><EditItem /> </>} />
+                        <Route path="new" element={<> <ToastContainer /><NewItemForm /> </>} />
+                      </Route>
                     </Route>
-                  </Route>
-                  <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin, ROLES.Employee]} />}>
-                    <Route path="pos">
-                      <Route index element={<> <ToastContainer /> <POS /></>} />
+                    <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin, ROLES.Employee]} />}>
+                      <Route path="pos">
+                        <Route index element={<> <ToastContainer /> <POS /></>} />
+                      </Route>
                     </Route>
-                  </Route>
-                  <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin, ROLES.Employee]} />}>
-                    <Route path="access-denied">
-                      <Route index element={<> <ToastContainer /> <AccessDenied /></>} />
+                    <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin, ROLES.Employee]} />}>
+                      <Route path="access-denied">
+                        <Route index element={<> <ToastContainer /> <AccessDenied /></>} />
+                      </Route>
                     </Route>
-                  </Route>
-                  <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin]} />}>
-                    <Route path="orders">
-                      <Route index element={<> <ToastContainer /> <OrdersList /></>} />
-                      {/* <Route path=":id" element={<> <ToastContainer /><EditOrder /> </>} />
+                    <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin]} />}>
+                      <Route path="orders">
+                        <Route index element={<> <ToastContainer /> <OrdersList /></>} />
+                        {/* <Route path=":id" element={<> <ToastContainer /><EditOrder /> </>} />
                       <Route path="new" element={<> <ToastContainer /><NewOrderForm /> </>} /> */}
+                      </Route>
                     </Route>
-                  </Route>
-                </Route>{/* End Dashboard */}
+                  </Route>{/* End Dashboard */}
 
-                <Route path="pos" element={<DashLayout />}>
-                  <Route index element={<POS />} />
-                  <Route path='*' element={<Navigate replace to="/" />} />
-                </Route>{/* End pos */}
+                  <Route path="pos" element={<DashLayout />}>
+                    <Route index element={<POS />} />
+                    <Route path='*' element={<Navigate replace to="/" />} />
+                  </Route>{/* End pos */}
 
 
-                <Route path="inventory" element={<DashLayout />}>
-                  <Route index element={<> <ToastContainer /> <ItemsList /></>} />
-                  <Route path=":id" element={<> <ToastContainer /><EditItem /> </>} />
-                  <Route path="new" element={<> <ToastContainer /><NewItemForm /> </>} />
-                </Route>{/* End inventory */}
+                  <Route path="inventory" element={<DashLayout />}>
+                    <Route index element={<> <ToastContainer /> <ItemsList /></>} />
+                    <Route path=":id" element={<> <ToastContainer /><EditItem /> </>} />
+                    <Route path="new" element={<> <ToastContainer /><NewItemForm /> </>} />
+                  </Route>{/* End inventory */}
 
-                <Route path="orders" element={<DashLayout />}>
-                  <Route index element={<> <ToastContainer /> <OrdersList /></>} />
-                </Route>{/* End orders */}
+                  <Route path="orders" element={<DashLayout />}>
+                    <Route index element={<> <ToastContainer /> <OrdersList /></>} />
+                  </Route>{/* End orders */}
 
-                <Route path="settings" element={<DashLayout />}>
-                  <Route index element={<> <ToastContainer /> <UsersList /></>} />
-               
+                  <Route path="settings" element={<DashLayout />}>
+                    <Route index element={<> <ToastContainer /> <UsersList /></>} />
+
                     <Route path=":id" element={<> <ToastContainer /><EditUser /> </>} />
                     <Route path="new" element={<> <ToastContainer /><NewUserForm /> </>} />
-              
 
-                </Route>{/* End orders */}
 
+                  </Route>{/* End orders */}
+
+                </Route>
               </Route>
-            </Route>
-          </Route>{/* End Protected Routes */}
+            </Route>{/* End Protected Routes */}
 
-          <Route path='*' element={<Navigate replace to="/" />} />
-        </Route>
-      </Routes>
+            <Route path='*' element={<Navigate replace to="/" />} />
+          </Route>
+        </Routes>
+      </OrderProvider>
       <Analytics />
     </div>
   );

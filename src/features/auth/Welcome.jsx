@@ -13,8 +13,8 @@ const Welcome = () => {
   const columnsOrders = ["Order#/Type", "Date/Time", "ITEMS", "Total", "Barista"];
   const columnsItems = ["Item Name", "Stock"];
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [orderId, setOderID] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleModalOpen = (id) => {
     setOderID(id)
@@ -456,7 +456,7 @@ const Welcome = () => {
                     <div>
                       <p className="text-sm text-gray-500">Total Sales</p>
 
-                      <p className="text-2xl font-medium text-gray-900">₱{Number(totalSales).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
+                      <p className="text-2xl font-medium text-gray-900">₱ {Number(totalSales).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
                     </div>
 
                     <span className="rounded-xl bg-green-100 p-3 text-green-600">
@@ -489,7 +489,7 @@ const Welcome = () => {
                     <div>
                       <p className="text-sm text-gray-500"> Sales Today</p>
 
-                      <p className="text-2xl font-medium text-gray-900">₱{Number(salesToday()).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
+                      <p className="text-2xl font-medium text-gray-900">₱ {Number(salesToday()).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
                     </div>
 
                     <span className="rounded-xl bg-orange-100 p-3 text-orange-600">
@@ -559,7 +559,7 @@ const Welcome = () => {
                             <p className="">{order.items.reduce((totalItem, item) => totalItem + Number(item.qty), 0)} </p>
                           </td>
                           <td className={`whitespace-nowrap px-6 py-3 font-semibold  text-gray-900 dark:text-gray-300`}>
-                            <p className="">₱{Number(order.total).toFixed(2)} </p>
+                            <p className="">₱ {Number(order.total).toFixed(2)} </p>
                           </td>
 
                           <td className={`whitespace-nowrap px-6 py-3 text-gray-900 dark:text-gray-300 `}>

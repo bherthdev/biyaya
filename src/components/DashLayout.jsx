@@ -3,12 +3,10 @@ import DashHeader from "./DashHeader";
 import { SideMenu } from "./SideMenu";
 import { useState } from "react";
 import { Cart } from "../features/pos/Cart";
-import Order from "../features/pos/Order"
 
 
 const DashLayout = () => {
 
-  const {orderTransac, orderItems, setOrdersItems} = Order()
 
 
   const [toggleSideMenu, setToggleSideMenu] = useState(true)
@@ -22,13 +20,17 @@ const DashLayout = () => {
   return (
     <>
       <div className="flex ">
-        <SideMenu toggleSideMenu={toggleSideMenu} setToggleSideMenu={setToggleSideMenu} setHeaderName={setHeaderName} setToggleCart={setToggleCart}/>
+        <SideMenu toggleSideMenu={toggleSideMenu} setToggleSideMenu={setToggleSideMenu} setHeaderName={setHeaderName} setToggleCart={setToggleCart} />
         <div aria-label="Site Header" className={`${classToggleSideMenu} ${classToggleCart} dark:border-gray-800 h-full w-full`}>
-           <DashHeader toggleSideMenu={toggleSideMenu} headerName={headerName} toggleCart={toggleCart} />
-            
+          <DashHeader toggleSideMenu={toggleSideMenu} headerName={headerName} toggleCart={toggleCart} />
+
           <Outlet />
         </div>
         {/* <Cart toggleCart={toggleCart} orderItems={orderItems} orderTransac={orderTransac} setOrdersItems={setOrdersItems}/> */}
+
+        {/* <ToastContainer />
+        <Cart toggleCart={toggleSideMenu} toggleCartMobile={toggleSideMenu} setToggleCartMobile={setToggleCartMobile} enableSaveOrder={enableSaveOrder} setEnableSaveOrder={setEnableSaveOrder} placeOrder={placeOrder} setPlaceOrder={setPlaceOrder} /> */}
+
       </div>
     </>
   )

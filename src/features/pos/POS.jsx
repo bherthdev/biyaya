@@ -1,18 +1,18 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useGetItemsQuery } from '../items/itemsApiSlice';
 import { useNavigate } from 'react-router-dom';
 import PageLoader from "../../components/PageLoader";
 import MenuItem from './MenuItem';
-import Order from "./Order"
 import { Cart } from './Cart';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { MdOutlineShoppingCart } from 'react-icons/md';
 import PageError from '../../components/PageError';
+import { OrderContext } from '../../context/OrderContext';
 
 const POS = () => {
-
-    const { orderTransac, setOrderTransac, orderItems, setOrdersItems } = Order()
+    
+    const { orderTransac } = useContext(OrderContext);
     const [toggleCartMobile, setToggleCartMobile] = useState(false)
     const [enableSaveOrder, setEnableSaveOrder] = useState(false)
     const [placeOrder, setPlaceOrder] = useState(false)
@@ -45,13 +45,13 @@ const POS = () => {
     if (isSuccess) {
         const { ids } = items;
 
-        const menuContent = ids?.length && ids.map((itemId) => <MenuItem key={itemId} itemId={itemId} search={search} orderItems={orderItems} setOrderTransac={setOrderTransac} orderTransac={orderTransac} setOrdersItems={setOrdersItems} enableSaveOrder={enableSaveOrder} setEnableSaveOrder={setEnableSaveOrder} placeOrder={placeOrder} setPlaceOrder={setPlaceOrder}  />)
+        const menuContent = ids?.length && ids.map((itemId) => <MenuItem key={itemId} itemId={itemId} search={search} enableSaveOrder={enableSaveOrder} setEnableSaveOrder={setEnableSaveOrder}  setPlaceOrder={setPlaceOrder}  />)
 
         content = (
             <>
                 <div>
                     <ToastContainer />
-                    <Cart toggleCart={location.pathname == '/pos'} orderTransac={orderTransac} setOrderTransac={setOrderTransac} orderItems={orderItems} setOrdersItems={setOrdersItems} toggleCartMobile={toggleCartMobile} setToggleCartMobile={setToggleCartMobile} enableSaveOrder={enableSaveOrder} setEnableSaveOrder={setEnableSaveOrder} placeOrder={placeOrder} setPlaceOrder={setPlaceOrder} />
+                    <Cart toggleCart={location.pathname == '/pos'}  toggleCartMobile={toggleCartMobile} setToggleCartMobile={setToggleCartMobile} enableSaveOrder={enableSaveOrder} setEnableSaveOrder={setEnableSaveOrder} placeOrder={placeOrder} setPlaceOrder={setPlaceOrder} />
                 </div>
                 <div aria-label="Page Header" className="">
                     <div className="mx-auto max-w-screen-xl px-0 py-8 sm:px-6 lg:px-8">
@@ -91,7 +91,7 @@ const POS = () => {
                                     <div onClick={() => setToggleCartMobile(true)} className='flex sm:hidden justify-between items-center  relative'>
                                         <div className='absolute p-1 w-6 h-6 rounded-full bg-[#242424] top-[-0%] left-[-100%] '>
                                             <h1 className='text-white text-xs text-center '>
-                                                {orderItems?.reduce((total, item) => total + item.qty, 0)}
+                                                {orderTransac.items?.reduce((total, item) => total + item.qty, 0)}
                                             </h1>
                                         </div>
 

@@ -1,27 +1,26 @@
 import { useAddNewActivityMutation } from '../features/UserLogs/activitiesApiSlice';
-import Order from '../features/pos/Order';
 import useAuth from './useAuth';
+import useGenerateORDATE from './useGenerateORDATE';
 
 const useActivityLogger = () => {
-    const { name, avatar } = useAuth();
-    const { formatDate } = Order()
-
-  const [addNewActivity, { isLoading, isSuccess, isError, error }] = useAddNewActivityMutation();
-
+  const { name, avatar } = useAuth();
+  const { formatDate } = useGenerateORDATE();
+  const [addNewActivity] = useAddNewActivityMutation();
 
   const log = async (actionType, description, orderID) => {
-
-   await addNewActivity({
+    try {
+      await addNewActivity({
         name,
         date: formatDate(),
         avatar,
         actionType,
         description,
         orderID,
-        seen: false
-    })
-    //  if (result) console.log("result", result)
-
+        seen: false,
+      });
+    } catch (error) {
+      console.error('Failed to log activity:', error);
+    }
   };
 
   return { log };
