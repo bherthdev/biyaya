@@ -8,11 +8,12 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { MdOutlineShoppingCart } from 'react-icons/md';
 import PageError from '../../components/PageError';
-import { OrderContext } from '../../context/OrderContext';
+import { POSContext } from '../../context/POSContext';
 
 const POS = () => {
     
-    const { orderTransac } = useContext(OrderContext);
+    const { orderTransac } = useContext(POSContext);
+
     const [toggleCartMobile, setToggleCartMobile] = useState(false)
     const [enableSaveOrder, setEnableSaveOrder] = useState(false)
     const [placeOrder, setPlaceOrder] = useState(false)

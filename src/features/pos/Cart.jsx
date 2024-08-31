@@ -9,12 +9,13 @@ import { MdClose } from "react-icons/md";
 import { useUpdateItemMutation } from "../items/itemsApiSlice";
 import Spenner from "../../components/Spinner";
 import useActivityLogger from "../../hooks/useActivityLogger";
-import { OrderContext } from "../../context/OrderContext";
+import { POSContext } from "../../context/POSContext";
 import useGenerateORDATE from "../../hooks/useGenerateORDATE";
 
 
 export const Cart = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSaveOrder, toggleCart, toggleCartMobile, setToggleCartMobile }) => {
-    const { orderTransac, setOrderTransac } = useContext(OrderContext);
+   
+    const { orderTransac, setOrderTransac } = useContext(POSContext);
     const { log } = useActivityLogger();
 
     const cashRef = useRef(null);

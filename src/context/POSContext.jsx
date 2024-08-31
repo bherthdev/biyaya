@@ -2,9 +2,9 @@ import React, { createContext, useState, useEffect } from 'react';
 import useGenerateORDATE from '../hooks/useGenerateORDATE';
 import useAuth from '../hooks/useAuth';
 
-export const OrderContext = createContext();
+export const POSContext = createContext();
 
-export const OrderProvider = ({ children }) => {
+export const POSProvider = ({ children }) => {
 
   const { id, name } = useAuth(); //current user id
   const { formatDate, generateOR } = useGenerateORDATE();
@@ -32,8 +32,8 @@ export const OrderProvider = ({ children }) => {
   }, [id, name]);
 
   return (
-    <OrderContext.Provider value={{ orderTransac, setOrderTransac }}>
+    <POSContext.Provider value={{ orderTransac, setOrderTransac }}>
       {children}
-    </OrderContext.Provider>
+    </POSContext.Provider>
   );
 };

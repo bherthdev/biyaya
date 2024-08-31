@@ -19,7 +19,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Analytics } from "@vercel/analytics/react"
 import POS from "./features/pos/POS";
 import AccessDenied from "./components/AccessDenied";
-import { OrderProvider } from "./context/OrderContext";
+import { POSProvider } from "./context/POSContext";
 
 
 function App() {
@@ -27,7 +27,7 @@ function App() {
 
   return (
     <div className="h-full  w-full  dark:bg-slate-900">
-      <OrderProvider >
+      <POSProvider >
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Login />} />
@@ -106,7 +106,7 @@ function App() {
             <Route path='*' element={<Navigate replace to="/" />} />
           </Route>
         </Routes>
-      </OrderProvider>
+      </POSProvider>
       <Analytics />
     </div>
   );

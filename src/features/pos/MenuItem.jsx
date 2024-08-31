@@ -2,11 +2,12 @@ import { useSelector } from 'react-redux';
 import { selectItemById } from '../items/itemsApiSlice';
 import { FaPlus } from 'react-icons/fa';
 import iconItem from "../../assets/icon-item.svg";
-import { OrderContext } from '../../context/OrderContext';
 import { useContext } from 'react';
+import { POSContext } from '../../context/POSContext';
 
 const MenuItem = ({ setPlaceOrder, setEnableSaveOrder, itemId, search }) => {
-    const { orderTransac, setOrderTransac } = useContext(OrderContext);
+    
+    const { orderTransac, setOrderTransac } = useContext(POSContext);
 
     const item = useSelector((state) => selectItemById(state, itemId));
 
