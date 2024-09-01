@@ -22,7 +22,7 @@ const LogsComponent = ({ logs, onUpdateLog }) => {
             loadMoreLogs();
         }
     };
-    
+
 
     useEffect(() => {
         const container = containerRef.current;
@@ -38,28 +38,33 @@ const LogsComponent = ({ logs, onUpdateLog }) => {
 
     return (
         <div ref={containerRef} className="h-72 overflow-auto">
-            {logs.slice(0, visibleLogs).map((log, idx) => (
-                <div
-                    key={idx}
-                    onClick={() => onUpdateLog(log)}
-                    className={`${!log?.seen && `border-l-4 border-l-red-400`} rounded-t-lg flex hover:bg-gray-50 cursor-pointer justify-between items-center gap-3 py-4 px-5 border-b text-sm`}>
-                    <div className="flex gap-3 relative ">
-                        <img
-                            alt="Profile"
-                            src={log.avatar}
-                            className="h-10 w-10 rounded-lg object-cover "
-                        />
-                        <div>
-                            <h2 className="font-semibold">{log.name}</h2>
-                            <p title={log.date} className="text-gray-500 text-sm"><UserLastLogin lastLoginTime={log.date} /></p>
+            {logs.length
+                ? logs.slice(0, visibleLogs).map((log, idx) => (
+                    <div
+                        key={idx}
+                        onClick={() => onUpdateLog(log)}
+                        className={`${!log?.seen && `border-l-4 border-l-red-400`} flex hover:bg-gray-50 cursor-pointer justify-between items-center gap-3 py-4 px-5 border-b text-sm`}>
+                        <div className="flex gap-3 relative ">
+                            <img
+                                alt="Profile"
+                                src={log.avatar}
+                                className="h-10 w-10 rounded-lg object-cover "
+                            />
+                            <div>
+                                <h2 className="font-semibold">{log.name}</h2>
+                                <p title={log.date} className="text-gray-500 text-sm"><UserLastLogin lastLoginTime={log.date} /></p>
+                            </div>
+                        </div>
+                        <div className="text-xs font-light text-right text-gray-500 w-24 ">
+                            <h2 className="text-wrap">{log?.deviceInfo?.device}</h2>
+                            <h2 className="text-wra">{log?.deviceInfo?.platform}</h2>
                         </div>
                     </div>
-                    <div className="text-xs font-light text-right text-gray-500 w-24 ">
-                        <h2 className="text-wrap">{log?.deviceInfo?.device}</h2>
-                        <h2 className="text-wra">{log?.deviceInfo?.platform}</h2>
-                    </div>
+                ))
+                : <div className="flex">
+                    <p className="mx-auto my-5 text-gray-500">No logs found!</p>
                 </div>
-            ))}
+            }
             {loading && (
                 <div className="flex py-4 justify-center">
                     <Spenner />

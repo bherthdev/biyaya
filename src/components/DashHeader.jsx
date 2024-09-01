@@ -19,7 +19,7 @@ const DashHeader = ({ headerName }) => {
   const [notifAdmin, setNotifAdmin] = useState(false);
   const [logTab, setLogTab] = useState("activity");
   const [colorChange, setColorChange] = useState(false);
-  const { id, isAdmin, name, position, avatar, biyaya_secret } = useAuth();
+  const { id, isAdmin, name, position, avatar, biyaya_secret, dev } = useAuth();
   const menuRef = useRef();
   const notifRef = useRef();
 
@@ -150,12 +150,24 @@ const DashHeader = ({ headerName }) => {
   }, [headerName]);
 
 
+
+
   const onUpdateLog = async (log) => {
-    if (log.seen) {
+    if (log.seen && dev) {
+
       alert(JSON.stringify(log, null, 2))
+
     } else {
-      const result = await updateLog({ id: log.id, seen: log.seen })
-      if (result) alert(JSON.stringify(log, null, 2))
+
+      if (!log.seen) {
+        try {
+          await updateLog({ id: log.id, seen: log.seen })
+          if (dev) alert(JSON.stringify(log, null, 2))
+        } catch (error) {
+          console.error('Failed to update log:', error);
+
+        }
+      }
     }
   }
 
@@ -300,12 +312,12 @@ const DashHeader = ({ headerName }) => {
                   <div ref={notifRef} className="absolute right-[-60px] sm:right-0 z-50 origin-top-right bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 mt-2 w-auto rounded-md shadow-lg">
                     <div className="pt-3 px-4  flex ">
                       <div onClick={() => setLogTab(prev => prev = "activity")}
-                        className={`${logTab === `activity` ? `bg-white border-t border-l border-r` : `bg-gray-100 border`} px-5 py-2 rounded-t-xl cursor-pointer`}>
+                        className={`${logTab === `activity` ? `bg-white border-t border-l border-r` : `bg-gray-100 border hover:bg-gray-50`} px-5 py-2 rounded-t-xl cursor-pointer`}>
                         Activity
                       </div>
-                      {notifAdmin &&
+                      {isAdmin &&
                         <div onClick={() => setLogTab(prev => prev = "lastViewed")}
-                          className={`${logTab === `lastViewed` ? `bg-white border-t border-l border-r` : `bg-gray-100 border`} px-5 py-2  rounded-t-xl cursor-pointer`}>
+                          className={`${logTab === `lastViewed` ? `bg-white border-t border-l border-r` : `bg-gray-100 border hover:bg-gray-50`} px-5 py-2  rounded-t-xl cursor-pointer`}>
                           Last viewed
                         </div>
                       }
@@ -349,7 +361,7 @@ const DashHeader = ({ headerName }) => {
                               </div>
                             ))
                             : <div className="flex">
-                              <p className="mx-auto my-5 text-gray-500">No logs found!</p>
+                              <p className="mx-auto my-5 text-gray-500">No activities found!</p>
                             </div>
                           }
 
