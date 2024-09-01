@@ -76,8 +76,6 @@ export const Cart = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSave
 
 
     const computeTotal = () => {
-        console.log(orderTransac)
-
         if (orderTransac.items.length) {
             setPlaceOrder(prev => !prev)
         }
