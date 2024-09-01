@@ -12,9 +12,9 @@ const User = ({ userId, search }) => {
 
   const navigate = useNavigate();
 
+ 
 
-
-  if (user && user.username !== username) {
+  if ( user && user.username !== username && !user?.dev ) {
 
     if (user.name.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
       user.position.toLowerCase().indexOf(search.toLowerCase()) > -1

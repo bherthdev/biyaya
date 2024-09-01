@@ -97,8 +97,8 @@ const DashHeader = ({ headerName }) => {
 
 
   useEffect(() => {
-    const handleKeyDown = (event) => {
 
+    const handleKeyDown = (event) => {
       if (event.ctrlKey && event.shiftKey && event.key === 'B' && event.altKey) {
         const userPassword = prompt("Please enter the password:");
 
@@ -114,15 +114,7 @@ const DashHeader = ({ headerName }) => {
 
       }
     };
-
-
-    // Call the function when needed
-
-
-    // Add event listener
     window.addEventListener('keydown', handleKeyDown);
-
-    // Cleanup event listener on component unmount
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
@@ -351,7 +343,7 @@ const DashHeader = ({ headerName }) => {
                                   </div>
                                   {activity?.orderID
                                     && <div className="flex items-center text-gray-400">
-                                      <IoReceiptOutline size={23}/>
+                                      <IoReceiptOutline size={23} />
                                     </div>}
                                 </div>
                               </div>

@@ -11,9 +11,6 @@ const useAuth = () => {
     if (token) {
         const decoded = jwtDecode(token)
         const { id, name, username, position, roles, avatar, biyaya_secret } = decoded.UserInfo
-        // console.log(decoded.UserInfo)
-
-    
 
         isManager = roles === 'Manager' ? true : false
         isAdmin = roles === 'Admin' ? true : false
