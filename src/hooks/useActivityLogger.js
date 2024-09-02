@@ -19,12 +19,14 @@ const useActivityLogger = () => {
 
 
   const popupNotif = (orderTransaction) => {
-    const notification = new Notification(`Biyaya - Kape Tindahan Atbp`,{
+    const notification = new Notification(`Biyaya - Kape Tindahan Atbp`, {
       body: `New order saved!\nBarista: ${orderTransaction?.barista}\nOrder ID: ${orderTransaction?._id}\nGrand Total: ₱ ${Number(orderTransaction?.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`,
+      vibrate: [200, 100, 200],
     })
 
-    notification.onclick = ()=>{
-       console.log('Notification clicked!')
+    notification.onclick = (event) => {
+      event.preventDefault(); // prevent the browser from focusing the Notification's tab
+      // window.open("https://biyaya.vercel.app/dashboard", "_blank");
     }
   }
 
