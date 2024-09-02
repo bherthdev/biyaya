@@ -1,15 +1,29 @@
 import { useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
 import { useSelector } from "react-redux";
 import { selectOrderById } from "./ordersApiSlice";
-import { MdEditNote } from 'react-icons/md';
-import { SlOptionsVertical } from "react-icons/sl";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { useEffect, useRef, useState } from "react";
+import useAuth from "../../hooks/useAuth";
 
 const Order = ({ orderId, search, handleModalOpen }) => {
 
+ const { isAdmin } =useAuth()
   const order = useSelector((state) => selectOrderById(state, orderId));
+  const [viewReceipt, setViewReceipt] = useState(false);
+  const optionRef = useRef(null);
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (optionRef.current && !optionRef.current.contains(e.target)) {
+        setViewReceipt(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   if (order) {
 
@@ -25,18 +39,47 @@ const Order = ({ orderId, search, handleModalOpen }) => {
       return (
         <>
 
-          <tr className=" text-base dark:hover:bg-[#151e30] ">
-
+          <tr className="text-base dark:hover:bg-[#151e30] ">
             <td
-              className={`sm:flex gap-4 whitespace-nowrap px-8 py-2 font-medium text-gray-700 dark:text-gray-300`}
+              className={`flex gap-2 whitespace-nowrap px-4 sm:px-7 py-3 font-medium text-gray-700 dark:text-gray-300`}
             >
-              <div className="flex flex-col text-left">
-                <h1 className="font-semibold">{order.orderNo} </h1>
-                <p className="text-gray-600 text-sm font-normal">{order.orderType} </p>
+              <div
+                className="relative  text-gray-400 my-auto font-normal cursor-pointer hover:text-gray-600"
+                ref={optionRef}
+                onClick={() => setViewReceipt(prev => !prev)}
+              >
+
+                <BsThreeDotsVertical size={20} />
+                {viewReceipt &&
+                  <div className="absolute left-[-8px] z-50 origin-top-right bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 mt-2 w-48 rounded-md shadow-lg">
+                    <div className="block top-[-7px] bg-white h-3 w-3 border-t border-l rotate-45 absolute left-3"></div>
+
+                    <div className="py-2">
+                      <div
+                        onClick={() => handleModalOpen(order.id, false)}
+                        className="cursor-pointer block text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-gray-900 dark:hover:text-gray-400"
+                      >
+                        View Receipt
+                      </div>
+                      {isAdmin &&
+                      <div
+                        className="cursor-pointer block text-left px-4 py-2 text-sm text-red-700 dark:text-gray-500 hover:bg-red-100 dark:hover:bg-slate-700 hover:text-gray-900 dark:hover:text-gray-400"
+                        onClick={() => handleModalOpen(order.id, true)}
+                      >
+
+                        Back Date Order
+                      </div>
+                      }
+                    </div>
+
+                  </div>
+                }
 
               </div>
-
-
+              <div className="flex flex-col text-left">
+                <h1 className="font-semibold text-sm">{order.orderNo} </h1>
+                <p className="text-gray-600 text-sm font-normal">{order.orderType} </p>
+              </div>
             </td>
 
             <td className={`whitespace-nowrap  px-8 py-2  text-gray-900 dark:text-gray-300`}>
@@ -54,16 +97,6 @@ const Order = ({ orderId, search, handleModalOpen }) => {
 
             <td className={`whitespace-nowrap px-8 py-2 text-sm  text-gray-900 dark:text-gray-300 `}>
               {order.barista}
-            </td>
-            <td className={`whitespace-nowrap px-8 py-2 flex flex-col items-end justify-end text-sm  text-gray-900 dark:text-gray-300 `}>
-              <span
-                onClick={()=>handleModalOpen(order.id)}
-                title='Receipt'
-                className="items-center cursor-pointer  px-6 py-2 text-black border dark:text-gray-300 font-medium border-gray-300 dark:border-slate-600  hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150"
-              >
-
-                Receipt
-              </span>
             </td>
           </tr>
         </>

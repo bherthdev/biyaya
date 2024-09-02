@@ -13,15 +13,17 @@ import { ImFilesEmpty } from "react-icons/im";
 
 
 const OrdersList = () => {
-
+  
   const [search, setsearch] = useState("");
-  const columnsArray = ["ORDER#/TYPE", "DATE/TIME", "NO. OF ITEMS", "TOTAL", "BARISTA", ""];
+  const columnsArray = ["ORDER#/TYPE", "DATE/TIME", "NO. OF ITEMS", "TOTAL", "BARISTA"];
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [orderId, setOderID] = useState('');
+  const [backDateOrder, setBackDateOrder] = useState(false);
 
-  const handleModalOpen = (id) => {
+  const handleModalOpen = (id, isBackDate) => {
     setOderID(id)
+    setBackDateOrder(isBackDate)
     setIsModalOpen(true)
   }
 
@@ -138,11 +140,9 @@ const OrdersList = () => {
     const checkOrders = Object.values(ordersEntities).sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime))
 
 
-
-
     content = (
       <>
-        <ReceiptModal isOpen={isModalOpen} onClose={handleModalClose} orderId={orderId} />
+        <ReceiptModal isOpen={isModalOpen} onClose={handleModalClose} orderId={orderId} backDateOrder={backDateOrder} />
 
         <div className="no-print mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="sm:flex justify-between">

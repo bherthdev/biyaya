@@ -1,70 +1,180 @@
 import React, { useEffect, useRef, useState } from "react";
 import { IoIosClose } from 'react-icons/io';
 import { useSelector } from "react-redux";
-import { selectOrderById } from "../features/orders/ordersApiSlice";
+import { selectOrderById, useUpdateOrderMutation } from "../features/orders/ordersApiSlice";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import biyayaLogo from "../assets/biyaya_logo.png";
 import html2pdf from "html2pdf.js";
+import { toast } from "react-toastify";
+import useActivityLogger from "../hooks/useActivityLogger";
 
-function Modal({ isOpen, onClose, orderId }) {
+function Modal({ isOpen, onClose, orderId, backDateOrder }) {
 
+  const { log } = useActivityLogger();
   const [printNav, setPrintNav] = useState(false);
   const order = useSelector((state) => selectOrderById(state, orderId));
   const optionRef = useRef();
   const printRef = useRef();
 
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (optionRef.current && !optionRef.current.contains(e.target)) {
-        setPrintNav(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  const [selectedDate, setSelectedDate] = useState("");
+  const [currentDate, setCurrentDate] = useState("");
+  const [maxDate, setMaxDate] = useState("");
 
+  const [updateOrder] = useUpdateOrderMutation();
 
-  const handleDownloadPDF = () => {
-    const element = printRef.current;
-
-    // Define custom options
-    const opt = {
-      margin: 1,
-      filename: `Biyaya_Receipt-${order?.orderNo}.pdf`,
-      image: { type: 'jpeg', quality: 0.99 },
-      html2canvas: { scale: 5 },
-      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-    };
-
-    // Generate and download the PDF with the options
-    html2pdf().set(opt).from(element).save();
+  const options = {
+    timeZone: 'Asia/Manila',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
   };
 
-  const totalItem = order?.items.reduce((sum, item) => sum + Number(item.qty), 0);
+  const formatter = new Intl.DateTimeFormat('en-GB', options);
+
+  const formatDateToParts = (date) => {
+    const parts = formatter.formatToParts(date);
+    const lookup = Object.fromEntries(parts.map(p => [p.type, p.value]));
+
+    return `${lookup.year}-${lookup.month}-${lookup.day}T${lookup.hour}:${lookup.minute}`;
+  };
+
+  useEffect(() => {
+    // Format the current date
+    const now = new Date();
+    const formattedNow = formatDateToParts(now);
+    setMaxDate(formattedNow);
+  
+    // Format the order date if it exists
+    if (order) {
+      const orderDate = new Date(order?.dateTime); // Ensure it's a Date object
+      const formattedOrderDate = formatDateToParts(orderDate);
+      setCurrentDate(formattedOrderDate);
+    }
+    
+  }, [order]);
+
+const handleDateChange = (event) => {
+  const now = new Date()
+  const inputDate = new Date(event.target.value);
+  const currentDateNow = formatDateToParts(now)
+  const inputDateParts = formatDateToParts(new Date(event.target.value))
+  setCurrentDate(formatDateToParts(inputDate));
+
+  if (inputDateParts <= currentDateNow) {
+    setSelectedDate(inputDate);
+    
+  }else {
+    console.warn("Selected date and time is in the future!");
+    setSelectedDate("")
+  }
+};
 
 
-  const showHideClassName = isOpen ? "block" : "hidden";
+const formatDate = (date) => {
+  return date.toLocaleString("en-US", {
+    timeZone: 'Asia/Manila',
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    hour12: true,
+  });
+};
 
-  return (
-    <div className={`fixed z-50 inset-0 overflow-y-auto ${showHideClassName}`}>
-      <div className="flex items-center justify-center  pt-4 px-4 pb-20 text-center  ">
+useEffect(() => {
+  const handleClickOutside = (e) => {
+    if (optionRef.current && !optionRef.current.contains(e.target)) {
+      setPrintNav(false);
+    }
+  };
+  document.addEventListener("mousedown", handleClickOutside);
 
-        <div className="fixed inset-0 transition-opacity">
-          <div className="absolute inset-0 bg-black  dark:bg-gray-900 opacity-80"></div>
-        </div>
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, []);
 
-        <div
-          className="inline-block bg-white dark:bg-gray-800 rounded-xl text-center overflow-hidden  transform transition-all  sm:my-8 align-middle  w-full sm:w-8/12 lg:w-4/12"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="modal-headline"
-        >
 
-          <div className="flex justify-between border-b-2  no-print">
-            <div className="flex py-2 px-4 items-center ">
+const handleDownloadPDF = () => {
+  const element = printRef.current;
+
+  // Define custom options
+  const opt = {
+    margin: 1,
+    filename: `Biyaya_Receipt-${order?.orderNo}.pdf`,
+    image: { type: 'jpeg', quality: 0.99 },
+    html2canvas: { scale: 5 },
+    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+  };
+
+  // Generate and download the PDF with the options
+  html2pdf().set(opt).from(element).save();
+};
+
+const onUpdateOrder = async () => {
+
+  if (selectedDate) {
+    try {
+      const result = await updateOrder({
+        id: orderId,
+        date: formatDate(selectedDate)
+      })
+      toast.success(result.data, {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+
+      onClose()
+      setSelectedDate("")
+      log(`BACK DATE ORDER`, `Order No. ${orderId} Back Date: ${formatDate(selectedDate)}`)
+
+
+    } catch (error) {
+      console.error('Failed to update order', error);
+    }
+  }
+
+}
+
+const totalItem = order?.items.reduce((sum, item) => sum + Number(item.qty), 0);
+
+
+const showHideClassName = isOpen ? "block" : "hidden";
+
+return (
+  <div className={`fixed z-50 inset-0 overflow-y-auto ${showHideClassName}`}>
+    <div className="flex items-center justify-center  pt-4 px-4 pb-20 text-center  ">
+
+      <div className="fixed inset-0 transition-opacity">
+        <div className="absolute inset-0 bg-black  dark:bg-gray-900 opacity-80"></div>
+      </div>
+
+      <div
+        className="inline-block bg-white dark:bg-gray-800 rounded-xl text-center overflow-hidden  transform transition-all  sm:my-8 align-middle  w-full sm:w-8/12 lg:w-4/12"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-headline"
+      >
+
+        <div className="flex justify-between border-b-2  no-print">
+          {backDateOrder
+            ? <div className="flex py-2 px-4 items-center ">
+              <h1 className=" text-gray-700 text-lg uppercase font-medium">Back Date Order</h1>
+            </div>
+            : <div className="flex py-2 px-4 items-center ">
               <h1 className=" text-gray-700 text-lg uppercase font-medium">Receipt</h1>
               <div
                 className="relative text-gray-400 p-1 cursor-pointer hover:text-gray-600"
@@ -96,91 +206,122 @@ function Modal({ isOpen, onClose, orderId }) {
 
               </div>
             </div>
-            <button onClick={onClose} className=" w-12 h-12 m-0 p-1 text-gray-300 hover:text-gray-600 dark:text-gray-500 hover:dark:text-gray-400 ">
-              <IoIosClose size={35} />
-            </button>
-          </div>
+          }
+          <button onClick={() => {
+            onClose()
+            setSelectedDate("")
+          }} className=" w-12 h-12 m-0 p-1 text-gray-300 hover:text-gray-600 dark:text-gray-500 hover:dark:text-gray-400 ">
+            <IoIosClose size={35} />
+          </button>
+        </div>
 
-          {/* {children} */}
+        {/* {children} */}
 
-          <div ref={printRef} id="print-area" className="bg-white  dark:bg-gray-700 py-10 px-7">
-            <div className="flex flex-col justify-between gap-7">
+        <div ref={printRef} id="print-area" className="bg-white  dark:bg-gray-700 py-10 px-7">
+          <div className="flex flex-col justify-between gap-7">
 
-              <div className="flex flex-col gap-5 border-dashed border-gray-500 border-b pb-5">
+            {backDateOrder
+              && <div className="flex justify-between gap-5">
+                <div className="flex flex-col justify-start gap-2">
+                  <p className="text-xs tracking-wider text-gray-600 text-left">Date/Time.</p>
+                  <input
+                    type="datetime-local"
+                    className="border rounded-lg p-2 text-xs focus:outline-none focus:ring focus:border-blue-300"
+                    onChange={handleDateChange}
+                    max={maxDate} // Set max attribute to the current date and time
+                    value={currentDate}
+                  />
+                  <p className={`${selectedDate ? 'text-black' : 'text-red-700'} text-xs`}>
+                    {selectedDate ? formatDate(selectedDate) : "Please select a back date and time."}
+                  </p>
+                </div>
+                <div className="flex my-auto">
+                  <button
+                    type="button"
+                    className="rounded-full text-gray-200 dark:text-gray-300  bg-black hover:bg-gray-800 px-4 py-2 text-xs tracking-widest font-medium  sm:w-24"
+                    onClick={onUpdateOrder}
+                  >
+                    UPDATE
+                  </button>
+                </div>
+              </div>}
 
-                <div className="flex justify-between pb-5 items-center text-left border-dashed border-b border-gray-500">
-                  <div className="flex items-center gap-3 text-gray-500 dark:text-gray-400">
-                    <img src={biyayaLogo} alt="Logo" className="w-20 " />
-                    <div className="font-normal text-xs">
-                      <div className="mb-2">
-                        <p className="text-[10px] tracking-wider">ORDER NO.</p>
-                        <h2 className="text-black ">{order?.orderNo}</h2>
-                      </div>
-                      <div className="text-gray-500 dark:text-gray-400">
-                        <p className="text-[10px] tracking-wider">BARISTA</p>
-                        <h2 className="text-black ">{order?.barista}</h2>
-                      </div>
-                    </div>
-                  </div>
+            <div className="flex flex-col gap-5 border-dashed border-gray-500 border-b pb-5">
 
-                  <div className="text-right w-24 text-xs text-gray-500 dark:text-gray-400">
+              <div className="flex justify-between pb-5 items-center text-left border-dashed border-b border-gray-500">
+                <div className="flex items-center gap-3 text-gray-500 dark:text-gray-400">
+                  {!backDateOrder && <img src={biyayaLogo} alt="Logo" className="w-20 " />}
+                  <div className="font-normal text-xs">
                     <div className="mb-2">
-                      <p className="text-[10px] tracking-wider">DATE/TIME</p>
-                      <h2 className="text-black ">{order?.dateTime}</h2>
+                      <p className="text-[10px] tracking-wider">ORDER NO.</p>
+                      <h2 className="text-black ">{order?.orderNo}</h2>
                     </div>
                     <div className="text-gray-500 dark:text-gray-400">
-                      <p className="text-[10px] tracking-wider">ORDER TYPE</p>
-                      <h2 className="text-black ">{order?.orderType}</h2>
+                      <p className="text-[10px] tracking-wider">BARISTA</p>
+                      <h2 className="text-black ">{order?.barista}</h2>
                     </div>
                   </div>
-
                 </div>
-                <div className="flex flex-col justify-between gap-2">
-                  <dl className=" divide-gray-100 text-xs mb-5">
-                    <div className="grid  gap-1 grid-cols-4 sm:gap-4 text-right text-gray-700">
-                      <dt className=" text-gray-900 text-left ">Name</dt>
-                      <dd>Qty</dd>
-                      <dd>Price</dd>
-                      <dd>Sub Total</dd>
+
+                <div className="text-right w-24 text-xs text-gray-500 dark:text-gray-400">
+                  <div className="mb-2">
+                    <p className="text-[10px] tracking-wider">DATE/TIME</p>
+
+                    <h2 className="text-black ">{order?.dateTime}</h2>
+                  </div>
+                  <div className="text-gray-500 dark:text-gray-400">
+                    <p className="text-[10px] tracking-wider">ORDER TYPE</p>
+                    <h2 className="text-black ">{order?.orderType}</h2>
+                  </div>
+                </div>
+
+              </div>
+              <div className="flex flex-col justify-between gap-2">
+                <dl className=" divide-gray-100 text-xs mb-5">
+                  <div className="grid  gap-1 grid-cols-4 sm:gap-4 text-right text-gray-700">
+                    <dt className=" text-gray-900 text-left ">Name</dt>
+                    <dd>Qty</dd>
+                    <dd>Price</dd>
+                    <dd>Sub Total</dd>
+                  </div>
+                </dl>
+                {order && order.items.map((item, idx) =>
+                  <dl key={idx} className=" divide-gray-100 text-sm">
+                    <div className="grid gap-1 grid-cols-4 text-right sm:gap-4 text-gray-700">
+                      <dt className="font-medium text-gray-900 text-left">{item.name}</dt>
+                      <dd>{item.qty}</dd>
+                      <dd>₱ {Number(item.price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</dd>
+                      <dd className="font-medium ">₱ {Number(item.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</dd>
                     </div>
                   </dl>
-                  {order && order.items.map((item, idx) =>
-                    <dl key={idx} className=" divide-gray-100 text-sm">
-                      <div className="grid gap-1 grid-cols-4 text-right sm:gap-4 text-gray-700">
-                        <dt className="font-medium text-gray-900 text-left">{item.name}</dt>
-                        <dd>{item.qty}</dd>
-                        <dd>₱ {Number(item.price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</dd>
-                        <dd className="font-medium ">₱ {Number(item.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</dd>
-                      </div>
-                    </dl>
-                  )}
-                </div>
+                )}
               </div>
-              <div>
+            </div>
+            <div>
 
-                <div className=" text-left text-base flex flex-col gap-2  ">
-                  <div className="flex text-lg justify-between font-semibold mb-2">
-                    <h1 className="text-gray-500 text-base">Item(s)</h1>
-                    <h1 className="  text-gray-600 ">{totalItem}</h1>
-                  </div>
-                  <div className="flex justify-between">
-                    <h1 className="font-bold text-lg text-gray-800">Grand Total</h1>
-                    <h1 className="font-bold text-lg text-gray-800 ">₱ {Number(order?.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
-                  </div>
-                  <div className="flex justify-between font-semibold">
-                    <h1 className=" text-gray-500 ">Cash</h1>
-                    <h1 className=" text-gray-600 ">₱ {Number(order?.cash).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
-                  </div>
-                  <div className="flex justify-between font-semibold">
-                    <h1 className=" text-gray-500 ">Change</h1>
-                    <h1 className=" text-gray-600 ">₱ {Number(order?.change).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
-                  </div>
+              <div className=" text-left text-base flex flex-col gap-2  ">
+                <div className="flex text-lg justify-between font-semibold mb-2">
+                  <h1 className="text-gray-500 text-base">Item(s)</h1>
+                  <h1 className="  text-gray-600 ">{totalItem}</h1>
+                </div>
+                <div className="flex justify-between">
+                  <h1 className="font-bold text-lg text-gray-800">Grand Total</h1>
+                  <h1 className="font-bold text-lg text-gray-800 ">₱ {Number(order?.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
+                </div>
+                <div className="flex justify-between font-semibold">
+                  <h1 className=" text-gray-500 ">Cash</h1>
+                  <h1 className=" text-gray-600 ">₱ {Number(order?.cash).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
+                </div>
+                <div className="flex justify-between font-semibold">
+                  <h1 className=" text-gray-500 ">Change</h1>
+                  <h1 className=" text-gray-600 ">₱ {Number(order?.change).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
                 </div>
               </div>
             </div>
           </div>
-          {/* Footer Button */}
-          {/* <div className="bg-gray-50 dark:bg-gray-700 px-4 py-3 sm:px-6 flex justify-between gap-6">
+        </div>
+        {/* Footer Button */}
+        {/* <div className="bg-gray-50 dark:bg-gray-700 px-4 py-3 sm:px-6 flex justify-between gap-6">
             <button
               type="button"
               className="flex h-9 w-full justify-center px-3 sm:px-4 py-1 text-slate-700 border dark:text-slate-200 border-slate-300 dark:border-slate-600  hover:bg-gray-200 dark:hover:bg-gray-900 dark:active:bg-slate-800 rounded-md duration-150"
@@ -196,10 +337,10 @@ function Modal({ isOpen, onClose, orderId }) {
               Yes
             </button>
           </div> */}
-        </div>
       </div>
     </div>
-  );
+  </div>
+);
 }
 
 export default Modal;
