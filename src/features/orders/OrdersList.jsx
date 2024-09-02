@@ -8,6 +8,7 @@ import { useState } from "react";
 import PageLoader from "../../components/PageLoader";
 import ReceiptModal from "../../components/ReceiptModal"
 import { MdErrorOutline } from "react-icons/md";
+import { ImFilesEmpty } from "react-icons/im";
 
 
 
@@ -29,8 +30,6 @@ const OrdersList = () => {
   }
 
 
-
-  const navigate = useNavigate();
 
   const {
     data: orders,
@@ -132,10 +131,11 @@ const OrdersList = () => {
   };
 
   if (isSuccess) {
-    const { ids } = orders;
+    const { ids, entities: ordersEntities } = orders;
 
 
     const tableContent = ids?.length && ids.map((orderId) => <Order key={orderId} orderId={orderId} search={search} handleModalOpen={handleModalOpen} />)
+    const checkOrders = Object.values(ordersEntities).sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime))
 
 
 
@@ -207,9 +207,20 @@ const OrdersList = () => {
                       ))}
                     </tr>
                   </thead>
-                  <Tbody tbName={tableContent} />
-
+                  {checkOrders.length !== 0
+                    && <Tbody tbName={tableContent} />
+                  }
                 </table>
+                {checkOrders.length === 0
+                  && <div className="flex text-sm flex-col p-5 gap-3  dark:bg-gray-900 text-gray-400 dark:text-gray-400">
+                    <div className="flex flex-col  m-auto ">
+                      <div className="m-auto">
+                        <ImFilesEmpty size={30} />
+                      </div>
+                    </div>
+                    <div className='m-auto '>No orders</div>
+                  </div>
+                }
               </div>
               <div className="pt-10 bg-gray-50 rounded-b"></div>
             </div>

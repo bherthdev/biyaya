@@ -100,17 +100,19 @@ const DashHeader = ({ headerName }) => {
 
     const handleKeyDown = (event) => {
       if (event.ctrlKey && event.shiftKey && event.key === 'B' && event.altKey) {
-        const userPassword = prompt("Please enter the password:");
 
-        if (userPassword === biyaya_secret) {
-          alert("Access granted!");
-          // Perform the action for authorized users here
-          setNotifAdmin(prev => !prev)
-        } else if (userPassword === null) {
-          alert("Password entry cancelled.");
-        } else {
-          alert("Incorrect password. Access denied!");
-        }
+        // notification()
+        // const userPassword = prompt("Please enter the password:");
+
+        // if (userPassword === biyaya_secret) {
+        //   alert("Access granted!");
+        //   // Perform the action for authorized users here
+        //   setNotifAdmin(prev => !prev)
+        // } else if (userPassword === null) {
+        //   alert("Password entry cancelled.");
+        // } else {
+        //   alert("Incorrect password. Access denied!");
+        // }
 
       }
     };
@@ -150,7 +152,26 @@ const DashHeader = ({ headerName }) => {
   }, [headerName]);
 
 
+  const notification = () => {
+    Notification.requestPermission().then((result) => {
+      if (result === 'granted') {
+        popupNotif()
+      } else {
+        console.log('Permission denied')
+      }
+    })
+  }
 
+
+  const popupNotif = () => {
+    const notification = new Notification('New Notification',{
+      body: 'This is a default notification message.'
+    })
+
+    notification.onclick = ()=>{
+       console.log('Notification clicked!')
+    }
+  }
 
   const onUpdateLog = async (log) => {
     if (log.seen && dev) {

@@ -7,6 +7,7 @@ import { useGetItemsQuery } from "../items/itemsApiSlice";
 import Spenner from "../../components/Spinner";
 import { MdErrorOutline } from "react-icons/md";
 import ReceiptModal from "../../components/ReceiptModal"
+import { ImFilesEmpty } from "react-icons/im";
 
 const Welcome = () => {
 
@@ -537,7 +538,8 @@ const Welcome = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y dark:bg-slate-800 divide-gray-200 dark:divide-gray-700 ">
-                      {orders.map((order, idx) => (
+                      {orders.length !== 0
+                        && orders.map((order, idx) => (
                         <tr key={idx} onClick={(() => handleModalOpen(order.id))} className="hover:bg-gray-100 cursor-pointer dark:hover:bg-[#151e30] ">
 
                           <td
@@ -566,9 +568,19 @@ const Welcome = () => {
                             {order.barista}
                           </td>
                         </tr>
-                      ))}
+                      )) }
                     </tbody>
                   </table>
+                  {orders.length === 0  
+                  && <div className="flex text-sm flex-col p-5 gap-3  dark:bg-gray-900 text-gray-400 dark:text-gray-400">
+                    <div className="flex flex-col  m-auto ">
+                      <div className="m-auto">
+                        <ImFilesEmpty size={30} />
+                      </div>
+                    </div>
+                    <div className='m-auto '>No recent orders</div>
+                  </div>
+                  }
                 </div>
                 <div className="pt-8 bg-gray-50 rounded-b"></div>
               </div>
