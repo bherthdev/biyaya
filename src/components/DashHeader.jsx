@@ -151,28 +151,6 @@ const DashHeader = ({ headerName }) => {
     }
   }, [headerName]);
 
-
-  const notification = () => {
-    Notification.requestPermission().then((result) => {
-      if (result === 'granted') {
-        popupNotif()
-      } else {
-        console.log('Permission denied')
-      }
-    })
-  }
-
-
-  const popupNotif = () => {
-    const notification = new Notification('New Notification',{
-      body: 'This is a default notification message.'
-    })
-
-    notification.onclick = ()=>{
-       console.log('Notification clicked!')
-    }
-  }
-
   const onUpdateLog = async (log) => {
     if (log.seen && dev) {
 

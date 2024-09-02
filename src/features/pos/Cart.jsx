@@ -90,7 +90,7 @@ export const Cart = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSave
 
             if (result?.data?.message) {
                 handleSuccess(result.data.message);
-                log(`POS ORDER`, `Order No. ${orderTransac?.orderNo} Grand Total: ${orderTransac?.total}`, result?.data?.orderID)
+                log(`POS ORDER`, `Order No. ${orderTransac?.orderNo} Grand Total: ${orderTransac?.total}`, result?.data?.orderTransaction)
 
                 if (itemToBeUpdate.length) {
                     // Update each item after the order is successfully saved
