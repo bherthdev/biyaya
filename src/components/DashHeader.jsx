@@ -334,7 +334,7 @@ const DashHeader = ({ headerName }) => {
                                 onClick={() => onUpdateActivity(activity)}
                                 className={`${!activity?.seen && `border-l-4 border-l-red-400`}  flex hover:bg-gray-100 cursor-pointer justify-between items-center gap-3 py-4 px-5 border-b text-sm`}>
 
-                                <div className="flex  gap-8">
+                                <div className="flex gap-4 sm:gap-8">
 
                                   <div className="text-xs flex gap-2 justify-center items-center">
                                     <img
@@ -356,7 +356,7 @@ const DashHeader = ({ headerName }) => {
                                     
                                   </div>
 
-                                  <div title={activity.date} className="flex gap-1 items-center whitespace-nowrap text-gray-600">
+                                  <div title={activity.date} className="flex gap-1 items-center text-xs sm:text-sm whitespace-nowrap text-gray-600">
                                     <LuClock3 size={15} className=" text-gray-400" />
                                     <UserLastLogin lastLoginTime={activity.date} />
 

@@ -55,7 +55,7 @@ const LogsComponent = ({ logs, onUpdateLog }) => {
                            
                             
                         </div>
-                        <div className="text-sm  text-gray-600 w-24 ">
+                        <div className="text-xs sm:text-sm  text-gray-600 w-24 ">
                             {/* <h2 className="text-wrap">{log?.deviceInfo?.device}</h2>
                             <h2 className="text-wra">{log?.deviceInfo?.platform}</h2> */}
                            
