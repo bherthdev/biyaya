@@ -49,7 +49,7 @@ const LogsComponent = ({ logs, onUpdateLog }) => {
                             <img
                                 alt="Profile"
                                 src={log.avatar}
-                                className="h-10 w-10 rounded-lg object-cover "
+                                className="h-10 w-10 rounded-full object-cover "
                             />
                                 <h2 className="font-semibold text-gray-600">{log.name}</h2>
                            
