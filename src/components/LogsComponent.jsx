@@ -1,3 +1,4 @@
+import { LuClock3 } from "react-icons/lu";
 import Spenner from "./Spinner";
 import UserLastLogin from "./UserLastLogin";
 import { useState, useEffect, useRef } from 'react';
@@ -54,10 +55,11 @@ const LogsComponent = ({ logs, onUpdateLog }) => {
                            
                             
                         </div>
-                        <div className="text-sm  text-right text-gray-600 w-24 ">
+                        <div className="text-sm  text-gray-600 w-24 ">
                             {/* <h2 className="text-wrap">{log?.deviceInfo?.device}</h2>
                             <h2 className="text-wra">{log?.deviceInfo?.platform}</h2> */}
-                            <p title={log.date}><UserLastLogin lastLoginTime={log.date} /></p>
+                           
+                            <p title={log.date} className="flex items-center justify-end gap-1"> <LuClock3 size={15} className="text-gray-400"/> <UserLastLogin lastLoginTime={log.date} /></p>
 
                         </div>
                     </div>

@@ -334,12 +334,8 @@ const DashHeader = ({ headerName }) => {
                                 onClick={() => onUpdateActivity(activity)}
                                 className={`${!activity?.seen && `border-l-4 border-l-red-400`}  flex hover:bg-gray-100 cursor-pointer justify-between items-center gap-3 py-4 px-5 border-b text-sm`}>
 
-                                <div className="flex  gap-4">
-                                  <div title={activity.date} className="flex gap-1 items-center whitespace-nowrap">
-                                    <LuClock3 size={13} className="text-gray-500" />
-                                    <UserLastLogin lastLoginTime={activity.date} />
+                                <div className="flex  gap-8">
 
-                                  </div>
                                   <div className="text-xs flex gap-2 justify-center items-center">
                                     <img
                                       title={activity.name}
@@ -348,14 +344,23 @@ const DashHeader = ({ headerName }) => {
                                       className="h-10 w-10 rounded-full object-cover "
                                     />
                                     <div className="flex flex-col justify-center">
+                                    <div className="flex gap-2"> 
                                       <h2 className="text-wrap font-semibold">{activity?.actionType}</h2>
+                                      {activity?.orderID
+                                      && <div className="flex items-center text-gray-600">
+                                        <IoReceiptOutline size={13} />
+                                      </div>}
+                                    </div>
                                       <h2 className="text-wrap text-gray-600">{activity?.description}</h2>
                                     </div>
+                                    
                                   </div>
-                                  {activity?.orderID
-                                    && <div className="flex items-center text-gray-400">
-                                      <IoReceiptOutline size={23} />
-                                    </div>}
+
+                                  <div title={activity.date} className="flex gap-1 items-center whitespace-nowrap text-gray-600">
+                                    <LuClock3 size={15} className=" text-gray-400" />
+                                    <UserLastLogin lastLoginTime={activity.date} />
+
+                                  </div>
                                 </div>
                               </div>
                             ))
