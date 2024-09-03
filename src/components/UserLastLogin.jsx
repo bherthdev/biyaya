@@ -24,15 +24,15 @@ const UserLastLogin = ({ lastLoginTime }) => {
         if (diffInSeconds < 60) {
             return `just now`;
         } else if (diffInMinutes < 60) {
-            return `${diffInMinutes}m`;
+            return `${diffInMinutes}m ago`;
         } else if (diffInHours < 24) {
-            return `${diffInHours}h`;
+            return `${diffInHours}h ago`;
         } else if (diffInDays < 30) {
-            return `${diffInDays}d`;
+            return `${diffInDays}d ago`;
         } else if (diffInMonths < 12) {
-            return `${diffInMonths}m`;
+            return `${diffInMonths}m ago`;
         } else {
-            return `${diffInYears}y`;
+            return `${diffInYears}y ago`;
         }
     };
 

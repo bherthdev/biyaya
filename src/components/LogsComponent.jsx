@@ -44,20 +44,21 @@ const LogsComponent = ({ logs, onUpdateLog }) => {
                         key={idx}
                         onClick={() => onUpdateLog(log)}
                         className={`${!log?.seen && `border-l-4 border-l-red-400`} flex hover:bg-gray-50 cursor-pointer justify-between items-center gap-3 py-4 px-5 border-b text-sm`}>
-                        <div className="flex gap-3 relative ">
+                        <div className="flex gap-3 relative items-center">
                             <img
                                 alt="Profile"
                                 src={log.avatar}
                                 className="h-10 w-10 rounded-lg object-cover "
                             />
-                            <div>
                                 <h2 className="font-semibold">{log.name}</h2>
-                                <p title={log.date} className="text-gray-500 text-sm"><UserLastLogin lastLoginTime={log.date} /></p>
-                            </div>
+                           
+                            
                         </div>
-                        <div className="text-xs font-light text-right text-gray-500 w-24 ">
-                            <h2 className="text-wrap">{log?.deviceInfo?.device}</h2>
-                            <h2 className="text-wra">{log?.deviceInfo?.platform}</h2>
+                        <div className="text-sm font-light text-right text-gray-700 w-24 ">
+                            {/* <h2 className="text-wrap">{log?.deviceInfo?.device}</h2>
+                            <h2 className="text-wra">{log?.deviceInfo?.platform}</h2> */}
+                            <p title={log.date}><UserLastLogin lastLoginTime={log.date} /></p>
+
                         </div>
                     </div>
                 ))
