@@ -139,7 +139,7 @@ const onUpdateOrder = async () => {
 
       onClose()
       setSelectedDate("")
-      log(`BACK DATE ORDER`, `Order No. ${orderId} Back Date: ${formatDate(selectedDate)}`)
+      log(`BACK DATE ORDER`, `Order No. ${order?.orderNo} Back Date: ${formatDate(selectedDate)}`)
 
 
     } catch (error) {
