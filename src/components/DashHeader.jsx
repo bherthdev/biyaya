@@ -332,9 +332,9 @@ const DashHeader = ({ headerName }) => {
                               <div
                                 key={idx}
                                 onClick={() => onUpdateActivity(activity)}
-                                className={`${!activity?.seen && `border-l-4 border-l-red-400`}  flex hover:bg-gray-100 cursor-pointer justify-between items-center gap-3 py-4 px-5 border-b text-sm`}>
+                                className={`${!activity?.seen && `border-l-4 border-l-red-400`}  hover:bg-gray-100 cursor-pointer  items-center gap-3 py-4 px-5 border-b text-sm`}>
 
-                                <div className="flex gap-4 sm:gap-8">
+                                <div className="flex justify-between gap-4 sm:gap-8">
 
                                   <div className="text-xs flex gap-2 justify-center items-center">
                                     <img
