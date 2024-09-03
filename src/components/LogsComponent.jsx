@@ -50,11 +50,11 @@ const LogsComponent = ({ logs, onUpdateLog }) => {
                                 src={log.avatar}
                                 className="h-10 w-10 rounded-lg object-cover "
                             />
-                                <h2 className="font-semibold">{log.name}</h2>
+                                <h2 className="font-semibold text-gray-600">{log.name}</h2>
                            
                             
                         </div>
-                        <div className="text-sm font-light text-right text-gray-700 w-24 ">
+                        <div className="text-sm  text-right text-gray-600 w-24 ">
                             {/* <h2 className="text-wrap">{log?.deviceInfo?.device}</h2>
                             <h2 className="text-wra">{log?.deviceInfo?.platform}</h2> */}
                             <p title={log.date}><UserLastLogin lastLoginTime={log.date} /></p>
