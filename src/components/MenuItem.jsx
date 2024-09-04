@@ -11,7 +11,7 @@ const MenuItem = ({ icon: Icon, label, path, toggleSideMenu, isActive, onClick }
                 <div className="text-gray-500">
                     <Icon size={25} />
                 </div>
-                <div className={`${toggleSideMenu ? "hidden sm:flex" : "text-[0px]"} text-md tracking-wide ease-in-out duration-300`}>
+                <div className={`${toggleSideMenu ? "hidden lg:flex" : "text-[0px]"} text-md tracking-wide ease-in-out duration-300`}>
                     {label}
                 </div>
                 {!toggleSideMenu && (

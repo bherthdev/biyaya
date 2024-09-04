@@ -118,7 +118,7 @@ const ItemsList = () => {
                
                 <table className="min-w-full  divide-y divide-gray-200 dark:divide-gray-700 text-sm leading-normal">
                   <thead className="bg-gray-50 dark:bg-gray-800 sticky top-0">
-                    <tr className="sticky">
+                    <tr className="sticky z-20">
                       {columnsArray.map((column, index) => (
                         <Thead thName={column} key={index} />
                       ))}

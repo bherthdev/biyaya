@@ -140,7 +140,7 @@ const EditUserForm = ({ user }) => {
           theme: "dark",
         });
 
-        log(`UPDATE USER`, `updated existing user data and password of ${name}`)
+        log(`UPDATED USER`, `${userName} updated existing user data and password of ${name}`)
 
       }
 
@@ -181,7 +181,7 @@ const EditUserForm = ({ user }) => {
           theme: "dark",
         });
 
-        log(`UPDATE USER`, `${userName} updated existing user data of ${name}`)
+        log(`UPDATED USER`, `${userName} updated existing user data of ${name}`)
 
       }
     }
@@ -217,7 +217,7 @@ const EditUserForm = ({ user }) => {
           progress: undefined,
           theme: "dark",
         });
-        log(`DELETE USER`, `${userName} deleted user ${name}`)
+        log(`DELETED USER`, `${userName} deleted user ${name}`)
 
       }
 

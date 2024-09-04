@@ -3,17 +3,19 @@ import { useGetOrdersQuery } from "./ordersApiSlice";
 import Order from "./Order";
 import Thead from "../../components/Thead";
 import Tbody from "../../components/Tbody";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import PageLoader from "../../components/PageLoader";
 import ReceiptModal from "../../components/ReceiptModal"
 import { MdErrorOutline } from "react-icons/md";
 import { ImFilesEmpty } from "react-icons/im";
+import { POSContext } from "../../context/POSContext";
 
 
 
 const OrdersList = () => {
   
+  const { headSearch } = useContext(POSContext);
+
   const [search, setsearch] = useState("");
   const columnsArray = ["ORDER#/TYPE", "DATE/TIME", "NO. OF ITEMS", "TOTAL", "BARISTA"];
 
@@ -136,7 +138,7 @@ const OrdersList = () => {
     const { ids, entities: ordersEntities } = orders;
 
 
-    const tableContent = ids?.length && ids.map((orderId) => <Order key={orderId} orderId={orderId} search={search} handleModalOpen={handleModalOpen} />)
+    const tableContent = ids?.length && ids.map((orderId) => <Order key={orderId} orderId={orderId} search={headSearch} handleModalOpen={handleModalOpen} />)
     const checkOrders = Object.values(ordersEntities).sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime))
 
 
@@ -200,8 +202,8 @@ const OrdersList = () => {
               <div className="h-5 bg-white mt-5 rounded-t-lg"></div>
               <div className="overflow-x-auto h-full bg-white min-w-full shadow-sm ">
                 <table className="min-w-full  divide-y divide-gray-200 dark:divide-gray-700 text-sm leading-normal">
-                  <thead className="bg-gray-50 dark:bg-gray-800 sticky top-0">
-                    <tr className="sticky">
+                  <thead className="bg-gray-50 dark:bg-gray-800 ">
+                    <tr className="sticky top-0 z-10">
                       {columnsArray.map((column, index) => (
                         <Thead thName={column} key={index} />
                       ))}

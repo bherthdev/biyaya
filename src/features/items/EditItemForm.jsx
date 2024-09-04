@@ -154,7 +154,7 @@ const EditItemForm = ({ item }) => {
         });
       }
 
-      log(`UPDATE INVINTORY`, `${userName} updated existing item data`)
+      log(`UPDATED INVINTORY`, `${userName} updated existing item data`)
     }
 
   };
@@ -188,7 +188,7 @@ const EditItemForm = ({ item }) => {
           progress: undefined,
           theme: "dark",
         });
-        log(`DELETE INVINTORY`, `${userName} deleted the item ${name}`)
+        log(`DELETED INVINTORY`, `${userName} deleted the item ${name}`)
 
       }
 

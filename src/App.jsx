@@ -81,20 +81,20 @@ function App() {
 
 
                   <Route path="inventory" element={<DashLayout />}>
-                    <Route index element={<> <ToastContainer /> <ItemsList /></>} />
-                    <Route path=":id" element={<> <ToastContainer /><EditItem /> </>} />
-                    <Route path="new" element={<> <ToastContainer /><NewItemForm /> </>} />
+                    <Route index element={<ItemsList />} />
+                    <Route path=":id" element={<EditItem /> } />
+                    <Route path="new" element={<NewItemForm /> } />
                   </Route>{/* End inventory */}
 
                   <Route path="orders" element={<DashLayout />}>
-                    <Route index element={<> <ToastContainer /> <OrdersList /></>} />
+                    <Route index element={ <OrdersList />} />
                   </Route>{/* End orders */}
 
                   <Route path="settings" element={<DashLayout />}>
-                    <Route index element={<> <ToastContainer /> <UsersList /></>} />
+                    <Route index element={ <UsersList />} />
 
-                    <Route path=":id" element={<> <ToastContainer /><EditUser /> </>} />
-                    <Route path="new" element={<> <ToastContainer /><NewUserForm /> </>} />
+                    <Route path=":id" element={<EditUser /> } />
+                    <Route path="new" element={<NewUserForm /> } />
 
 
                   </Route>{/* End orders */}

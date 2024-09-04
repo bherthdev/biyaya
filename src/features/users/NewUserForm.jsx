@@ -114,7 +114,7 @@ const NewUserForm = () => {
           progress: undefined,
           theme: "dark",
         })
-        log(`ADD USER`, `${userName} added new user ${name}`)
+        log(`ADDED USER`, `${userName} added new user ${name}`)
 
       }
     }

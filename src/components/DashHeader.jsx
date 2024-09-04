@@ -2,24 +2,24 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef, useCallback, useContext } from "react";
 import useAuth from "../hooks/useAuth";
-import { IoNotificationsOutline, IoReceiptOutline } from "react-icons/io5";
+import { IoNotificationsOutline } from "react-icons/io5";
 import { useGetLogsQuery, useUpdateLogMutation } from "../features/UserLogs/logsApiSlice";
 import PageError from "./PageError";
 import LogsComponent from "./LogsComponent";
 import { useGetActivitiesQuery, useUpdateActivityMutation } from "../features/UserLogs/activitiesApiSlice";
-import UserLastLogin from "./UserLastLogin";
-import { LuClock3 } from "react-icons/lu";
 import ReceiptModal from "./ReceiptModal"
+import { POSContext } from "../context/POSContext";
+import ActivitiesComponent from "./ActivitiesComponent";
 
 const DashHeader = ({ headerName }) => {
 
+  const { headSearch, setHeadSearch } = useContext(POSContext);
   const navigate = useNavigate();
   const [userNav, setUserNav] = useState(false);
   const [notif, setNotif] = useState(false);
   const [notifAdmin, setNotifAdmin] = useState(false);
   const [logTab, setLogTab] = useState("activity");
-  const [colorChange, setColorChange] = useState(false);
-  const { id, isAdmin, name, position, avatar, biyaya_secret, dev } = useAuth();
+  const { id, isAdmin, name, position, avatar, dev } = useAuth();
   const menuRef = useRef();
   const notifRef = useRef();
 
@@ -84,57 +84,11 @@ const DashHeader = ({ headerName }) => {
     };
   }, []);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setColorChange(window.scrollY >= 1);
-    };
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-
-  useEffect(() => {
-
-    const handleKeyDown = (event) => {
-      if (event.ctrlKey && event.shiftKey && event.key === 'B' && event.altKey) {
-
-        // notification()
-        // const userPassword = prompt("Please enter the password:");
-
-        // if (userPassword === biyaya_secret) {
-        //   alert("Access granted!");
-        //   // Perform the action for authorized users here
-        //   setNotifAdmin(prev => !prev)
-        // } else if (userPassword === null) {
-        //   alert("Password entry cancelled.");
-        // } else {
-        //   alert("Incorrect password. Access denied!");
-        // }
-
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, []);
-
-
 
   const handleSettingsClick = () => {
     navigate(`/settings/${id}`);
     setUserNav(!userNav);
   };
-  const handleNotifClick = () => {
-    setNotif(!notif);
-  };
-
-  const navClass = colorChange
-    ? 'border-b z-30 sticky top-0 w-full dark:border-b-slate-800 ease-in-out duration-300'
-    : 'ease-in-out duration-300';
 
   const getHeaderName = useCallback(() => {
     switch (headerName) {
@@ -152,37 +106,50 @@ const DashHeader = ({ headerName }) => {
   }, [headerName]);
 
   const onUpdateLog = async (log) => {
-    if (log.seen && dev) {
-
-      alert(JSON.stringify(log, null, 2))
-
-    } else {
-
-      if (!log.seen) {
-        try {
-          await updateLog({ id: log.id, seen: log.seen })
-          if (dev) alert(JSON.stringify(log, null, 2))
-        } catch (error) {
-          console.error('Failed to update log:', error);
-
-        }
+    const handleLogUpdate = async (id, seen) => {
+      try {
+        await updateLog({ id, seen });
+        if (dev) alert(JSON.stringify(log, null, 2));
+      } catch (error) {
+        console.error('Failed to update log:', error);
       }
+    };
+
+    const handleActivityTab = async () => {
+      if (!log.seen) {
+        await updateActivity({ id: log.id, seen: log.seen });
+      }
+
+      if (log?.orderID) {
+        handleModalOpen(log?.orderID);
+        setNotif(prev => !prev);
+      }
+    };
+
+    const handleLastViewedTab = async () => {
+      if (log.seen && dev) {
+        alert(JSON.stringify(log, null, 2));
+      } else if (!log.seen) {
+        await handleLogUpdate(log.id, log.seen);
+      }
+    };
+
+    switch (logTab) {
+      case 'activity':
+        await handleActivityTab();
+        break;
+      case 'lastViewed':
+        await handleLastViewedTab();
+        break;
+      default:
+        console.warn('Unhandled log tab:', logTab);
     }
-  }
+  };
 
-  const onUpdateActivity = useCallback(async (activity) => {
 
-    !activity.seen && await updateActivity({ id: activity.id, seen: activity.seen })
-
-    if (activity?.orderID) {
-      handleModalOpen(activity?.orderID)
-      setNotif(prev => !prev);
-    }
-
-  }, [updateActivity])
 
   if (isLoadingLogs || isLoadingActivities) return (
-    <div className={`bg-white dark:bg-slate-900 sm:px-8 border flex ${navClass} h-20 sm:h-32 items-center justify-between px-4 right-0`}>
+    <div className={`bg-white dark:bg-slate-900 sm:px-8 border flex  h-20 sm:h-32 items-center justify-between px-4 right-0`}>
       <div className="flex items-center">
         <p className="flex">
           <span className="sr-only">Logo</span>
@@ -268,16 +235,18 @@ const DashHeader = ({ headerName }) => {
     const { entities: activitiesEntities } = ActivitiesData;
 
     const logs = Object.values(logsEntities).sort((a, b) => new Date(b.date) - new Date(a.date))
-
     const activities = Object.values(activitiesEntities).sort((a, b) => new Date(b.date) - new Date(a.date))
-
     const hasSeen = logs.some(log => log?.seen === false) || activities.some(activity => activity?.seen === false);
-
+    
+    const renderLogComponent = logTab === 'lastViewed'
+    ? <LogsComponent logs={logs} onUpdateLog={onUpdateLog} />
+    : <ActivitiesComponent logs={activities} onUpdateLog={onUpdateLog} />;
 
     return (
       <>
         <ReceiptModal isOpen={isModalOpen} onClose={handleModalClose} orderId={orderId} />
-        <div className={`bg-white dark:bg-slate-900 no-print sm:px-8 border flex ${navClass} h-20 sm:h-32 items-center justify-between px-4 right-0`}>
+
+        <div className={`bg-white dark:bg-slate-900 no-print sm:px-8 border flex z-30 sticky top-0 w-full ease-in-out duration-300 h-20 sm:h-32 items-center justify-between px-4 `}>
           <div className="flex items-center">
             <p className="flex">
               <span className="sr-only">Logo</span>
@@ -292,8 +261,66 @@ const DashHeader = ({ headerName }) => {
 
             <div className="flex justify-between items-center gap-2">
 
-              <div className="relative">
 
+              {/* <div className="relative hidden sm:block">
+                <label className="sr-only" htmlFor="search">
+               
+                  {" "}
+                  Search{" "}
+                </label>
+                <button
+                  type="button"
+                  className="absolute top-1/2 left-1 -translate-y-1/2 rounded-full  dark:bg-slate-900 p-2 text-gray-400 transition hover:text-gray-700"
+                >
+                  <span className="sr-only">Submit Search</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
+                </button>
+                <input
+                  className="h-10 w-full outline-none border border-gray-300 dark:text-gray-300 rounded-full border-none bg-gray-100 dark:bg-slate-800 pl-11 pr-2 text-sm shadow-sm sm:w-56"
+                  id="search"
+                  type="search"
+                  placeholder="Search..."
+                  value={headSearch}
+                  onChange={(e)=> setHeadSearch(e.target.value)}
+                />
+
+               
+              </div> */}
+              {/* <span
+                type="button"
+                className="block shrink-0 rounded-lg bg-white p-2.5 text-gray-600 shadow-sm hover:text-gray-700 sm:hidden"
+              >
+                <span className="sr-only">Search</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+              </span> */}
+
+              <div className="relative">
                 <div
                   onClick={() => setNotif(prev => !prev)}
 
@@ -324,60 +351,12 @@ const DashHeader = ({ headerName }) => {
                     <div className="block -top-[7px] bg-white h-3 w-3 border-t border-l rotate-45 absolute right-[71px] sm:right-3 "></div>
 
                     <div className="w-[20rem]  sm:w-[25rem] z-50 border rounded-b-md">
-                      {logTab === `lastViewed`
-                        ? <LogsComponent logs={logs} onUpdateLog={onUpdateLog} />
-                        : <div className="h-72 overflow-auto">
-                          {activities.length
-                            ? activities.map((activity, idx) => (
-                              <div
-                                key={idx}
-                                onClick={() => onUpdateActivity(activity)}
-                                className={`${!activity?.seen && `border-l-4 border-l-red-400`}  hover:bg-gray-100 cursor-pointer  items-center gap-3 py-4 px-5 border-b text-sm`}>
-
-                                <div className="flex justify-between gap-4 sm:gap-8">
-
-                                  <div className="text-xs flex gap-2 justify-center items-center">
-                                    <img
-                                      title={activity.name}
-                                      alt="Profile"
-                                      src={activity.avatar}
-                                      className="h-10 w-10 rounded-full object-cover "
-                                    />
-                                    <div className="flex flex-col justify-center">
-                                    <div className="flex gap-2"> 
-                                      <h2 className="text-wrap font-semibold">{activity?.actionType}</h2>
-                                      {activity?.orderID
-                                      && <div className="flex items-center text-gray-600">
-                                        <IoReceiptOutline size={13} />
-                                      </div>}
-                                    </div>
-                                      <h2 className="text-wrap text-gray-600">{activity?.description}</h2>
-                                    </div>
-                                    
-                                  </div>
-
-                                  <div title={activity.date} className="flex gap-1 items-center text-xs sm:text-sm whitespace-nowrap text-gray-600">
-                                    <LuClock3 size={15} className=" text-gray-400" />
-                                    <UserLastLogin lastLoginTime={activity.date} />
-
-                                  </div>
-                                </div>
-                              </div>
-                            ))
-                            : <div className="flex">
-                              <p className="mx-auto my-5 text-gray-500">No activities found!</p>
-                            </div>
-                          }
-
-                        </div>
-                      }
+                      {renderLogComponent}
                     </div>
                   </div>
                 }
               </div>
-
               <div className="flex items-center  rounded-full   divide-x divide-gray-100 dark:border-l-gray-900 dark:border-r-gray-900">
-
                 <div className="flex gap-4">
 
                   <div className="inline-flex bg-white dark:bg-slate-900 rounded-full"
@@ -435,6 +414,7 @@ const DashHeader = ({ headerName }) => {
                   </div>
                 </div>
               </div>
+
             </div>
           </div>
         </div>

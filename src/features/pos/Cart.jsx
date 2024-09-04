@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useRef, useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import iconItem from "../../assets/icon-item.svg"
@@ -13,9 +12,14 @@ import { POSContext } from "../../context/POSContext";
 import useGenerateORDATE from "../../hooks/useGenerateORDATE";
 
 
-export const Cart = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSaveOrder, toggleCart, toggleCartMobile, setToggleCartMobile }) => {
-   
-    const { orderTransac, setOrderTransac } = useContext(POSContext);
+export const Cart = () => {
+
+    const { orderTransac, setOrderTransac,
+        toggleCart, setToggleCart,
+        enableSaveOrder, setEnableSaveOrder,
+        placeOrder, setPlaceOrder
+    } = useContext(POSContext);
+
     const { log } = useActivityLogger();
 
     const cashRef = useRef(null);
@@ -27,6 +31,7 @@ export const Cart = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSave
     useEffect(() => {
         orderTransac.items.length && cashRef.current ? cashRef.current.focus() : window.focus()
     }, [placeOrder]);
+
 
 
     // Utility to combine states
@@ -115,7 +120,7 @@ export const Cart = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSave
             toast.error("Some items failed to update.", {
                 position: "bottom-right",
                 autoClose: 5000,
-                hideProgressBar: true,
+                hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true,
@@ -126,7 +131,7 @@ export const Cart = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSave
             toast.success("All items updated successfully.", {
                 position: "bottom-right",
                 autoClose: 5000,
-                hideProgressBar: true,
+                hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true,
@@ -142,7 +147,7 @@ export const Cart = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSave
         toast.success(message, {
             position: "bottom-right",
             autoClose: 5000,
-            hideProgressBar: true,
+            hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
@@ -157,7 +162,7 @@ export const Cart = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSave
         toast.error(error?.error?.error || "An unexpected error occurred", {
             position: "bottom-right",
             autoClose: 5000,
-            hideProgressBar: true,
+            hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
@@ -168,7 +173,7 @@ export const Cart = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSave
 
     // Helper function to reset order state
     const resetOrderState = () => {
-        setToggleCartMobile(false);
+        setToggleCart(false);
         setPlaceOrder(false);
         setEnableSaveOrder(false);
         setOrderTransac({
@@ -227,36 +232,33 @@ export const Cart = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSave
             change: 0
         });
 
-        // Update other states if there are items in the cart
-        if (tempRows.length > 0) {
-            setPlaceOrder(false);
-            setEnableSaveOrder(false);
-        }
+        setPlaceOrder(false);
+        setEnableSaveOrder(false);
+
     };
 
+    const totalQty = orderTransac?.items.reduce((sum, item) => sum + Number(item.qty), 0)
 
 
-    const classToggleCart = toggleCart ? ' ease-in-out duration-300 right-0 top-0 bottom-0' : ' right-[-100%]  ease-in-out duration-300'
-    const classToggleCartMobile = toggleCartMobile ? `flex` : `hidden sm:flex`
-
+    const classToggleCart = toggleCart ? 'ease-in-out duration-300 right-0 top-0 bottom-0' : 'right-[-100%] ease-in-out duration-300'
 
     const content = (
         <>
-            <div className={` ${classToggleCartMobile} shadow-2xl sm:shadow-transparent  h-full bg-white fixed w-80 border ${classToggleCart} z-40 px-5  flex-col justify-between border-e bg-white `}>
+            <div className={`flex shadow-2xl sm:shadow-transparent h-full fixed w-80  ${classToggleCart} z-40 px-5  flex-col justify-between border-e bg-white `}>
                 <div className={`py-5 flex flex-col  gap-5`}>
-                    <div className="flex sm:hidden justify-between">
+                    <div className="flex justify-between">
                         <h1 className={`text-3xl text-gray-700`}
 
                         >
                             Cart
                         </h1>
                         <div
-                            onClick={() => setToggleCartMobile(false)}
-                            className="p-1 text-gray-400">
+                            onClick={() => setToggleCart(false)}
+                            className="flex my-auto text-gray-400 hover:text-gray-600 cursor-pointer ">
                             <MdClose size={30} />
                         </div>
                     </div>
-                    <div className="hidden sm:flex justify-between items-center">
+                    {/* <div className="hidden lg:flex justify-between items-center">
                         <h1 className={`text-3xl text-gray-700`}
 
                         >
@@ -266,46 +268,46 @@ export const Cart = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSave
                         <p className="flex text-sm text-gray-400 font-normal">
                             {orderTransac.orderNo}
                         </p>
-                    </div>
-                    <div className="flex gap-5 text-xs">
+                    </div> */}
+                    <div className="flex gap-5 text-xs items-center">
                         <button
                             title="Dine in"
                             onClick={() => setOrderTransac({ ...orderTransac, orderType: 'Dine in' })}
                             className={`${orderTransac.orderType == 'Dine in' ? 'bg-[#242424] text-white hover:bg-gray-700' : 'hover:bg-gray-200 text-black'} flex px-5  py-2 border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
-                            Dine in
+                            Dine in {orderTransac?.items.length !== 0 && orderTransac.orderType == 'Dine in' && `(${totalQty})`}
                         </button>
                         <button
                             title="Dine in"
                             onClick={() => setOrderTransac({ ...orderTransac, orderType: 'Take out' })}
                             className={`${orderTransac.orderType === 'Take out' ? 'bg-[#242424] text-white hover:bg-gray-700' : 'hover:bg-gray-200 text-black'} flex px-5  py-2 border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
-                            Take out
+                            Take out {orderTransac?.items.length !== 0 && orderTransac.orderType == 'Take out' && `(${totalQty})`}
                         </button>
                     </div>
 
                 </div>
-                <div className="h-2/3 overflow-x-auto">
 
+                <div className="h-2/3 overflow-x-auto bg-gray-50 px-4 rounded-md">
                     {orderTransac.items.length
                         ? orderTransac.items.map((item, idx) => (
-                            <div key={idx} className="flex mt-5 gap-3  border-b dark:bg-slate-800 py-5 border-gray-300 dark:border-gray-800 text-center text-gray-800 dark:text-gray-200 hover:text-gray-500 dark:hover:text-gray-400">
+                            <div key={idx} className="flex gap-3  border-b dark:bg-slate-800 py-5 border-gray-300 dark:border-gray-800 text-center text-gray-800 dark:text-gray-200 hover:text-gray-500 dark:hover:text-gray-400">
                                 <div className="text-4xl  font-bold  md:text-5xl   flex flex-col gap-2">
-                                    <div className='h-24 w-20 object-cover bg-gray-600 rounded-2xl'>
+                                    <div className='h-20 w-16 object-cover bg-gray-600 rounded-2xl'>
                                         <img
                                             alt="Man"
                                             src={item.avatar
                                                 ? item.avatar
                                                 : iconItem
                                             }
-                                            className="h-24 w-20 rounded-2xl opacity-60 dark:border-slate-600 object-cover"
+                                            className="h-20 w-16 rounded-2xl opacity-60 dark:border-slate-600 object-cover"
                                         />
                                     </div>
                                 </div>
                                 <div className="w-full px-2 text-sm flex flex-col gap-2 items-start justify-start text-gray-500 dark:text-gray-400">
-                                    <div className='text-gray-800 text-lg text-left'>
+                                    <div className='text-gray-800 text-base text-left'>
                                         <h1 className='font-semibold'>{item.name}
                                         </h1>
                                         <h1 className='text-gray-500 text-sm font-semibold'>₱ {Number(item.price).toFixed(2)}</h1>
-                                        {item.stock && <h1 className='text-green-700 text-xs mt-2'> {Number(item.currentStock)} in stock</h1>}
+                                        {item.stock && <h1 className='text-green-700 text-xs mt-1'> {Number(item.currentStock)} in stock</h1>}
                                     </div>
                                     <div className="flex justify-center items-center">
                                         <div className=''>
@@ -324,7 +326,7 @@ export const Cart = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSave
                                                     id="Quantity"
                                                     value={item.qty}
                                                     readOnly
-                                                    className="h-10 w-9 font-bold rounded border-gray-200 text-center sm:text-sm text-black [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none "
+                                                    className="h-10 w-9 font-bold rounded bg-transparent border-gray-200 text-center sm:text-sm text-black [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none "
                                                 />
 
                                                 <span
@@ -351,7 +353,8 @@ export const Cart = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSave
                     }
 
                 </div>
-                <div className={` py-4 bg-white  font-sans sticky bottom-0 border-t border-gray-100 `}>
+
+                <div className={`py-4 bg-white  font-sans sticky bottom-0`}>
                     <div className={`flex flex-col gap-5`}>
                         <div className="flex justify-between text-2xl font-medium">
                             <h1 className="text-gray-500">Total</h1>
@@ -381,7 +384,7 @@ export const Cart = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSave
                                     onClick={saveOrder}
                                     title="Save Order"
                                     disabled={enableSaveOrder}
-                                    className={`${enableSaveOrder ? 'bg-green-900 hover:bg-green-700 ' : 'bg-gray-300'}  cursor-pointer flex font-medium text-xl justify-center  text-white w-full py-3 border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
+                                    className={`${enableSaveOrder ? 'bg-green-900 hover:bg-green-700 ' : 'bg-gray-300'}  cursor-pointer flex font-medium text-xl justify-center  text-gray-100 w-full py-3 border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
 
                                     {isLoading
                                         ?
@@ -389,7 +392,7 @@ export const Cart = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSave
                                             <Spenner />
                                             <p>Saving order.... </p>
                                         </div>
-                                        : `Save Order`
+                                        : `Save order`
                                     }
 
 
@@ -400,7 +403,7 @@ export const Cart = ({ placeOrder, setPlaceOrder, enableSaveOrder, setEnableSave
                                 <div
                                     onClick={computeTotal}
                                     title="Place an order"
-                                    className={`${orderTransac.items.length ? `bg-[#242424] hover:bg-gray-700` : `bg-gray-300`} cursor-pointer flex font-medium text-xl justify-center  text-white  w-full py-3 border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
+                                    className={`${orderTransac.items.length ? `bg-gray-900 hover:bg-black text-white ` : `bg-gray-300 text-white`} cursor-pointer flex  font-medium text-xl justify-center   w-full py-3 border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
                                     Place an order
 
                                 </div>

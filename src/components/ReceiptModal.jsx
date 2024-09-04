@@ -127,7 +127,7 @@ const onUpdateOrder = async () => {
         date: formatDate(selectedDate)
       })
       toast.success(result.data, {
-        position: "bottom-left",
+        position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,

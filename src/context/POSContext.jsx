@@ -8,6 +8,13 @@ export const POSProvider = ({ children }) => {
 
   const { id, name } = useAuth(); //current user id
   const { formatDate, generateOR } = useGenerateORDATE();
+  const [headSearch, setHeadSearch] = useState("")
+
+
+  const [toggleCart, setToggleCart] = useState(false)
+  const [enableSaveOrder, setEnableSaveOrder] = useState(false)
+  const [placeOrder, setPlaceOrder] = useState(false)
+
 
   const [orderTransac, setOrderTransac] = useState({
     user: null,
@@ -32,7 +39,14 @@ export const POSProvider = ({ children }) => {
   }, [id, name]);
 
   return (
-    <POSContext.Provider value={{ orderTransac, setOrderTransac }}>
+    <POSContext.Provider value={{
+      orderTransac,
+      setOrderTransac,
+      headSearch, setHeadSearch,
+      toggleCart, setToggleCart,
+      enableSaveOrder, setEnableSaveOrder,
+      placeOrder, setPlaceOrder
+    }}>
       {children}
     </POSContext.Provider>
   );

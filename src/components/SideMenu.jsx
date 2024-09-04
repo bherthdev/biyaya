@@ -10,8 +10,15 @@ import Spinner from "./Spinner";
 import PageError from "./PageError";
 import MenuItem from "./MenuItem";
 import { IoIosLogOut } from "react-icons/io";
+import { POSContext } from "../context/POSContext";
+import { useContext } from "react";
 
-export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, setToggleCart }) => {
+export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName }) => {
+
+  
+  const { setHeadSearch, orderTransac, setToggleCart,
+} = useContext(POSContext);
+
   const location = useLocation();
   const { isAdmin } = useAuth();
   const navigate = useNavigate();
@@ -21,7 +28,6 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
   const navigateMenu = (menuName) => {
     navigate(menuName);
     setHeaderName(menuName);
-    setToggleCart(menuName === "/pos");
   };
 
   const logOutUser = async () => {
@@ -31,26 +37,37 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
 
   if (isError) return <PageError error={error?.data?.message} />;
 
-  const classToggleSideMenu = toggleSideMenu ? "w-16 sm:w-44" : "w-16";
+  const onMenuClick = (path)=>{
+    navigateMenu(path)
+
+    if(path === "/pos" && orderTransac?.items.length) {
+      setToggleCart(true)
+    }else{
+      setHeadSearch('')
+      setToggleCart(false)
+    } 
+  }
+
+  const classToggleSideMenu = toggleSideMenu ? "w-16 lg:w-44" : "w-16";
 
   return (
     <div className={`z-40 flex h-full no-print fixed ${classToggleSideMenu} flex-col justify-between border-e bg-white ease-in-out duration-300`}>
-      <div className={`${toggleSideMenu ? "py-7 sm:py-6" : "py-12"} ease-in-out duration-300`}>
+      <div className={`${toggleSideMenu ? "py-7 lg:py-6" : "py-12"} ease-in-out duration-300`}>
         <div
-          className={`cursor-pointer mx-auto w-10 ${toggleSideMenu ? "sm:w-20" : ""} rounded-lg text-xs text-gray-600 ease-in-out duration-300`}
+          className={`cursor-pointer mx-auto w-10 ${toggleSideMenu ? "lg:w-20" : ""} rounded-lg text-xs text-gray-600 ease-in-out duration-300`}
           onClick={() => setToggleSideMenu(!toggleSideMenu)}
         >
           <img src={biyayaLogo} alt="Logo" />
         </div>
 
-        <ul className={`${toggleSideMenu ? "mt-10 sm:mt-6" : "mt-10"} ease-in-out duration-300`}>
+        <ul className={`${toggleSideMenu ? "mt-10 lg:mt-6" : "mt-10"} ease-in-out duration-300`}>
           <MenuItem
             icon={AiOutlineDashboard}
             label="Dashboard"
             path="/dashboard"
             toggleSideMenu={toggleSideMenu}
             isActive={location.pathname === "/dashboard"}
-            onClick={() => navigateMenu("/dashboard")}
+            onClick={() => onMenuClick("/dashboard")}
           />
           <MenuItem
             icon={BsFillMenuButtonWideFill}
@@ -58,7 +75,7 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
             path="/pos"
             toggleSideMenu={toggleSideMenu}
             isActive={location.pathname === "/pos"}
-            onClick={() => navigateMenu("/pos")}
+            onClick={() => onMenuClick("/pos")}
           />
           {isAdmin && (
             <>
@@ -70,7 +87,7 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
                 isActive={
                   location.pathname.startsWith("/inventory") || location.pathname === "/inventory/new"
                 }
-                onClick={() => navigateMenu("/inventory")}
+                onClick={() => onMenuClick("/inventory")}
               />
               <MenuItem
                 icon={IoReceiptOutline}
@@ -78,7 +95,7 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
                 path="/orders"
                 toggleSideMenu={toggleSideMenu}
                 isActive={location.pathname.startsWith("/orders") || location.pathname === "/orders/new"}
-                onClick={() => navigateMenu("/orders")}
+                onClick={() => onMenuClick("/orders")}
               />
               <MenuItem
                 icon={IoSettingsOutline}
@@ -86,7 +103,7 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
                 path="/settings"
                 toggleSideMenu={toggleSideMenu}
                 isActive={location.pathname.startsWith("/settings") || location.pathname === "/settings/new"}
-                onClick={() => navigateMenu("/settings")}
+                onClick={() => onMenuClick("/settings")}
               />
             </>
           )}
@@ -99,7 +116,7 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName, set
         {isLoading ? (
           <div className="flex text-gray-500 justify-center py-4 font-normal dark:text-gray-300 text-xs h-full w-full items-center p-2">
             <Spinner />
-            <p className="hidden sm:flex">Logging Out...</p>
+            <p className="hidden lg:flex">Logging Out...</p>
           </div>
         ) : (
           <MenuItem
