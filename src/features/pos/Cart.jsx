@@ -279,13 +279,13 @@ export const Cart = () => {
                         <button
                             title="Dine in"
                             onClick={() => setOrderTransac({ ...orderTransac, orderType: 'Dine in' })}
-                            className={`${orderTransac.orderType == 'Dine in' ? 'bg-[#242424] text-white hover:bg-gray-700' : 'hover:bg-gray-200 text-black'} flex px-5  py-2 border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
+                            className={`${orderTransac.orderType == 'Dine in' ? 'bg-[#242424] text-white' : 'text-black'} flex px-5 hover:shadow py-2 border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
                             Dine in {orderTransac?.items.length !== 0 && orderTransac.orderType == 'Dine in' && `(${totalQty})`}
                         </button>
                         <button
                             title="Dine in"
                             onClick={() => setOrderTransac({ ...orderTransac, orderType: 'Take out' })}
-                            className={`${orderTransac.orderType === 'Take out' ? 'bg-[#242424] text-white hover:bg-gray-700' : 'hover:bg-gray-200 text-black'} flex px-5  py-2 border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
+                            className={`${orderTransac.orderType === 'Take out' ? 'bg-[#242424] text-white' : 'text-black'} flex px-5  py-2 border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
                             Take out {orderTransac?.items.length !== 0 && orderTransac.orderType == 'Take out' && `(${totalQty})`}
                         </button>
                     </div>
