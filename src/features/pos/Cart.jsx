@@ -247,13 +247,13 @@ export const Cart = () => {
             <div className={`flex shadow-2xl sm:shadow-transparent h-full fixed w-80  ${classToggleCart} z-40 px-5  flex-col justify-between border-e bg-white `}>
                 <div className={`py-5 flex flex-col  gap-5`}>
                     <div className="flex justify-between">
-                        <div className="flex  gap-4">
+                        <div className="flex items-center  gap-4">
                             <h1 className={`text-3xl text-gray-700`}
 
                             >
                                 Cart
                             </h1>
-                            <p className="flex items-end text-base text-gray-300 font-light">
+                            <p className="flex text-base text-gray-300 font-light">
                                 {orderTransac.orderNo}
                             </p>
                         </div>
