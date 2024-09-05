@@ -259,7 +259,7 @@ export const Cart = () => {
                         </div>
                         <div
                             onClick={() => setToggleCart(false)}
-                            title="Close Cart"
+                            title="Hide Cart"
                             className="flex my-auto text-gray-700 p-1 hover:text-white hover:bg-gray-900 cursor-pointer rounded-full">
                             <IoIosArrowForward size={25}/>
                         </div>
@@ -285,7 +285,7 @@ export const Cart = () => {
                         <button
                             title="Dine in"
                             onClick={() => setOrderTransac({ ...orderTransac, orderType: 'Take out' })}
-                            className={`${orderTransac.orderType === 'Take out' ? 'bg-[#242424] text-white' : 'text-black'} flex px-5  py-2 border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
+                            className={`${orderTransac.orderType === 'Take out' ? 'bg-[#242424] text-white' : 'text-black'} flex px-5 hover:shadow py-2 border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
                             Take out {orderTransac?.items.length !== 0 && orderTransac.orderType == 'Take out' && `(${totalQty})`}
                         </button>
                     </div>
