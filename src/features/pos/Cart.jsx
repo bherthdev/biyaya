@@ -240,11 +240,11 @@ export const Cart = () => {
     const totalQty = orderTransac?.items.reduce((sum, item) => sum + Number(item.qty), 0)
 
 
-    const classToggleCart = toggleCart ? 'ease-in-out duration-300 right-0 top-0 bottom-0' : 'right-[-100%] ease-in-out duration-300'
+    const classToggleCart = toggleCart ? 'ease-in-out duration-300 right-0' : ' right-[-100%] ease-in-out duration-300'
 
     const content = (
         <>
-            <div className={`flex shadow-2xl sm:shadow-transparent h-full fixed w-80  ${classToggleCart} z-40 px-5  flex-col justify-between border-e bg-white `}>
+            <div className={`flex shadow-2xl sm:shadow-transparent h-full fixed w-80  ${classToggleCart} z-40 px-5 top-0 bottom-0 flex-col justify-between border-e bg-white `}>
                 <div className={`py-5 flex flex-col  gap-5`}>
                     <div className="flex justify-between">
                         <div className="flex items-center  gap-4">
