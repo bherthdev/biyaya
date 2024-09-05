@@ -8,6 +8,14 @@ import Spenner from "../../components/Spinner";
 import { MdErrorOutline } from "react-icons/md";
 import ReceiptModal from "../../components/ReceiptModal"
 import { ImFilesEmpty } from "react-icons/im";
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  Tooltip,
+  BarChart,
+  Bar,
+} from "recharts";
 
 const Welcome = () => {
 
@@ -391,6 +399,50 @@ const Welcome = () => {
     // Sort orders by recent or current date
     const orders = Object.values(ordersEntities).sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime))
 
+    // Step 1: Function to format date as "Sep 5, 2024"
+    const formatDate = (dateStr) => {
+      const options = { timeZone: 'Asia/Manila', year: 'numeric', month: 'short', day: 'numeric' };
+      return new Date(dateStr).toLocaleDateString('en-US', options);
+    };
+
+    // Step 2-4: Group by date and sum the total
+    const groupedSalesOrders = orders.reduce((acc, order) => {
+      const date = formatDate(order.dateTime); // Format the date
+
+      // Check if date already exists in the accumulator
+      const existingOrder = acc.find(item => item.date === date);
+
+      if (existingOrder) {
+        // If date exists, sum the totals
+        existingOrder.Total += order.total;
+      } else {
+        // If date doesn't exist, create a new entry
+        acc.push({ date, Total: order.total });
+      }
+
+      return acc;
+    }, []);
+
+    // Step 2-4: Group by date and sum the total
+    const groupedOrders = orders.reduce((acc, order) => {
+      const date = formatDate(order.dateTime); // Format the date
+
+      // Check if date already exists in the accumulator
+      const existingOrder = acc.find(item => item.date === date);
+
+      if (existingOrder) {
+        // If date exists, sum the totals
+        existingOrder.Order += 1;
+      } else {
+        // If date doesn't exist, create a new entry
+        acc.push({ date, Order: 1 });
+      }
+
+      return acc;
+    }, []);
+
+    // console.log(groupedOrders)
+
 
     const salesToday = () => {
       const today = new Date();
@@ -425,7 +477,6 @@ const Welcome = () => {
     const totalSales = orders.reduce((total, order) => total + Number(order.total), 0);
 
 
-
     content = (
       <div aria-label="Page Header">
         <ReceiptModal isOpen={isModalOpen} onClose={handleModalClose} orderId={orderId} />
@@ -452,11 +503,10 @@ const Welcome = () => {
             <div className="mx-auto max-w-screen-xl  py-3  md:py-5">
               <dl className="font-normal grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
 
-                <article className="rounded-lg border border-gray-100 bg-white p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-gray-500">Total Sales</p>
-
+                <article className="rounded-lg border border-gray-100 bg-white ">
+                  <div className="flex items-center justify-between px-5 pt-4 pb-3 ">
+                    <div className="flex flex-col">
+                      <p className="text-[11px] font-semibold text-gray-400 tracking-widest">TOTAL SALES</p>
                       <p className="text-2xl font-medium text-gray-900">₱ {Number(totalSales).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
                     </div>
 
@@ -464,18 +514,25 @@ const Welcome = () => {
                       <PiMoneyLight size={25} className="text-green-600 dark:text-gray-500" />
                     </span>
                   </div>
-                  <div className="mt-1 flex gap-1 text-green-600">
-                    <p className="flex gap-2 text-xs">
-                      <span className="text-gray-500">  *Updated every order success </span>
-                    </p>
+
+                  <div className="flex">
+                    <AreaChart width={300} height={50} data={groupedSalesOrders} margin={{
+                      top: 3,
+                      right: 0,
+                      left: 0,
+                      bottom: -31,
+                    }}>
+                      <XAxis dataKey="date" />
+                      <Tooltip />
+                      <Area type="monotone" dataKey="Total" stroke="#5eba00" strokeWidth={1.5} fill="#c1edd1" />
+                    </AreaChart>
                   </div>
                 </article>
 
-                <article className="rounded-lg border border-gray-100 bg-white p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-gray-500">  Total Orders </p>
-
+                <article className="rounded-lg border border-gray-100 bg-white">
+                  <div className="flex items-center justify-between px-5 pt-4 pb-3 ">
+                    <div className="flex flex-col">
+                      <p className="text-[11px] font-semibold text-gray-400 tracking-widest">  TOTAL ORDERS </p>
                       <p className="text-2xl font-medium text-gray-900">{orders.length}</p>
                     </div>
 
@@ -483,12 +540,24 @@ const Welcome = () => {
                       <PiReceiptLight size={25} className="text-gray-500 dark:text-gray-500" />
                     </span>
                   </div>
+                  <div className="flex">
+                    <BarChart width={300} height={50} data={groupedOrders} margin={{
+                      top: 3,
+                      right: 0,
+                      left: 0,
+                      bottom: -30,
+                    }}>
+                      <XAxis dataKey="date" />
+                      <Tooltip />
+                      <Bar type="monotone" dataKey="Order" fill="gray" />
+                    </BarChart>
+                  </div>
                 </article>
 
                 <article className="rounded-lg border border-gray-100 bg-white p-6">
                   <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-gray-500"> Sales Today</p>
+                    <div className="flex flex-col">
+                      <p className="text-[11px] font-semibold text-gray-400 tracking-widest">SALES TODAY</p>
 
                       <p className="text-2xl font-medium text-gray-900">₱ {Number(salesToday()).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
                     </div>
@@ -507,8 +576,8 @@ const Welcome = () => {
 
                 <article className=" rounded-lg border border-gray-100 bg-white p-6">
                   <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-gray-500">  Orders Today </p>
+                    <div className="flex flex-col">
+                      <p className="text-[11px] font-semibold text-gray-400 tracking-widest"> ORDERS TODAY </p>
 
                       <p className="text-2xl font-medium text-gray-900"> {ordersToday()}</p>
                     </div>
@@ -540,46 +609,46 @@ const Welcome = () => {
                     <tbody className="divide-y dark:bg-slate-800 divide-gray-200 dark:divide-gray-700 ">
                       {orders.length !== 0
                         && orders.map((order, idx) => (
-                        <tr key={idx} onClick={(() => handleModalOpen(order.id))} className="hover:bg-gray-100 cursor-pointer dark:hover:bg-[#151e30] ">
+                          <tr key={idx} onClick={(() => handleModalOpen(order.id))} className="hover:bg-gray-100 cursor-pointer dark:hover:bg-[#151e30] ">
 
-                          <td
-                            className={`sm:flex gap-4 whitespace-nowrap px-6 py-3 font-medium text-gray-900 dark:text-gray-300`}
-                          >
-                            <div className="flex flex-col text-left">
-                              <h1 className="font-medium">{order.orderNo} </h1>
-                              <p className="text-gray-600  font-normal">{order.orderType} </p>
-                            </div>
-                          </td>
+                            <td
+                              className={`sm:flex gap-4 whitespace-nowrap px-6 py-3 font-medium text-gray-900 dark:text-gray-300`}
+                            >
+                              <div className="flex flex-col text-left">
+                                <h1 className="font-medium">{order.orderNo} </h1>
+                                <p className="text-gray-600  font-normal">{order.orderType} </p>
+                              </div>
+                            </td>
 
-                          <td className={`whitespace-nowrap  px-6 py-3  text-gray-900 dark:text-gray-300`}>
-                            <p className=" text-gray-700 dark:text-gray-500">
-                              {order.dateTime}
-                            </p>
-                          </td>
+                            <td className={`whitespace-nowrap  px-6 py-3  text-gray-900 dark:text-gray-300`}>
+                              <p className=" text-gray-700 dark:text-gray-500">
+                                {order.dateTime}
+                              </p>
+                            </td>
 
-                          <td className={`whitespace-nowrap px-6 py-3  text-gray-900 dark:text-gray-300`}>
-                            <p className="">{order.items.reduce((totalItem, item) => totalItem + Number(item.qty), 0)} </p>
-                          </td>
-                          <td className={`whitespace-nowrap px-6 py-3 font-semibold  text-gray-900 dark:text-gray-300`}>
-                            <p className="">₱ {Number(order.total).toFixed(2)} </p>
-                          </td>
+                            <td className={`whitespace-nowrap px-6 py-3  text-gray-900 dark:text-gray-300`}>
+                              <p className="">{order.items.reduce((totalItem, item) => totalItem + Number(item.qty), 0)} </p>
+                            </td>
+                            <td className={`whitespace-nowrap px-6 py-3 font-semibold  text-gray-900 dark:text-gray-300`}>
+                              <p className="">₱ {Number(order.total).toFixed(2)} </p>
+                            </td>
 
-                          <td className={`whitespace-nowrap px-6 py-3 text-gray-900 dark:text-gray-300 `}>
-                            {order.barista}
-                          </td>
-                        </tr>
-                      )) }
+                            <td className={`whitespace-nowrap px-6 py-3 text-gray-900 dark:text-gray-300 `}>
+                              {order.barista}
+                            </td>
+                          </tr>
+                        ))}
                     </tbody>
                   </table>
-                  {orders.length === 0  
-                  && <div className="flex text-sm flex-col p-5 gap-3  dark:bg-gray-900 text-gray-400 dark:text-gray-400">
-                    <div className="flex flex-col  m-auto ">
-                      <div className="m-auto">
-                        <ImFilesEmpty size={30} />
+                  {orders.length === 0
+                    && <div className="flex text-sm flex-col p-5 gap-3  dark:bg-gray-900 text-gray-400 dark:text-gray-400">
+                      <div className="flex flex-col  m-auto ">
+                        <div className="m-auto">
+                          <ImFilesEmpty size={30} />
+                        </div>
                       </div>
+                      <div className='m-auto '>No recent orders</div>
                     </div>
-                    <div className='m-auto '>No recent orders</div>
-                  </div>
                   }
                 </div>
                 <div className="pt-8 bg-gray-50 rounded-b"></div>

@@ -7,7 +7,7 @@ export const POSContext = createContext();
 export const POSProvider = ({ children }) => {
 
   const { id, name } = useAuth(); //current user id
-  const { formatDate, generateOR } = useGenerateORDATE();
+  const { generateDate, generateOR } = useGenerateORDATE();
   const [headSearch, setHeadSearch] = useState("")
 
 
@@ -19,7 +19,7 @@ export const POSProvider = ({ children }) => {
   const [orderTransac, setOrderTransac] = useState({
     user: null,
     orderNo: generateOR(),
-    dateTime: formatDate(),
+    dateTime: generateDate(),
     barista: null,
     orderType: 'Dine in',
     items: [],

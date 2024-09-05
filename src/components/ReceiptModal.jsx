@@ -290,8 +290,8 @@ return (
                     <div className="grid gap-1 grid-cols-4 text-right sm:gap-4 text-gray-700">
                       <dt className="font-medium text-gray-900 text-left">{item.name}</dt>
                       <dd>{item.qty}</dd>
-                      <dd>₱ {Number(item.price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</dd>
-                      <dd className="font-medium ">₱ {Number(item.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</dd>
+                      <dd> {Number(item.price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</dd>
+                      <dd className="font-medium "> {Number(item.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</dd>
                     </div>
                   </dl>
                 )}
@@ -310,11 +310,11 @@ return (
                 </div>
                 <div className="flex justify-between font-semibold">
                   <h1 className=" text-gray-500 ">Cash</h1>
-                  <h1 className=" text-gray-600 ">₱ {Number(order?.cash).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
+                  <h1 className=" text-gray-600 "> {Number(order?.cash).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
                 </div>
                 <div className="flex justify-between font-semibold">
                   <h1 className=" text-gray-500 ">Change</h1>
-                  <h1 className=" text-gray-600 ">₱ {Number(order?.change).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
+                  <h1 className=" text-gray-600 "> {Number(order?.change).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
                 </div>
               </div>
             </div>

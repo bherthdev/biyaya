@@ -54,8 +54,8 @@ const MenuItem = ({ itemId, search }) => {
                 category: item.category,
                 currentStock: item.qty,
                 qty: 1,
-                price: Number(item.price),
-                total: Number(item.price),
+                price: item.price,
+                total: item.price,
             };
 
             setOrderTransac((prevState) => {
@@ -93,7 +93,7 @@ const MenuItem = ({ itemId, search }) => {
                             <div className='mx-auto text-black text-sm sm:text-lg text-center'>
                                 <h1 className='font-bold'>{item.name}</h1>
                                 <div className={`${item.stock_mgt ? 'sm:flex-row' : ''} flex flex-col justify-between my-1 text-xs sm:text-base`}>
-                                    <p className='text-gray-500 font-semibold'>₱ {Number(item.price).toFixed(2)}</p>
+                                    <p className='text-gray-500 font-semibold'>₱ {item.price.toFixed(2)}</p>
                                     {item.stock_mgt && <p className='text-green-700 text-xs font-medium'>{item.qty} in stock</p>}
                                 </div>
                                 <p className='hidden sm:block text-left text-xs text-gray-400' title={item.description}>

@@ -23,7 +23,7 @@ export const Cart = () => {
     const { log } = useActivityLogger();
 
     const cashRef = useRef(null);
-    const { formatDate, generateOR } = useGenerateORDATE()
+    const { generateDate, generateOR } = useGenerateORDATE()
 
     const { id, name } = useAuth(); //current user id
     const [itemToBeUpdate, setItemToBeUpdate] = useState([]);
@@ -31,7 +31,6 @@ export const Cart = () => {
     useEffect(() => {
         orderTransac.items.length && cashRef.current ? cashRef.current.focus() : window.focus()
     }, [placeOrder]);
-
 
 
     // Utility to combine states
@@ -55,8 +54,8 @@ export const Cart = () => {
 
 
     const inputChange = (e) => {
-        setOrderTransac({ ...orderTransac, dateTime: formatDate(), cash: e.target.value, change: Number(e.target.value) - Number(orderTransac.total) })
-        Number(e.target.value) >= Number(orderTransac.total) ? setEnableSaveOrder(true) : setEnableSaveOrder(false)
+        setOrderTransac({ ...orderTransac, cash: Number(e.target.value), change: Number(e.target.value) - orderTransac.total })
+        Number(e.target.value) >= orderTransac.total ? setEnableSaveOrder(true) : setEnableSaveOrder(false)
 
     }
 
@@ -71,8 +70,8 @@ export const Cart = () => {
                     stockMGT: data.stock,
                     category: data.category,
                     price: data.price,
-                    qty: Number(data.currentStock) - Number(data.qty),
-                    status: Number(data.currentStock) - Number(data.qty) === 0 ? 'Out of Stock' : 'In Stock',
+                    qty: data.currentStock - data.qty,
+                    status: data.currentStock - data.qty === 0 ? 'Out of Stock' : 'In Stock',
                 }));
 
             setItemToBeUpdate(updatedItems);
@@ -179,7 +178,7 @@ export const Cart = () => {
         setOrderTransac({
             user: id,
             orderNo: generateOR(),
-            dateTime: formatDate(),
+            dateTime: generateDate(),
             barista: name,
             orderType: 'Dine in',
             items: [],
@@ -198,19 +197,19 @@ export const Cart = () => {
         const tempRows = [...orderTransac.items]; // Avoid direct state mutation
         const tempObj = { ...tempRows[index] }; // Copy state object at index to a temporary object
 
-        if (Number(tempObj.qty) >= 1) {
+        if (tempObj.qty >= 1) {
 
             if (option) {
                 // Increment qty if stock management allows it
-                if ((tempObj?.stock && Number(tempObj?.currentStock) > Number(tempObj?.qty)) || !tempObj?.stock) {
-                    tempObj.qty = Number(tempObj.qty) + 1;
+                if ((tempObj?.stock && tempObj?.currentStock > tempObj?.qty) || !tempObj?.stock) {
+                    tempObj.qty = tempObj.qty + 1;
                 }
             } else {
                 // Decrement qty
-                tempObj.qty = Number(tempObj.qty) - 1;
+                tempObj.qty = tempObj.qty - 1;
             }
 
-            tempObj.total = Number(tempObj.qty) * Number(tempObj.price);
+            tempObj.total = tempObj.qty * tempObj.price;
 
             // Remove item if quantity is zero
             if (tempObj.qty === 0) {
@@ -260,7 +259,7 @@ export const Cart = () => {
                         <div
                             onClick={() => setToggleCart(false)}
                             title="Hide Cart"
-                            className="flex my-auto text-gray-700 p-1 hover:text-white hover:bg-gray-900 cursor-pointer rounded-full">
+                            className="flex my-auto border text-gray-700 p-1  hover:shadow cursor-pointer rounded-full">
                             <IoIosArrowForward size={25}/>
                         </div>
                     </div>
@@ -364,7 +363,7 @@ export const Cart = () => {
                     <div className={`flex flex-col gap-5`}>
                         <div className="flex justify-between text-2xl font-medium">
                             <h1 className="text-gray-500">Total</h1>
-                            <p className="text-green-800">₱ {Number(orderTransac.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
+                            <p className="text-green-800">₱ {orderTransac.total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
                         </div>
                         {placeOrder
                             ?
@@ -384,7 +383,7 @@ export const Cart = () => {
                                 </div>
                                 <div className="flex justify-between text-lg">
                                     <h1 className="text-gray-500">Change</h1>
-                                    <p className="text-red-800 font-medium">₱ {Number(orderTransac.change).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
+                                    <p className="text-red-800 font-medium">₱ {orderTransac.change.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
                                 </div>
                                 <span
                                     onClick={saveOrder}

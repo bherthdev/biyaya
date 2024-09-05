@@ -11,8 +11,11 @@ const useGenerateORDATE = () => {
       second: 'numeric',
       hour12: true // Use 12-hour format with AM/PM
   };
+
+  const formatDate = (dateStr) => new Date(dateStr).toLocaleDateString('en-US', options);
   
-  const formatDate = ()=> new Date().toLocaleDateString('en-US', options)
+
+  const generateDate = ()=> new Date().toLocaleDateString('en-US', options)
   
   
   const generateOR = ()=> `#${new Date().getFullYear()}-${new Date().getMonth()+ 1}${new Date().getDate()}${new Date().getHours()}-${new Date().getMinutes()}${new Date().getSeconds()}`
@@ -20,7 +23,7 @@ const useGenerateORDATE = () => {
   // OR number: YEAR-MONTH/DAY/HOUR/MINUTES/SECONDS
   
   
-    return { formatDate, generateOR }
+    return { formatDate, generateOR, generateDate }
   }
   
   export default useGenerateORDATE
