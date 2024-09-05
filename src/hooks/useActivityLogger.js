@@ -4,7 +4,7 @@ import useGenerateORDATE from './useGenerateORDATE';
 
 const useActivityLogger = () => {
   const { name, avatar } = useAuth();
-  const { formatDate } = useGenerateORDATE();
+  const { generateDate } = useGenerateORDATE();
   const [addNewActivity] = useAddNewActivityMutation();
 
   const notification = (orderTransaction) => {
@@ -36,7 +36,7 @@ const useActivityLogger = () => {
 
       await addNewActivity({
         name,
-        date: formatDate(),
+        date: generateDate(),
         avatar,
         actionType,
         description,
