@@ -13,7 +13,12 @@ const ActivitiesComponent = ({ logs, onUpdateLog }) => {
         if (loading) return;
         setLoading(true);
         setTimeout(() => {
-            setVisibleLogs(prev => Math.min(prev + 4, logs.length));
+            // Increment exactly 4 logs on each load, ensuring we don't load more than the total number of logs
+            setVisibleLogs(prev => {
+                const remainingLogs = logs.length - prev;
+                const increment = remainingLogs >= 4 ? 4 : remainingLogs; // Load exactly 4 or the remaining logs
+                return prev + increment;
+            });
             setLoading(false);
         }, 1000); // Simulate a loading delay of 1 second
     };

@@ -60,7 +60,7 @@ const POS = () => {
         content = (
             <>
                 <div aria-label="Page Header" className=''>
-                    <div className='z-20 sticky  top-[79px] sm:top-32  bg-[#f1f1f1] border-b'>
+                    <div className='z-20 sticky  top-[79px] sm:top-32  bg-white sm:bg-[#f1f1f1] border-b'>
 
                         <div className='flex flex-col px-4 lg:px-8 pt-5 pb-2'>
                             <div className='flex justify-between gap-2 items-center'>
@@ -95,7 +95,7 @@ const POS = () => {
                                             </svg>
                                         </button>
                                         <input
-                                            className="h-10 w-32 outline-none border border-gray-300 dark:text-gray-300 rounded-full border-none bg-gray-50 dark:bg-slate-800 pl-11 pr-2 text-sm  sm:w-56"
+                                            className="h-10 w-32 border border-gray-100 dark:text-gray-300 rounded-full bg-[#f1f1f1]  sm:bg-white dark:bg-slate-800 pl-11 pr-2 text-sm  sm:w-56"
                                             id="search"
                                             type="search"
                                             placeholder="Search..."
@@ -124,7 +124,7 @@ const POS = () => {
                                             key={idx}
                                             title={category}
                                             onClick={() => onCategorySearch(category)}
-                                            className={`${search === category ? 'bg-[#242424] text-white hover:bg-gray-700' : 'hover:bg-gray-200 text-black'} flex justify-center items-center px-6 sm:px-8 py-3 cursor-pointer  border  border-gray-300 rounded-full`} >
+                                            className={`${search === category ? 'bg-[#242424] text-white active:bg-black' : 'active:bg-white text-black hover:shadow'} flex justify-center items-center px-6 sm:px-8 py-3 cursor-pointer  border  border-gray-300 rounded-full`} >
                                             {category}
                                         </div>
                                     ))}
