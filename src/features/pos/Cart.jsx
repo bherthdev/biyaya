@@ -4,7 +4,7 @@ import iconItem from "../../assets/icon-item.svg"
 import { useAddNewOrderMutation } from "../orders/ordersApiSlice";
 import { toast } from "react-toastify";
 import useAuth from "../../hooks/useAuth";
-import { MdClose } from "react-icons/md";
+import { MdKeyboardArrowRight } from "react-icons/md";
 import { useUpdateItemMutation } from "../items/itemsApiSlice";
 import Spenner from "../../components/Spinner";
 import useActivityLogger from "../../hooks/useActivityLogger";
@@ -247,15 +247,21 @@ export const Cart = () => {
             <div className={`flex shadow-2xl sm:shadow-transparent h-full fixed w-80  ${classToggleCart} z-40 px-5  flex-col justify-between border-e bg-white `}>
                 <div className={`py-5 flex flex-col  gap-5`}>
                     <div className="flex justify-between">
-                        <h1 className={`text-3xl text-gray-700`}
+                        <div className="flex  gap-4">
+                            <h1 className={`text-3xl text-gray-700`}
 
-                        >
-                            Cart
-                        </h1>
+                            >
+                                Cart
+                            </h1>
+                            <p className="flex items-end text-base text-gray-300 font-light">
+                                {orderTransac.orderNo}
+                            </p>
+                        </div>
                         <div
                             onClick={() => setToggleCart(false)}
-                            className="flex my-auto text-gray-400 hover:text-gray-600 cursor-pointer ">
-                            <MdClose size={30} />
+                            title="Close Cart"
+                            className="flex my-auto text-gray-500 hover:text-white hover:bg-black cursor-pointer rounded-full">
+                            <MdKeyboardArrowRight  size={30}/>
                         </div>
                     </div>
                     {/* <div className="hidden lg:flex justify-between items-center">
