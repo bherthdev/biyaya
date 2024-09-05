@@ -4,12 +4,12 @@ import iconItem from "../../assets/icon-item.svg"
 import { useAddNewOrderMutation } from "../orders/ordersApiSlice";
 import { toast } from "react-toastify";
 import useAuth from "../../hooks/useAuth";
-import { MdKeyboardArrowRight } from "react-icons/md";
 import { useUpdateItemMutation } from "../items/itemsApiSlice";
 import Spenner from "../../components/Spinner";
 import useActivityLogger from "../../hooks/useActivityLogger";
 import { POSContext } from "../../context/POSContext";
 import useGenerateORDATE from "../../hooks/useGenerateORDATE";
+import { IoIosArrowForward } from "react-icons/io";
 
 
 export const Cart = () => {
@@ -260,8 +260,8 @@ export const Cart = () => {
                         <div
                             onClick={() => setToggleCart(false)}
                             title="Close Cart"
-                            className="flex my-auto text-gray-500 hover:text-white hover:bg-black cursor-pointer rounded-full">
-                            <MdKeyboardArrowRight  size={30}/>
+                            className="flex my-auto text-gray-700 p-1 hover:text-white hover:bg-gray-900 cursor-pointer rounded-full">
+                            <IoIosArrowForward size={25}/>
                         </div>
                     </div>
                     {/* <div className="hidden lg:flex justify-between items-center">
