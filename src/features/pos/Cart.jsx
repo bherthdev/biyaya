@@ -96,6 +96,7 @@ export const Cart = () => {
                 handleSuccess(result.data.message);
                 log(`POS ORDER`, `Order No. ${orderTransac?.orderNo} Grand Total: ${orderTransac?.total}`, result?.data?.orderTransaction)
 
+                
                 if (itemToBeUpdate.length) {
                     // Update each item after the order is successfully saved
                     const updatePromises = itemToBeUpdate.map(item => updateItem({ ...item }));
@@ -259,7 +260,7 @@ export const Cart = () => {
                         <div
                             onClick={() => setToggleCart(false)}
                             title="Hide Cart"
-                            className="flex my-auto border text-gray-700 p-1  hover:shadow cursor-pointer rounded-full">
+                            className="flex my-auto text-gray-700 p-1  hover:shadow cursor-pointer rounded-full">
                             <IoIosArrowForward size={25}/>
                         </div>
                     </div>
