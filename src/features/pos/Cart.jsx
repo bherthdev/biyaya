@@ -96,6 +96,7 @@ export const Cart = () => {
                 handleSuccess(result.data.message);
                 log(`POS ORDER`, `Order No. ${orderTransac?.orderNo} Grand Total: ${orderTransac?.total}`, result?.data?.orderTransaction)
 
+                
                 if (itemToBeUpdate.length) {
                     // Update each item after the order is successfully saved
                     const updatePromises = itemToBeUpdate.map(item => updateItem({ ...item }));
