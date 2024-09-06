@@ -543,7 +543,7 @@ const Welcome = () => {
                                   </div>
                                   <p className="text-gray-400 text-[11px]">TOTAL:
                                     <span className="font-medium text-xs text-gray-50 ">
-                                      {`  ₱ ${(item.payload.Total).toFixed(2)}`}
+                                      {`  ₱ ${(item.payload.Total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`}
                                     </span>
                                   </p>
 
