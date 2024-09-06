@@ -15,6 +15,7 @@ import {
   Tooltip,
   BarChart,
   Bar,
+  ResponsiveContainer,
 } from "recharts";
 
 const Welcome = () => {
@@ -515,17 +516,40 @@ const Welcome = () => {
                     </span>
                   </div>
 
-                  <div className="flex">
-                    <AreaChart width={300} height={50} data={groupedSalesOrders} margin={{
-                      top: 3,
-                      right: 0,
-                      left: 0,
-                      bottom: -31,
-                    }}>
-                      <XAxis dataKey="date" />
-                      <Tooltip />
-                      <Area type="monotone" dataKey="Total" stroke="#5eba00" strokeWidth={1.5} fill="#c1edd1" />
-                    </AreaChart>
+                  <div className="flex h-14">
+                    <ResponsiveContainer width={"100%"} height={"100%"}>
+                      <AreaChart width={300} height={50} data={groupedSalesOrders} margin={{
+                        top: 3,
+                        right: 0,
+                        left: 0,
+                        bottom: -31,
+                      }}>
+                        <XAxis dataKey="date" />
+                        <Tooltip content={(props) => (
+                          <div>
+                            {props.payload?.map((item, idx) => {
+                              return (
+                                <div className="flex flex-col gap-2 bg-green-100 text-gray-700 py-2 px-4 rounded-md shadow-lg "
+                                  key={idx}
+                                >
+                                  <p className="text-gray-500 text-[11px]">DATE:
+                                    <span className="text-gray-700 text-xs font-medium">
+                                      {` ${(item.payload.date)}`}
+                                    </span>
+                                  </p>
+                                  <p className="text-gray-500 text-[11px]">TOTAL:
+                                    <span className="text-gray-700 font-medium">
+                                      {` ₱ ${(item.payload.Total).toFixed(2)}`}
+                                    </span>
+                                  </p>
+                                </div>
+                              )
+                            })}
+                          </div>
+                        )} />
+                        <Area type="monotone" dataKey="Total" stroke="#5eba00" strokeWidth={1.5} fill="#c1edd1" />
+                      </AreaChart>
+                    </ResponsiveContainer>
                   </div>
                 </article>
 
@@ -540,17 +564,42 @@ const Welcome = () => {
                       <PiReceiptLight size={25} className="text-gray-500 dark:text-gray-500" />
                     </span>
                   </div>
-                  <div className="flex">
-                    <BarChart width={300} height={50} data={groupedOrders} margin={{
-                      top: 3,
-                      right: 0,
-                      left: 0,
-                      bottom: -30,
-                    }}>
-                      <XAxis dataKey="date" />
-                      <Tooltip />
-                      <Bar type="monotone" dataKey="Order" fill="gray" />
-                    </BarChart>
+                  <div className="flex h-14">
+                    <ResponsiveContainer width={"100%"} height={"100%"}>
+
+                      <BarChart width={300} height={50} data={groupedOrders} margin={{
+                        top: 3,
+                        right: 0,
+                        left: 0,
+                        bottom: -31,
+                      }}>
+                        <XAxis dataKey="date" />
+                        <Tooltip content={(props) => (
+                          <div>
+                            {props.payload?.map((item, idx) => {
+                              return (
+                                <div className="flex flex-col gap-2 bg-gray-500 text-gray-700 py-2 px-4 rounded-md shadow-lg "
+                                  key={idx}
+                                >
+                                  <p className="text-gray-300 text-[11px]">DATE:
+                                    <span className="text-gray-50 text-xs font-medium">
+                                      {` ${(item.payload.date)}`}
+                                    </span>
+                                  </p>
+                                  <p className="text-gray-300 text-[11px]">ORDER:
+                                    <span className="text-gray-50 font-medium">
+                                      {`  ${(item.payload.Order)}`}
+                                    </span>
+                                  </p>
+                                </div>
+                              )
+                            })}
+                          </div>
+                        )} />
+                        <Bar type="monotone" dataKey="Order" fill="#d5d5d5" />
+                      </BarChart>
+
+                    </ResponsiveContainer>
                   </div>
                 </article>
 

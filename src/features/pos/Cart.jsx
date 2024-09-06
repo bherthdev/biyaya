@@ -260,7 +260,7 @@ export const Cart = () => {
                         <div
                             onClick={() => setToggleCart(false)}
                             title="Hide Cart"
-                            className="flex my-auto border text-gray-700 p-1  hover:shadow cursor-pointer rounded-full">
+                            className="flex my-auto text-gray-700 p-1  hover:shadow cursor-pointer rounded-full">
                             <IoIosArrowForward size={25}/>
                         </div>
                     </div>
