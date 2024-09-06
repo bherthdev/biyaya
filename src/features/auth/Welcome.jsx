@@ -507,7 +507,7 @@ const Welcome = () => {
                 <article className="rounded-lg border border-gray-100 bg-white ">
                   <div className="flex items-center justify-between px-5 pt-4 pb-3 ">
                     <div className="flex flex-col">
-                      <p className="text-[11px] font-semibold text-gray-400 tracking-widest">TOTAL SALES</p>
+                      <p className="text-[11px] font-semibold text-gray-500 tracking-widest">TOTAL SALES</p>
                       <p className="text-2xl font-medium text-gray-900">₱ {Number(totalSales).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
                     </div>
 
@@ -529,19 +529,24 @@ const Welcome = () => {
                           <div>
                             {props.payload?.map((item, idx) => {
                               return (
-                                <div className="flex flex-col gap-2 bg-green-100 text-gray-700 py-2 px-4 rounded-md shadow-lg "
+                                <div className="flex flex-col gap-2 bg-slate-800 border text-xs  font-medium py-3 px-5 rounded-md shadow-lg "
                                   key={idx}
                                 >
-                                  <p className="text-gray-500 text-[11px]">DATE:
-                                    <span className="text-gray-700 text-xs font-medium">
+
+
+
+                                  <div className="flex gap-1 items-center">
+                                    <div className="h-2 w-2 rounded-full bg-green-500"></div>
+                                    <p className="text-gray-50 font-medium">
                                       {` ${(item.payload.date)}`}
+                                    </p>
+                                  </div>
+                                  <p className="text-gray-400 text-[11px]">TOTAL:
+                                    <span className="font-medium text-xs text-gray-50 ">
+                                      {`  ₱ ${(item.payload.Total).toFixed(2)}`}
                                     </span>
                                   </p>
-                                  <p className="text-gray-500 text-[11px]">TOTAL:
-                                    <span className="text-gray-700 font-medium">
-                                      {` ₱ ${(item.payload.Total).toFixed(2)}`}
-                                    </span>
-                                  </p>
+
                                 </div>
                               )
                             })}
@@ -556,7 +561,7 @@ const Welcome = () => {
                 <article className="rounded-lg border border-gray-100 bg-white">
                   <div className="flex items-center justify-between px-5 pt-4 pb-3 ">
                     <div className="flex flex-col">
-                      <p className="text-[11px] font-semibold text-gray-400 tracking-widest">  TOTAL ORDERS </p>
+                      <p className="text-[11px] font-semibold text-gray-500 tracking-widest">  TOTAL ORDERS </p>
                       <p className="text-2xl font-medium text-gray-900">{orders.length}</p>
                     </div>
 
@@ -578,16 +583,18 @@ const Welcome = () => {
                           <div>
                             {props.payload?.map((item, idx) => {
                               return (
-                                <div className="flex flex-col gap-2 bg-gray-500 text-gray-700 py-2 px-4 rounded-md shadow-lg "
+                                <div className="flex flex-col gap-2 bg-slate-800 border text-xs  font-medium py-3 px-5 rounded-md shadow-lg "
                                   key={idx}
                                 >
-                                  <p className="text-gray-300 text-[11px]">DATE:
-                                    <span className="text-gray-50 text-xs font-medium">
+
+                                  <div className="flex gap-1 items-center">
+                                    <div className="h-2 w-2 rounded-full bg-gray-400"></div>
+                                    <p className="text-gray-50 font-medium">
                                       {` ${(item.payload.date)}`}
-                                    </span>
-                                  </p>
-                                  <p className="text-gray-300 text-[11px]">ORDER:
-                                    <span className="text-gray-50 font-medium">
+                                    </p>
+                                  </div>
+                                  <p className="text-gray-400 text-[11px]">ORDER:
+                                    <span className="text-gray-50 text-xs font-medium">
                                       {`  ${(item.payload.Order)}`}
                                     </span>
                                   </p>
@@ -596,7 +603,7 @@ const Welcome = () => {
                             })}
                           </div>
                         )} />
-                        <Bar type="monotone" dataKey="Order" fill="#d5d5d5" />
+                        <Bar type="monotone" dataKey="Order" fill="#e7e7e7" />
                       </BarChart>
 
                     </ResponsiveContainer>
@@ -606,7 +613,7 @@ const Welcome = () => {
                 <article className="rounded-lg border border-gray-100 bg-white p-6">
                   <div className="flex items-center justify-between">
                     <div className="flex flex-col">
-                      <p className="text-[11px] font-semibold text-gray-400 tracking-widest">SALES TODAY</p>
+                      <p className="text-[11px] font-semibold text-gray-500 tracking-widest">SALES TODAY</p>
 
                       <p className="text-2xl font-medium text-gray-900">₱ {Number(salesToday()).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
                     </div>
@@ -626,7 +633,7 @@ const Welcome = () => {
                 <article className=" rounded-lg border border-gray-100 bg-white p-6">
                   <div className="flex items-center justify-between">
                     <div className="flex flex-col">
-                      <p className="text-[11px] font-semibold text-gray-400 tracking-widest"> ORDERS TODAY </p>
+                      <p className="text-[11px] font-semibold text-gray-500 tracking-widest"> ORDERS TODAY </p>
 
                       <p className="text-2xl font-medium text-gray-900"> {ordersToday()}</p>
                     </div>
