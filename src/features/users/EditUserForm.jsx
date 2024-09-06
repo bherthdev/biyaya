@@ -278,7 +278,7 @@ const EditUserForm = ({ user }) => {
 
       <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8 ">
         <h1 className="mb-2 text-xl font-semibold text-gray-500 sm:text-2xl dark:text-gray-200 ">
-          {id === user._id ? 'Account Setting' : 'Edit Employee'}
+          {id === user._id ? 'Account Setting' : 'Edit User'}
         </h1>
         <p className="text-red-700 sm:text-xl dark:text-gray-200">{error?.data?.message}</p>
 
@@ -288,60 +288,8 @@ const EditUserForm = ({ user }) => {
               <div className="space-y-6 bg-white dark:bg-slate-800 px-4 py-5 sm:p-10">
                 <div className="grid grid-cols-2 gap-20">
                   <div className="col-span-2 sm:col-span-1 ">
-                    <div className="">
-                      <label
-                        className="block text-base  text-gray-500 dark:text-gray-200"
-                        htmlFor="name"
-                      >
-                        Name
-                      </label>
-                      <input
-                        className={`w-full mt-1 px-3 py-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
-                        id="name"
-                        name="name"
-                        type="text"
-                        autoComplete="off"
-                        value={name}
-                        onChange={onNameChanged}
-                      />
-                    </div>
 
-                    <div className="mt-5">
-                      <label
-                        className="block text-base text-gray-500 dark:text-gray-200"
-                        htmlFor="position"
-                      >
-                        Position
-                      </label>
-                      <input
-                        className={`w-full mt-1 px-3 py-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
-                        id="position"
-                        name="position"
-                        type="text"
-                        autoComplete="off"
-                        required
-                        value={position}
-                        onChange={onPositionChanged}
-                      />
-                    </div>
-                    <div className="mt-5">
-                      <label
-                        htmlFor="country"
-                        className="block text-base text-gray-500 dark:text-gray-200"
-                      >
-                        Roles
-                      </label>
-                      <select
-                        id="roles"
-                        name="roles"
-                        value={roles}
-                        onChange={(e) => setRoles(e.target.value)}
-                        className="mt-1 block w-full py-2 px-2 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md"
-                      >
-                        {options}
-                      </select>
-                    </div>
-                    <div className="mt-10">
+                    <div className="">
                       <label className="block text-base text-center sm:text-left  text-gray-500 dark:text-gray-200">
                         Photo
                       </label>
@@ -385,7 +333,67 @@ const EditUserForm = ({ user }) => {
                         </p>
                       </div>
                     </div>
+                    <div className="mt-10">
+                      <label
+                        className="block text-base  text-gray-500 dark:text-gray-200"
+                        htmlFor="name"
+                      >
+                        Name
+                      </label>
+                      <input
+                        className={`w-full mt-1 px-3 py-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
+                        id="name"
+                        name="name"
+                        type="text"
+                        autoComplete="off"
+                        value={name}
+                        onChange={onNameChanged}
+                      />
+                    </div>
+
+                    <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-5">
+                     
+                      <div>
+                        <label
+                          className="block text-base text-gray-500 dark:text-gray-200"
+                          htmlFor="position"
+                        >
+                          Position
+                        </label>
+                        <input
+                          className={`w-full mt-1 px-3 py-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
+                          id="position"
+                          name="position"
+                          type="text"
+                          autoComplete="off"
+                          required
+                          value={position}
+                          onChange={onPositionChanged}
+                        />
+                      </div>
+
+                      <div className="">
+                      <label
+                        htmlFor="country"
+                        className="block text-base text-gray-500 dark:text-gray-200"
+                      >
+                        Roles
+                      </label>
+                      <select
+                        id="roles"
+                        name="roles"
+                        value={roles}
+                        onChange={(e) => setRoles(e.target.value)}
+                        className="mt-1 block w-full py-2 px-2 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md"
+                      >
+                        {options}
+                      </select>
+                    </div>
+                    </div>
+
+                    
                   </div>
+
                   <div className="col-span-2 sm:col-span-1">
                     <div className="">
                       <label
@@ -515,7 +523,7 @@ const EditUserForm = ({ user }) => {
                     }
                   >
                     <AiOutlineSave size={20} className="mr-1 sm:mr-2" />
-                    Save
+                    Update
                   </span>
                 </div>
               </div>

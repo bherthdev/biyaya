@@ -153,6 +153,9 @@ const NewUserForm = () => {
                 <div className="grid grid-cols-2 gap-20">
                   <div className="col-span-2 sm:col-span-1 ">
                     <div className="">
+                      <ImageUploadField imageView={imageView} onChange={handleImageChange} />
+                    </div>
+                    <div className="mt-10">
                       <label
                         className="block text-base text-gray-500 dark:text-gray-200"
                         htmlFor="name"
@@ -170,91 +173,45 @@ const NewUserForm = () => {
                         onChange={onNameChanged}
                       />
                     </div>
-                    <div className="mt-5">
-                      <label
-                        className="block text-base text-gray-500 dark:text-gray-200"
-                        htmlFor="position"
-                      >
-                        Position
-                      </label>
-                      <input
-                        className={`w-full mt-1 px-3 py-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
-                        id="position"
-                        name="position"
-                        type="text"
-                        autoComplete="off"
-                        required
-                        value={position}
-                        onChange={onPositionChanged}
-                      />
-                    </div>
-
-                    <div className="mt-5">
-                      <label
-                        htmlFor="country"
-                        className="block text-base  text-gray-500 dark:text-gray-200"
-                      >
-                        Roles
-                      </label>
-                      <select
-                        id="roles"
-                        name="roles"
-                        value={roles}
-                        onChange={onRolesChanged}
-                        className="mt-1 block w-full py-3 px-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md"
-                      >
-                        <option defaultValue value={""}>
-                          ---
-                        </option>
-                        {options}
-                      </select>
-                    </div>
-
-
-
-
-                    <div className="mt-10">
-                      {/* <label className="block text-base  text-center sm:text-left text-gray-500 dark:text-gray-200">
-                        Photo
-                      </label>
-                      <div className="mt-1 flex flex-col gap-4 sm:gap-0 sm:flex-row items-center">
-                        {imageView
-                          ? <Image data={imageView} size="h-40 w-40 " rounded="rounded-md" />
-                          : <span className="inline-block h-40 w-40  overflow-hidden rounded-md bg-gray-100">
-                            <svg
-                              className="h-full w-full text-gray-300"
-                              fill="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                            </svg>
-                          </span>
-                        }
-
+                    <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <div>
                         <label
-                          htmlFor="file-upload"
-                          className="sm:ml-5 cursor-pointer text-[10px]  px-4 py-2 text-black border dark:text-gray-300 font-medium border-gray-300 dark:border-slate-600  dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150"
+                          className="block text-base text-gray-500 dark:text-gray-200"
+                          htmlFor="position"
                         >
-
-                          <span className="whitespace-nowrap">Upload Photo</span>
-
-                          <input
-                            id="file-upload"
-                            name="image"
-                            type="file"
-                            className="sr-only"
-                            accept="image/png, image/jpeg"
-                            onChange={event => {
-                              readImage(event, setImage)
-                              onImageChanged(event)
-                            }}
-                          />
+                          Position
                         </label>
-                        <p className="text-xs text-gray-500 ml-3">
-                          JPG, JPEG, PNG up to 10MB
-                        </p>
-                      </div> */}
-                  <ImageUploadField imageView={imageView} onChange={handleImageChange} />
+                        <input
+                          className={`w-full mt-1 px-3 py-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
+                          id="position"
+                          name="position"
+                          type="text"
+                          autoComplete="off"
+                          required
+                          value={position}
+                          onChange={onPositionChanged}
+                        />
+                      </div>
+                      <div className="">
+                        <label
+                          htmlFor="country"
+                          className="block text-base  text-gray-500 dark:text-gray-200"
+                        >
+                          Roles
+                        </label>
+                        <select
+                          id="roles"
+                          name="roles"
+                          value={roles}
+                          onChange={onRolesChanged}
+                          className="mt-1 block w-full py-3 px-3 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md"
+                        >
+                          <option defaultValue value={""}>
+                            ---
+                          </option>
+                          {options}
+                        </select>
+                      </div>
                     </div>
 
                   </div>
@@ -374,8 +331,8 @@ const NewUserForm = () => {
 };
 
 const ImageUploadField = ({ imageView, onChange }) => (
-  <div className="mt-10">
-    <label className="block text-base text-center sm:text-left text-gray-500 dark:text-gray-200">Item Photo</label>
+  <div className="">
+    <label className="block text-base text-center sm:text-left text-gray-500 dark:text-gray-200">User Photo</label>
     <div className="mt-1 flex flex-col gap-4 sm:gap-0 sm:flex-row items-center">
       {imageView ? (
         <Image data={imageView} size="h-40 w-40" rounded="rounded-md" />
