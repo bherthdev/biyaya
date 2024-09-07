@@ -1,12 +1,25 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { POSContext } from '../context/POSContext';
 
 const MenuItem = ({ icon: Icon, label, path, toggleSideMenu, isActive, onClick }) => {
+
+    const { orderTransac } = useContext(POSContext);
+    
+
     return (
         <div
-            className={`${isActive && "border-r-[4px] border-r-black bg-gray-200" 
-                } px-4 py-4 cursor-pointer font-sans font-medium text-gray-700 hover:bg-gray-200`}
+            className={`${isActive && "border-r-[4px] border-r-black bg-gray-200"
+                } relative px-4 py-4 cursor-pointer font-sans font-medium text-gray-700 hover:bg-gray-200`}
             onClick={onClick}
         >
+            {label === 'POS' &&
+                <div className='absolute p-1 w-[22px] h-[22px] rounded-full bg-[#242424] top-1 left-8 z-10'>
+                    <h1 className='text-white text-[10px] text-center'>
+                        {orderTransac.items?.reduce((total, item) => total + item.qty, 0)}
+                    </h1>
+                </div>
+
+            }
             <div className={`flex gap-5 ${!toggleSideMenu && "group relative"} items-center`}>
                 <div className="text-gray-500">
                     <Icon size={25} />
