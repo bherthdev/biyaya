@@ -1,6 +1,5 @@
 import { AiOutlineDashboard } from "react-icons/ai";
 import biyayaLogo from "../../src/assets/biyaya_logo.png";
-import { BsFillMenuButtonWideFill } from "react-icons/bs";
 import { MdOutlineInventory, MdOutlineShoppingCart } from "react-icons/md";
 import { IoReceiptOutline, IoSettingsOutline } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -12,6 +11,7 @@ import MenuItem from "./MenuItem";
 import { IoIosLogOut } from "react-icons/io";
 import { POSContext } from "../context/POSContext";
 import { useContext } from "react";
+import { BsFillMenuButtonWideFill } from "react-icons/bs";
 
 export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName }) => {
 
@@ -70,7 +70,7 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName }) =
             onClick={() => onMenuClick("/dashboard")}
           />
           <MenuItem
-            icon={MdOutlineShoppingCart}
+            icon={BsFillMenuButtonWideFill}
             label="POS"
             path="/pos"
             toggleSideMenu={toggleSideMenu}
