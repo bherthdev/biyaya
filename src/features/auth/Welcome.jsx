@@ -17,10 +17,10 @@ import {
   Bar,
   ResponsiveContainer,
 } from "recharts";
+import RecentOrders from "../../components/RecentOrders";
 
 const Welcome = () => {
 
-  const columnsOrders = ["Order#/Type", "Date/Time", "ITEMS", "Total", "Barista"];
   const columnsItems = ["Item Name", "Stock"];
 
   const [orderId, setOderID] = useState('');
@@ -493,13 +493,6 @@ const Welcome = () => {
                   {`Today is  ${dateToday} - ${time} `}
                 </p>
               </div>
-              {/* <div
-                className="flex  items-center  rounded-lg bg-gray-50 dark:bg-slate-800 p-4 text-gray-800 dark:text-gray-300 hover:text-gray-700"
-              >
-                <span className="sr-only">Notifications</span>
-                <RxActivityLog />
-
-              </div> */}
             </div>
             <div className="mx-auto max-w-screen-xl  py-3  md:py-5">
               <dl className="font-normal grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
@@ -532,9 +525,6 @@ const Welcome = () => {
                                 <div className="flex flex-col gap-2 bg-slate-800 border text-xs  font-medium py-3 px-5 rounded-md shadow-lg "
                                   key={idx}
                                 >
-
-
-
                                   <div className="flex gap-1 items-center">
                                     <div className="h-2 w-2 rounded-full bg-green-500"></div>
                                     <p className="text-gray-50 font-medium">
@@ -648,67 +638,7 @@ const Welcome = () => {
 
             {/* Orders Table */}
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8">
-              <div className=" h-96 min-w-full rounded bg-white col-span-1 lg:col-span-2">
-                <h1 className="py-4 px-6 text-sm font-medium text-gray-700 ">Recent Orders</h1>
-                <div className="overflow-x-auto h-full bg-white min-w-full shadow-sm ">
-
-                  <table className="min-w-full  divide-y divide-gray-200 dark:divide-gray-700 text-sm leading-normal">
-                    <thead className="bg-gray-50 dark:bg-gray-800 sticky top-0">
-                      <tr className="sticky">
-                        {columnsOrders.map((column, index) => (
-                          <th key={index} className={`mx-auto text-start px-6 py-2 bg-[#F1F1F1] dark:bg-gray-700  text-xs font-normal text-gray-500 dark:text-gray-400 uppercase tracking-wider`}>
-                            {column}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y dark:bg-slate-800 divide-gray-200 dark:divide-gray-700 ">
-                      {orders.length !== 0
-                        && orders.map((order, idx) => (
-                          <tr key={idx} onClick={(() => handleModalOpen(order.id))} className="hover:bg-gray-100 cursor-pointer dark:hover:bg-[#151e30] ">
-
-                            <td
-                              className={`sm:flex gap-4 whitespace-nowrap px-6 py-3 font-medium text-gray-900 dark:text-gray-300`}
-                            >
-                              <div className="flex flex-col text-left">
-                                <h1 className="font-medium">{order.orderNo} </h1>
-                                <p className="text-gray-600  font-normal">{order.orderType} </p>
-                              </div>
-                            </td>
-
-                            <td className={`whitespace-nowrap  px-6 py-3  text-gray-900 dark:text-gray-300`}>
-                              <p className=" text-gray-700 dark:text-gray-500">
-                                {order.dateTime}
-                              </p>
-                            </td>
-
-                            <td className={`whitespace-nowrap px-6 py-3  text-gray-900 dark:text-gray-300`}>
-                              <p className="">{order.items.reduce((totalItem, item) => totalItem + Number(item.qty), 0)} </p>
-                            </td>
-                            <td className={`whitespace-nowrap px-6 py-3 font-semibold  text-gray-900 dark:text-gray-300`}>
-                              <p className="">₱ {Number(order.total).toFixed(2)} </p>
-                            </td>
-
-                            <td className={`whitespace-nowrap px-6 py-3 text-gray-900 dark:text-gray-300 `}>
-                              {order.barista}
-                            </td>
-                          </tr>
-                        ))}
-                    </tbody>
-                  </table>
-                  {orders.length === 0
-                    && <div className="flex text-sm flex-col p-5 gap-3  dark:bg-gray-900 text-gray-400 dark:text-gray-400">
-                      <div className="flex flex-col  m-auto ">
-                        <div className="m-auto">
-                          <ImFilesEmpty size={30} />
-                        </div>
-                      </div>
-                      <div className='m-auto '>No recent orders</div>
-                    </div>
-                  }
-                </div>
-                <div className="pt-8 bg-gray-50 rounded-b"></div>
-              </div>
+              <RecentOrders orders={orders} />
 
               <div className="h-96 mt-20 lg:mt-0 min-w-full rounded bg-white">
                 <h1 className="py-4 px-6 text-sm font-medium text-gray-700 ">Item Status</h1>
@@ -771,6 +701,7 @@ const Welcome = () => {
                 </div>
                 <div className="pt-8 bg-gray-50 rounded-b"></div>
               </div>
+
             </div>
           </div>
         </div>

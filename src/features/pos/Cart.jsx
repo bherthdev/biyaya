@@ -96,7 +96,7 @@ export const Cart = () => {
                 handleSuccess(result.data.message);
                 log(`POS ORDER`, `Order No. ${orderTransac?.orderNo} Grand Total: ${orderTransac?.total}`, result?.data?.orderTransaction)
 
-                
+
                 if (itemToBeUpdate.length) {
                     // Update each item after the order is successfully saved
                     const updatePromises = itemToBeUpdate.map(item => updateItem({ ...item }));
@@ -240,41 +240,30 @@ export const Cart = () => {
     const totalQty = orderTransac?.items.reduce((sum, item) => sum + Number(item.qty), 0)
 
 
-    const classToggleCart = toggleCart ? 'ease-in-out duration-300 right-0' : ' right-[-100%] ease-in-out duration-300'
+    const classToggleCart = toggleCart ? ' right-0' : ' right-[-100%]'
 
     const content = (
         <>
-            <div className={`flex shadow-2xl sm:shadow-transparent h-full fixed w-80  ${classToggleCart} z-40 px-5 top-0 bottom-0 flex-col justify-between border-e bg-white `}>
-                <div className={`py-5 flex flex-col  gap-5`}>
-                    <div className="flex justify-between">
-                        <div className="flex items-center  gap-4">
-                            <h1 className={`text-3xl text-gray-700`}
+            <div className={`${classToggleCart} flex shadow-2xl sm:shadow-transparent h-full fixed w-80   ease-in-out duration-300 z-40 px-5 top-0 bottom-0 flex-col justify-between border-e bg-white `}>
+                <div className={`py-5 flex flex-col relative gap-5`}>
 
-                            >
-                                Cart
-                            </h1>
-                            <p className="flex text-base text-gray-300 font-light">
-                                {orderTransac.orderNo}
-                            </p>
-                        </div>
-                        <div
-                            onClick={() => setToggleCart(false)}
-                            title="Hide Cart"
-                            className="flex my-auto text-gray-700 p-1  hover:shadow cursor-pointer rounded-full">
-                            <IoIosArrowForward size={25}/>
-                        </div>
+                    <div
+                        onClick={() => setToggleCart(false)}
+                        title="Hide Cart"
+                        className="flex my-auto text-gray-700 p-1 absolute -right-2 top-5 hover:shadow cursor-pointer rounded-full">
+                        <IoIosArrowForward size={26} />
                     </div>
-                    {/* <div className="hidden lg:flex justify-between items-center">
+
+                    <div className="flex items-center  gap-4">
                         <h1 className={`text-3xl text-gray-700`}
 
                         >
                             Cart
                         </h1>
-
-                        <p className="flex text-sm text-gray-400 font-normal">
+                        <p className="flex text-base text-gray-300 font-light">
                             {orderTransac.orderNo}
                         </p>
-                    </div> */}
+                    </div>
                     <div className="flex gap-5 text-xs items-center">
                         <button
                             title="Dine in"

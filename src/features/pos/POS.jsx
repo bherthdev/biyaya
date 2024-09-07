@@ -7,11 +7,12 @@ import { MdOutlineShoppingCart } from 'react-icons/md';
 import PageError from '../../components/PageError';
 import { POSContext } from '../../context/POSContext';
 import { ToastContainer } from 'react-toastify';
+import { IoIosArrowForward } from 'react-icons/io';
 
 const POS = () => {
 
     const { headSearch, setHeadSearch,
-        orderTransac, setToggleCart,
+        orderTransac, toggleCart, setToggleCart,
     } = useContext(POSContext);
 
     const [search, setsearch] = useState("All");
@@ -59,9 +60,25 @@ const POS = () => {
 
         content = (
             <>
-                <div aria-label="Page Header" className=''>
+                <div aria-label="Page Header" className='mb-20'>
+                    <aside
+                    onClick={()=> setToggleCart(true)}
+                        className={`fixed bottom-5 end-5 hover:p-7 ease-in-out duration-300  z-30 flex items-center justify-center  rounded-full bg-white p-5  cursor-pointer border shadow-2xl`}
+                    >
+                        <div className='relative text-black '>
+                            <div className='absolute flex px-2 py-1 rounded-full bg-[#242424] -top-5 -right-4 z-10'>
+                                <h1 className='text-white text-xs text-center'>
+                                    {orderTransac.items?.reduce((total, item) => total + item.qty, 0)}
+                                </h1>
+
+                            </div>
+                            <MdOutlineShoppingCart size={25}/>
+                        </div>
+
+                    </aside>
+
                     <div className='z-20 sticky  top-[79px] sm:top-32  bg-white sm:bg-[#f1f1f1] border-b'>
-                        <div className='flex flex-col px-4 lg:px-8 pt-5 pb-2'>
+                        <div className='flex flex-col px-6 lg:px-12 pt-5 pb-2'>
                             <div className='flex justify-between gap-2 items-center'>
                                 <h1 className="text-md font-medium  text-gray-700 sm:text-2xl dark:text-gray-200">
                                     {search ? search : 'All'} Menu
@@ -110,7 +127,7 @@ const POS = () => {
                                             key={idx}
                                             title={category}
                                             onClick={() => onCategorySearch(category)}
-                                            className={`${search === category ? 'bg-[#242424] text-white active:bg-black' : 'active:bg-white text-black hover:shadow'} flex justify-center items-center px-6 sm:px-8 py-3 cursor-pointer  border  border-gray-300 rounded-full`} >
+                                            className={`${search === category ? 'bg-[#242424] text-white active:bg-black' : 'active:bg-white text-black hover:shadow'} flex justify-center items-center px-6 sm:px-8 py-2 cursor-pointer  border  border-gray-300 rounded-full`} >
                                             {category}
                                         </div>
                                     ))}
@@ -119,7 +136,7 @@ const POS = () => {
                         </div>
                     </div>
 
-                    <div className="mx-auto max-w-screen-xl mt-4 sm:mt-6 px-4 sm:px-8">
+                    <div className="mx-auto max-w-screen-xl mt-4 sm:mt-6 px-8 sm:px-10">
                         <div className="font-normal grid grid-cols-2 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 xl:gap-6 2xl:grid-cols-4 2xl:gap-8 ">
                             {menuContent}
                         </div>
