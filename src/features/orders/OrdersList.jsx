@@ -138,7 +138,7 @@ const OrdersList = () => {
     const { ids, entities: ordersEntities } = orders;
 
 
-    const tableContent = ids?.length && ids.map((orderId) => <Order key={orderId} orderId={orderId} search={headSearch} handleModalOpen={handleModalOpen} />)
+    const tableContent = ids?.length && ids.map((orderId) => <Order key={orderId} orderId={orderId} search={search} handleModalOpen={handleModalOpen} />)
     const checkOrders = Object.values(ordersEntities).sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime))
 
 
@@ -190,7 +190,7 @@ const OrdersList = () => {
                     className="w-full pl-10 p-2 block py-4 px-6 text-sm font-normal bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700 outline-none focus:border-gray-300  focus:shadow-sm rounded-xl"
                     placeholder="Search..."
                     value={search}
-                    onChange={(e) => handleSearch(e.target.value)}
+                    onChange={(e) => setsearch(e.target.value)}
                   />
                 </div>
               </div>

@@ -15,7 +15,6 @@ const Item = ({ itemId, search }) => {
   if (item && item.username !== username) {
 
     if (item.name.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
-      item.qty.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
       item.status.toLowerCase().indexOf(search.toLowerCase()) > -1
     ) {
 
