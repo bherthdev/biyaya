@@ -290,25 +290,28 @@ const EditUserForm = ({ user }) => {
                   <div className="col-span-2 sm:col-span-1 ">
 
                     <div className="">
-                      <label className="block text-base text-center sm:text-left  text-gray-500 dark:text-gray-200">
-                        Photo
-                      </label>
+
                       <div className="mt-1 flex flex-col gap-4 sm:gap-0 sm:flex-row items-center">
-                        {imageView ? (
-                          <Image
-                            data={imageView}
-                            size="h-40 w-40"
-                            rounded="rounded-md"
-                          />
-                        ) : (
-                          <span className="inline-block h-40 w-40 overflow-hidden rounded-md bg-gray-100">
-                            <img
-                              alt="Man"
-                              src={user.avatar}
-                              className="h-40 w-40 rounded-md object-cover border border-slate-300  dark:border-slate-600"
+                        <div className="flex flex-col items-center gap-1">
+                          <label className="block text-base text-center sm:text-left  text-gray-500 dark:text-gray-200">
+                            User  Photo
+                          </label>
+                          {imageView ? (
+                            <Image
+                              data={imageView}
+                              size="h-40 w-40"
+                              rounded="rounded-full"
                             />
-                          </span>
-                        )}
+                          ) : (
+                            <span className="inline-block h-40 w-40 overflow-hidden rounded-full bg-gray-100">
+                              <img
+                                alt="Man"
+                                src={user.avatar}
+                                className="h-40 w-40 rounded-full object-cover border border-slate-300  dark:border-slate-600"
+                              />
+                            </span>
+                          )}
+                        </div>
 
                         <label
                           htmlFor="file-upload"
@@ -352,7 +355,7 @@ const EditUserForm = ({ user }) => {
                     </div>
 
                     <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-5">
-                     
+
                       <div>
                         <label
                           className="block text-base text-gray-500 dark:text-gray-200"
@@ -373,25 +376,25 @@ const EditUserForm = ({ user }) => {
                       </div>
 
                       <div className="">
-                      <label
-                        htmlFor="country"
-                        className="block text-base text-gray-500 dark:text-gray-200"
-                      >
-                        Roles
-                      </label>
-                      <select
-                        id="roles"
-                        name="roles"
-                        value={roles}
-                        onChange={(e) => setRoles(e.target.value)}
-                        className="mt-1 block w-full py-2 px-2 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md"
-                      >
-                        {options}
-                      </select>
-                    </div>
+                        <label
+                          htmlFor="country"
+                          className="block text-base text-gray-500 dark:text-gray-200"
+                        >
+                          Roles
+                        </label>
+                        <select
+                          id="roles"
+                          name="roles"
+                          value={roles}
+                          onChange={(e) => setRoles(e.target.value)}
+                          className="mt-1 block w-full py-2 px-2 text-base font-normal text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md"
+                        >
+                          {options}
+                        </select>
+                      </div>
                     </div>
 
-                    
+
                   </div>
 
                   <div className="col-span-2 sm:col-span-1">

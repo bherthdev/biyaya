@@ -332,15 +332,20 @@ const NewUserForm = () => {
 
 const ImageUploadField = ({ imageView, onChange }) => (
   <div className="">
-    <label className="block text-base text-center sm:text-left text-gray-500 dark:text-gray-200">User Photo</label>
     <div className="mt-1 flex flex-col gap-4 sm:gap-0 sm:flex-row items-center">
-      {imageView ? (
-        <Image data={imageView} size="h-40 w-40" rounded="rounded-md" />
-      ) : (
-        <span className="inline-block h-40 w-40 overflow-hidden rounded-md bg-gray-100">
-          <img src={iconPicture} className="h-40 w-40" />
-        </span>
-      )}
+      <div className="flex flex-col items-center gap-1">
+        <label className="block text-base text-center sm:text-left text-gray-500 dark:text-gray-200">User Photo</label>
+        {imageView ? (
+          <div>
+            <Image data={imageView} size="h-40 w-40" rounded="rounded-full" />
+          </div>
+        ) : (
+          <span className="inline-block h-40 w-40 overflow-hidden rounded-full ">
+            <img src={iconPicture} className="h-40 w-40" />
+          </span>
+        )}
+
+      </div>
       <label
         htmlFor="file-upload"
         className="sm:ml-5 cursor-pointer text-[10px] px-4 py-2 text-black border dark:text-gray-300 font-medium border-gray-300 dark:border-slate-600 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150"
