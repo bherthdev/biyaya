@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Spinner from './Spinner';
 
-const RecentOrders = ({ orders }) => {
+const RecentOrders = ({ orders, handleModalOpen }) => {
 
   const columnsOrders = ["Order#/Type", "Date/Time", "ITEMS", "Total", "Barista"];
 

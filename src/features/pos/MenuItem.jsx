@@ -82,11 +82,11 @@ const MenuItem = ({ itemId, search }) => {
             return (
                 <div className="gap-3 flex flex-col justify-between bg-white dark:bg-slate-800 rounded-3xl shadow-sm border-gray-200 dark:border-gray-800 p-2 sm:p-4 text-center text-gray-800 dark:text-gray-200 hover:text-gray-500 dark:hover:text-gray-400">
                     <div className="text-4xl font-bold md:text-5xl flex flex-col">
-                        <div className='h-20 w-full lg:h-36 lg:w-full object-cover bg-gray-600 rounded-3xl'>
+                        <div className='h-20 w-full lg:h-36 lg:w-full object-cover border rounded-3xl'>
                             <img
                                 alt={item.name}
                                 src={item.avatar || iconItem}
-                                className="h-20 w-full lg:h-36 lg:w-full rounded-3xl opacity-80 dark:border-slate-600 object-cover"
+                                className="h-20 w-full lg:h-36 lg:w-full rounded-3xl dark:border-slate-600 object-cover"
                             />
                         </div>
                         <div className="w-full text-sm font-normal mt-3 gap-4 flex flex-col items-start justify-between text-gray-500 dark:text-gray-400">
@@ -122,11 +122,11 @@ const MenuItem = ({ itemId, search }) => {
                 return (
                     <div className="gap-3 flex flex-col justify-between bg-white dark:bg-slate-800 rounded-3xl shadow-sm border-gray-200 dark:border-gray-800 p-2 sm:p-4 text-center text-gray-800 dark:text-gray-200 hover:text-gray-500 dark:hover:text-gray-400">
                         <div className="text-4xl font-bold md:text-5xl flex flex-col">
-                            <div className='h-20 w-full lg:h-36 lg:w-full object-cover bg-gray-600 rounded-3xl'>
+                            <div className='h-20 w-full lg:h-36 lg:w-full object-cover border rounded-3xl'>
                                 <img
                                     alt={item.name}
                                     src={item.avatar || iconItem}
-                                    className="h-20 w-full lg:h-36 lg:w-full rounded-3xl opacity-80 dark:border-slate-600 object-cover"
+                                    className="h-20 w-full lg:h-36 lg:w-full rounded-3xl dark:border-slate-600 object-cover"
                                 />
                             </div>
                             <div className="w-full text-sm font-normal mt-3 gap-4 flex flex-col items-start justify-between text-gray-500 dark:text-gray-400">

@@ -638,7 +638,7 @@ const Welcome = () => {
 
             {/* Orders Table */}
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8">
-              <RecentOrders orders={orders} />
+              <RecentOrders orders={orders} handleModalOpen={handleModalOpen}  />
 
               <div className="h-96 mt-20 lg:mt-0 min-w-full rounded bg-white">
                 <h1 className="py-4 px-6 text-sm font-medium text-gray-700 ">Item Status</h1>

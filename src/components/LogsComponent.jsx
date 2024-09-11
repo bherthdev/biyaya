@@ -44,7 +44,8 @@ const LogsComponent = ({ logs, onUpdateLog }) => {
                     <div
                         key={idx}
                         onClick={() => onUpdateLog(log)}
-                        className={`${!log?.seen && `border-l-4 border-l-red-400`} flex hover:bg-gray-50 cursor-pointer justify-between items-center gap-3 py-4 px-5 border-b text-sm`}>
+                        title="Click to mark as read"
+                        className={`${!log?.seen ? `border-l-4 border-l-red-400 bg-gray-100 rounded-xl hover:bg-50` : `bg-white hover:bg-gray-100` } flex  cursor-pointer justify-between items-center gap-3 py-4 px-5 border-b text-sm`}>
                         <div className="flex gap-3 relative items-center">
                             <img
                                 alt="Profile"
