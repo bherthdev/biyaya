@@ -13,7 +13,7 @@ import { POSContext } from "../../context/POSContext";
 
 
 const OrdersList = () => {
-  
+
   const { headSearch } = useContext(POSContext);
 
   const [search, setsearch] = useState("");
@@ -149,9 +149,12 @@ const OrdersList = () => {
         <div className="no-print mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="sm:flex justify-between">
             <div className="flex justify-between items-center">
-              <h1 className="text-xl font-semibold  text-gray-500  dark:text-gray-400">
-                Order List
-              </h1>
+              <div className="flex gap-2 items-center">
+                <h1 className="text-xl font-semibold  text-gray-500  dark:text-gray-400">
+                  Order List
+                </h1>
+                <span className="text-gray-600">{`(${checkOrders.length})`}</span>
+              </div>
               {/* <span
                 onClick={() => navigate("/dashboard/items/new")}
                 title='Add Item'
