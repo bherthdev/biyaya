@@ -45,22 +45,25 @@ const LogsComponent = ({ logs, onUpdateLog }) => {
                         key={idx}
                         onClick={() => onUpdateLog(log)}
                         title="Click to mark as read"
-                        className={`${!log?.seen ? `border-l-4 border-l-red-400 bg-gray-100 rounded-xl hover:bg-50` : `bg-white hover:bg-gray-100` } flex  cursor-pointer justify-between items-center gap-3 py-4 px-5 border-b text-sm`}>
+                        className={`${!log?.seen ? ` bg-gray-100 hover:bg-50` : `bg-white hover:bg-gray-100`} relative flex  cursor-pointer justify-between items-center gap-3 py-4 px-5 border-b text-sm`}>
+                        {!log?.seen
+                            && <div className="p-1 absolute top-3 right-3 bg-red-500 rounded-full"></div>
+                        }
                         <div className="flex gap-3 relative items-center">
                             <img
                                 alt="Profile"
                                 src={log.avatar}
                                 className="h-10 w-10 rounded-full object-cover "
                             />
-                                <h2 className="font-semibold text-gray-600">{log.name}</h2>
-                           
-                            
+                            <h2 className="font-semibold text-gray-600">{log.name}</h2>
+
+
                         </div>
                         <div className="text-xs sm:text-sm  text-gray-600 w-24 ">
                             {/* <h2 className="text-wrap">{log?.deviceInfo?.device}</h2>
                             <h2 className="text-wra">{log?.deviceInfo?.platform}</h2> */}
-                           
-                            <p title={log.date} className="flex items-center justify-end gap-1"> <LuClock3 size={15} className="text-gray-400"/> <UserLastLogin lastLoginTime={log.date} /></p>
+
+                            <p title={log.date} className="flex items-center justify-end gap-1"> <LuClock3 size={15} className="text-gray-400" /> <UserLastLogin lastLoginTime={log.date} /></p>
 
                         </div>
                     </div>
