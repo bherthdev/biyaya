@@ -48,8 +48,11 @@ const ActivitiesComponent = ({ logs, onUpdateLog }) => {
             key={idx}
             onClick={() => onUpdateLog(log)}
             title={log?.orderID ? `Click to view receipt` : `Click to mark as read`}
-            className={`${!log?.seen ? `border-l-4 border-l-red-400 bg-gray-100 rounded-xl hover:bg-gray-50` : `bg-white hover:bg-gray-100`} hover:bg-gray-100 cursor-pointer items-center gap-3 py-4 px-5 border-b text-sm`}>
-            <div className="flex justify-between gap-4 sm:gap-8">
+            className={`${!log?.seen ? ` bg-gray-100  hover:bg-gray-50` : `bg-white hover:bg-gray-100`} relative hover:bg-gray-100 cursor-pointer items-center gap-3 py-4 px-5 border-b text-sm`}>
+            {!log?.seen
+                && <div className="p-1 absolute top-3 right-3 bg-red-500 rounded-full animate-pulse"></div>
+            }
+            <div className="flex justify-between gap-4 sm:gap-8 ">
                 <div className="text-xs flex gap-2 justify-center items-center">
                     <img
                         title={log?.name}
@@ -59,16 +62,19 @@ const ActivitiesComponent = ({ logs, onUpdateLog }) => {
                     />
 
                     <div className="flex flex-col justify-center">
-                        <h2 className="font-semibold">{log?.actionType}</h2>
+                        <div className="flex gap-2">
+                            {log?.orderID && (
+                                <div className="my-auto text-gray-500">
+                                    <IoReceiptOutline size={16} />
+                                </div>
+                            )}
+                            <h2 className="font-semibold">{log?.actionType}</h2>
+                        </div>
                         <div className="flex gap-2">
                             <h2 className="text-gray-600">{log?.description}</h2>
                         </div>
                     </div>
-                    {log?.orderID && (
-                        <div className="my-auto text-gray-400">
-                            <IoReceiptOutline size={25} />
-                        </div>
-                    )}
+
                 </div>
                 <div
                     title={log.date}

@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Spinner from './Spinner';
+import { ImFilesEmpty } from 'react-icons/im';
 
-const RecentOrders = ({ orders, handleModalOpen }) => {
-
-  const columnsOrders = ["Order#/Type", "Date/Time", "ITEMS", "Total", "Barista"];
+const RecentOrders = ({ orders, handleModalOpen, columnsOrders }) => {
 
   const [visibleOrders, setVisibleOrders] = useState(6);
   const [loading, setLoading] = useState(false);
