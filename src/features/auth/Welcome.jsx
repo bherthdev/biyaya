@@ -18,6 +18,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import RecentOrders from "../../components/RecentOrders";
+import TablePagination from "../../components/TablePagination";
 
 const Welcome = () => {
 
@@ -478,7 +479,13 @@ const Welcome = () => {
     // }, 0);
 
     const totalSales = orders.reduce((total, order) => total + Number(order.total), 0);
-
+    const data = [
+      { id: 1, name: "John Doe", email: "john@example.com" },
+      { id: 2, name: "Jane Doe", email: "jane@example.com" },
+      { id: 3, name: "Alice", email: "alice@example.com" },
+      { id: 4, name: "Bob", email: "bob@example.com" },
+      // Add more data...
+    ];
 
     content = (
       <div aria-label="Page Header">
@@ -635,7 +642,9 @@ const Welcome = () => {
                     </span>
                   </div>
                 </article>
+
               </dl>
+                {/* <TablePagination data={orders} rowsPerPage={2} /> */}
             </div>
 
             {/* Orders Table */}

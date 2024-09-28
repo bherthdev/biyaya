@@ -1,6 +1,5 @@
-import { AiOutlineDashboard } from "react-icons/ai";
 import biyayaLogo from "../../src/assets/biyaya_logo.png";
-import { MdOutlineInventory, MdOutlineShoppingCart } from "react-icons/md";
+import { MdDashboard, MdDashboardCustomize, MdOutlineInventory, MdSpaceDashboard } from "react-icons/md";
 import { IoReceiptOutline, IoSettingsOutline } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSendLogoutMutation } from "../features/auth/authApiSlice";
@@ -12,6 +11,7 @@ import { IoIosLogOut } from "react-icons/io";
 import { POSContext } from "../context/POSContext";
 import { useContext } from "react";
 import { BsFillMenuButtonWideFill } from "react-icons/bs";
+import { RxDashboard } from "react-icons/rx";
 
 export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName }) => {
 
@@ -62,7 +62,7 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName }) =
 
         <ul className={`${toggleSideMenu ? "mt-10 lg:mt-6" : "mt-10"} ease-in-out duration-300`}>
           <MenuItem
-            icon={AiOutlineDashboard}
+            icon={MdDashboardCustomize }
             label="Dashboard"
             path="/dashboard"
             toggleSideMenu={toggleSideMenu}

@@ -230,7 +230,6 @@ const OrdersList = () => {
               <div className="pt-10 bg-gray-50 rounded-b"></div>
             </div>
           </div>
-
         </div>
 
 

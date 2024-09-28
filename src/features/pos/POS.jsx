@@ -60,7 +60,7 @@ const POS = () => {
 
         content = (
             <>
-                <div aria-label="Page Header" className='mb-20'>
+                <div aria-label="Page Header" className='mb-20 no-print'>
                     <aside
                     onClick={()=> setToggleCart(true)}
                         className={`fixed bottom-5 end-5 hover:p-7 ease-in-out duration-300  z-30 flex items-center justify-center  rounded-full bg-white p-5  cursor-pointer border shadow-2xl`}
