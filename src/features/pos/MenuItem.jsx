@@ -90,8 +90,9 @@ const MenuItem = ({ itemId, search }) => {
                             />
                         </div>
                         <div className="w-full text-sm font-normal mt-3 gap-4 flex flex-col items-start justify-between text-gray-500 dark:text-gray-400">
-                            <div className='mx-auto text-black text-sm sm:text-lg text-center'>
+                            <div className='w-full text-black text-sm sm:text-lg text-center'>
                                 <h1 className='font-bold'>{item.name}</h1>
+                             
                                 <div className={`${item.stock_mgt ? 'sm:flex-row' : ''} flex flex-col justify-between my-1 text-xs sm:text-base`}>
                                     <p className='text-gray-500 font-semibold'>₱ {item.price.toFixed(2)}</p>
                                     {item.stock_mgt && <p className='text-green-700 text-xs font-medium'>{item.qty} in stock</p>}
@@ -130,7 +131,7 @@ const MenuItem = ({ itemId, search }) => {
                                 />
                             </div>
                             <div className="w-full text-sm font-normal mt-3 gap-4 flex flex-col items-start justify-between text-gray-500 dark:text-gray-400">
-                                <div className='mx-auto text-black text-sm sm:text-lg text-center'>
+                                <div className='w-full text-black text-sm sm:text-lg text-center'>
                                     <h1 className='font-bold'>{item.name}</h1>
                                     <div className={`${item.stock_mgt ? 'sm:flex-row' : ''} flex flex-col justify-between my-1 text-xs sm:text-base`}>
                                         <p className='text-gray-500 font-semibold'>₱ {Number(item.price).toFixed(2)}</p>
