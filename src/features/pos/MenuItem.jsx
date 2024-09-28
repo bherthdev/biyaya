@@ -94,7 +94,7 @@ const MenuItem = ({ itemId, search }) => {
                                 <h1 className='font-bold'>{item.name}</h1>
                              
                                 <div className={`${item.stock_mgt ? 'sm:flex-row' : ''} flex flex-col justify-between my-1 text-xs sm:text-base`}>
-                                    <p className='text-gray-500 font-semibold'>₱ {item.price.toFixed(2)}</p>
+                                    <p className='text-gray-500 font-semibold'>₱ {item.price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
                                     {item.stock_mgt && <p className='text-green-700 text-xs font-medium'>{item.qty} in stock</p>}
                                 </div>
                                 <p className='hidden sm:block text-left text-xs text-gray-400' title={item.description}>
@@ -134,7 +134,7 @@ const MenuItem = ({ itemId, search }) => {
                                 <div className='w-full text-black text-sm sm:text-lg text-center'>
                                     <h1 className='font-bold'>{item.name}</h1>
                                     <div className={`${item.stock_mgt ? 'sm:flex-row' : ''} flex flex-col justify-between my-1 text-xs sm:text-base`}>
-                                        <p className='text-gray-500 font-semibold'>₱ {Number(item.price).toFixed(2)}</p>
+                                        <p className='text-gray-500 font-semibold'>₱ {Number(item.price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
                                         {item.stock_mgt && <p className='text-green-700 text-xs font-medium'>{item.qty} in stock</p>}
                                     </div>
                                     <p className='hidden sm:block text-left text-xs text-gray-400' title={item.description}>
