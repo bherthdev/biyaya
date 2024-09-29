@@ -3,18 +3,15 @@ import { useGetOrdersQuery } from "./ordersApiSlice";
 import Order from "./Order";
 import Thead from "../../components/Thead";
 import Tbody from "../../components/Tbody";
-import { useContext, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import PageLoader from "../../components/PageLoader";
 import ReceiptModal from "../../components/ReceiptModal"
-import { MdErrorOutline } from "react-icons/md";
+import { MdErrorOutline, MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight, MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
 import { ImFilesEmpty } from "react-icons/im";
-import { POSContext } from "../../context/POSContext";
 
 
 
 const OrdersList = () => {
-
-  const { headSearch } = useContext(POSContext);
 
   const [search, setsearch] = useState("");
   const columnsArray = ["ORDER#/TYPE", "DATE/TIME", "NO. OF ITEMS", "TOTAL", "BARISTA"];
@@ -22,6 +19,8 @@ const OrdersList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [orderId, setOderID] = useState('');
   const [backDateOrder, setBackDateOrder] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [visiblePages, setVisiblePages] = useState([]);
 
   const handleModalOpen = (id, isBackDate) => {
     setOderID(id)
@@ -47,12 +46,41 @@ const OrdersList = () => {
     refetchOnMountOrArgChange: true,
   });
 
+  
+
+ // Define updateVisiblePages using useCallback
+ const updateVisiblePages = useCallback(() => {
+  if (!isSuccess) return; // Only update if data is successfully fetched
+
+  const { ids } = orders;
+  const totalPages = Math.ceil(ids.length / 7);
+  let pages = [];
+
+  if (totalPages <= 5) {
+    pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+  } else {
+    if (currentPage <= 3) {
+      pages = [1, 2, 3, 4, "...", totalPages];
+    } else if (currentPage >= totalPages - 2) {
+      pages = [1, "...", totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+    } else {
+      pages = [1, "...", currentPage - 1, currentPage, currentPage + 1, "...", totalPages];
+    }
+  }
+  setVisiblePages(pages);
+}, [currentPage, orders, isSuccess]);
+
+// Use useEffect to update visible pages whenever dependencies change
+useEffect(() => {
+  updateVisiblePages();
+}, [updateVisiblePages]);
+
   let content;
 
 
-  if (isLoading) content = <PageLoader />
-
-  if (isError) {
+  if (isLoading){
+    content = <PageLoader />
+  } else if (isError) {
     content = (
       <div className="no-print mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="sm:flex justify-between">
@@ -126,21 +154,38 @@ const OrdersList = () => {
 
       </div>
     )
-    // <PageError error={error?.data?.message} />
-  }
-
-
-  const handleSearch = (text) => {
-    setsearch(text);
-  };
-
-  if (isSuccess) {
+  } else if (isSuccess) {
     const { ids, entities: ordersEntities } = orders;
 
+   
+    const totalPages = Math.ceil(ids.length / 7);
+ 
+    const currentData = ids.slice(
+      (currentPage - 1) * 7,
+      currentPage * 7
+    );
 
-    const tableContent = ids?.length && ids.map((orderId) => <Order key={orderId} orderId={orderId} search={search} handleModalOpen={handleModalOpen} />)
+    const tableContent = currentData?.length && currentData.map((orderId) => <Order key={orderId} orderId={orderId} search={search} handleModalOpen={handleModalOpen} />)
     const checkOrders = Object.values(ordersEntities).sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime))
 
+
+ 
+    const handlePrevPage = () => {
+      if (currentPage > 1) setCurrentPage(currentPage - 1);
+    };
+
+    const handleNextPage = () => {
+      if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    };
+
+    const goToPage = (page) => {
+      setCurrentPage(page);
+    };
+
+    const handlePageClick = (page) => {
+      if (page === "...") return;
+      goToPage(page);
+    };
 
     content = (
       <>
@@ -149,12 +194,9 @@ const OrdersList = () => {
         <div className="no-print mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="sm:flex justify-between">
             <div className="flex justify-between items-center">
-              <div className="flex gap-2 items-center">
                 <h1 className="text-xl font-semibold  text-gray-500  dark:text-gray-400">
                   Order List
                 </h1>
-                <span className="text-gray-600">{`(${checkOrders.length})`}</span>
-              </div>
               {/* <span
                 onClick={() => navigate("/dashboard/items/new")}
                 title='Add Item'
@@ -202,7 +244,7 @@ const OrdersList = () => {
 
           <div className="grid grid-cols-1 mt-5">
             <div className="h-[400px] 2xl:h-[500px] min-w-full rounded bg-white col-span-1 lg:col-span-2">
-              <div className="h-5 bg-white mt-5 rounded-t-lg"></div>
+              <div className="h-1 sm:h-5 bg-white mt-5 rounded-t-lg"></div>
               <div className="overflow-x-auto h-full bg-white min-w-full shadow-sm ">
                 <table className="min-w-full  divide-y divide-gray-200 dark:divide-gray-700 text-sm leading-normal">
                   <thead className="bg-gray-50 dark:bg-gray-800 ">
@@ -227,7 +269,55 @@ const OrdersList = () => {
                   </div>
                 }
               </div>
-              <div className="pt-10 bg-gray-50 rounded-b"></div>
+              <div className="flex flex-col sm:flex-row gap-5 sm:gap-0 justify-between items-center py-4 px-8 bg-gray-50 rounded-b">
+                {/* Showing X to Y of Z entries */}
+                <div className="text-sm text-gray-600">
+                  Showing {Math.min((currentPage - 1) * 7 + 1, ids.length)} to{" "}
+                  {Math.min(currentPage * 7, ids.length)} of {ids.length} entries
+                </div>
+
+
+                {/* Pagination controls */}
+                <div className="flex justify-between items-center  gap-4">
+                  {/* Previous Button */}
+                  <button
+                    className={`flex  items-center px-2 py-1 bg-gray-50 hover:bg-gray-100 text-gray-500 rounded ${currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
+                      }`}
+                    onClick={handlePrevPage}
+                    disabled={currentPage === 1}
+                  >
+                    <MdOutlineKeyboardArrowLeft /> prev
+                  </button>
+
+                  {/* Page Numbers */}
+                  <div className="flex space-x-1">
+                    {visiblePages.map((page, idx) => (
+                      <button
+                        key={idx}
+                        className={`px-2 py-1 rounded ${currentPage === page
+                            ? "bg-gray-800 text-white"
+                            : " text-gray-700 "
+                          } ${page === "..." ? "cursor-default" : ""}`}
+                        onClick={() => handlePageClick(page)}
+                      >
+                        {page}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Next Button */}
+                  <button
+                    className={`flex  items-center px-2 py-1 bg-gray-50 hover:bg-gray-100 text-gray-500 rounded ${currentPage === totalPages ? "cursor-not-allowed opacity-50" : ""
+                      }`}
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPages}
+                  >
+                  
+                  next <MdOutlineKeyboardArrowRight size={20}/>
+                  </button>
+                </div>
+                
+              </div>
             </div>
           </div>
         </div>

@@ -34,8 +34,6 @@ const Order = ({ orderId, search, handleModalOpen }) => {
       order.orderType.toLowerCase().indexOf(search.toLowerCase()) > -1
     ) {
 
-      // const handleEdit = () => navigate(`/dashboard/orders/${orderId}`);
-
       return (
         <>
 
