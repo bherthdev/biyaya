@@ -237,10 +237,10 @@ const DashHeader = ({ headerName }) => {
     const logs = Object.values(logsEntities).sort((a, b) => new Date(b.date) - new Date(a.date))
     const activities = Object.values(activitiesEntities).sort((a, b) => new Date(b.date) - new Date(a.date))
     const hasSeen = logs.some(log => log?.seen === false) || activities.some(activity => activity?.seen === false);
-    
+
     const renderLogComponent = logTab === 'lastViewed'
-    ? <LogsComponent logs={logs} onUpdateLog={onUpdateLog} />
-    : <ActivitiesComponent logs={activities} onUpdateLog={onUpdateLog} />;
+      ? <LogsComponent logs={logs} onUpdateLog={onUpdateLog} />
+      : <ActivitiesComponent logs={activities} onUpdateLog={onUpdateLog} />;
 
     return (
       <>
@@ -328,7 +328,12 @@ const DashHeader = ({ headerName }) => {
                 >
                   <span className="sr-only">Notifications</span>
                   {hasSeen &&
-                    <div className="absolute animate-pulse p-1 w-2 h-2 rounded-full bg-red-600  top-1 right-1"></div>
+                    <div className="absolute top-1 right-1">
+                      <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                      </span>
+                    </div>
                   }
                   <span>
                     <IoNotificationsOutline size={20} />
