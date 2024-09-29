@@ -269,9 +269,9 @@ useEffect(() => {
                   </div>
                 }
               </div>
-              <div className="flex flex-col sm:flex-row gap-5 sm:gap-0 justify-between items-center py-4 px-8 bg-gray-50 rounded-b">
+              <div className="flex flex-col sm:flex-row gap-5 sm:gap-0 justify-between items-center text-sm p-4 border-t bg-gray-50 rounded-b">
                 {/* Showing X to Y of Z entries */}
-                <div className="text-sm text-gray-600">
+                <div className=" text-gray-500">
                   Showing {Math.min((currentPage - 1) * 7 + 1, ids.length)} to{" "}
                   {Math.min(currentPage * 7, ids.length)} of {ids.length} entries
                 </div>
@@ -281,10 +281,11 @@ useEffect(() => {
                 <div className="flex justify-between items-center  gap-4">
                   {/* Previous Button */}
                   <button
-                    className={`flex  items-center px-2 py-1 bg-gray-50 hover:bg-gray-100 text-gray-500 rounded ${currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
+                    className={`flex  items-center px-2 py-1 bg-gray-50 hover:bg-gray-200 text-gray-500 rounded ${currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
                       }`}
                     onClick={handlePrevPage}
                     disabled={currentPage === 1}
+                    title="Previous page"
                   >
                     <MdOutlineKeyboardArrowLeft /> prev
                   </button>
@@ -295,8 +296,8 @@ useEffect(() => {
                       <button
                         key={idx}
                         className={`px-2 py-1 rounded ${currentPage === page
-                            ? "bg-gray-800 text-white"
-                            : " text-gray-700 "
+                            ? "bg-gray-700 text-white"
+                            : " hover:bg-gray-200 text-gray-700 "
                           } ${page === "..." ? "cursor-default" : ""}`}
                         onClick={() => handlePageClick(page)}
                       >
@@ -307,10 +308,11 @@ useEffect(() => {
 
                   {/* Next Button */}
                   <button
-                    className={`flex  items-center px-2 py-1 bg-gray-50 hover:bg-gray-100 text-gray-500 rounded ${currentPage === totalPages ? "cursor-not-allowed opacity-50" : ""
+                    className={`flex  items-center px-2 py-1 bg-gray-50 hover:bg-gray-200 text-gray-500 rounded ${currentPage === totalPages ? "cursor-not-allowed opacity-50" : ""
                       }`}
                     onClick={handleNextPage}
                     disabled={currentPage === totalPages}
+                    title="Next Page"
                   >
                   
                   next <MdOutlineKeyboardArrowRight size={20}/>
