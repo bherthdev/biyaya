@@ -278,20 +278,20 @@ useEffect(() => {
 
 
                 {/* Pagination controls */}
-                <div className="flex justify-between items-center  gap-4">
+                <div className="flex justify-between items-center sm:gap-4">
                   {/* Previous Button */}
                   <button
-                    className={`flex  items-center px-2 py-1 bg-gray-50 hover:bg-gray-200 text-gray-500 rounded ${currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
+                    className={`flex  items-center px-2 py-1 mr-2 sm:mr-0 bg-gray-50 hover:bg-gray-200 text-gray-500 rounded ${currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
                       }`}
                     onClick={handlePrevPage}
                     disabled={currentPage === 1}
                     title="Previous page"
                   >
-                    <MdOutlineKeyboardArrowLeft /> prev
+                    <MdOutlineKeyboardArrowLeft size={20} /> <p className="hidden sm:flex">prev</p>
                   </button>
 
                   {/* Page Numbers */}
-                  <div className="flex space-x-1">
+                  <div className="flex">
                     {visiblePages.map((page, idx) => (
                       <button
                         key={idx}
@@ -308,14 +308,14 @@ useEffect(() => {
 
                   {/* Next Button */}
                   <button
-                    className={`flex  items-center px-2 py-1 bg-gray-50 hover:bg-gray-200 text-gray-500 rounded ${currentPage === totalPages ? "cursor-not-allowed opacity-50" : ""
+                    className={`flex items-center px-2 py-1 ml-2 sm:ml-0 bg-gray-50 hover:bg-gray-200 text-gray-500 rounded ${currentPage === totalPages ? "cursor-not-allowed opacity-50" : ""
                       }`}
                     onClick={handleNextPage}
                     disabled={currentPage === totalPages}
                     title="Next Page"
                   >
                   
-                  next <MdOutlineKeyboardArrowRight size={20}/>
+                  <p className="hidden sm:flex">next</p> <MdOutlineKeyboardArrowRight size={20}/>
                   </button>
                 </div>
                 
