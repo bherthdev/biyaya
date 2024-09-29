@@ -62,17 +62,19 @@ const POS = () => {
             <>
                 <div aria-label="Page Header" className='mb-20 no-print'>
                     <aside
-                    onClick={()=> setToggleCart(true)}
+                        onClick={() => setToggleCart(true)}
                         className={`fixed bottom-5 end-5 hover:p-7 ease-in-out duration-300  z-30 flex items-center justify-center  rounded-full bg-white p-5  cursor-pointer border shadow-2xl`}
                     >
                         <div className='relative text-black '>
-                            <div className='absolute flex px-2 py-1 rounded-full bg-[#242424] -top-5 -right-4 z-10'>
-                                <h1 className='text-white text-xs text-center'>
-                                    {orderTransac.items?.reduce((total, item) => total + item.qty, 0)}
-                                </h1>
-
-                            </div>
-                            <MdOutlineShoppingCart size={25}/>
+                            {orderTransac?.items?.length !== 0 &&
+                                <div className='absolute flex rounded-full w-full h-full bg-red-600 -top-6 -right-5 z-10'>
+                                    <h1 className='flex mx-auto items-center p-1 text-white text-xs text-center font-bold'>
+                                        {orderTransac.items?.reduce((total, item) => total + item.qty, 0)}
+                                    </h1>
+                                </div>
+                            }
+                           
+                            <MdOutlineShoppingCart size={25} />
                         </div>
 
                     </aside>
