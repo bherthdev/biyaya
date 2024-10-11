@@ -31,6 +31,9 @@ const DashHeader = ({ headerName }) => {
     setIsModalOpen(true)
   }
 
+
+  console.log(process.env.NODE_ENV)
+
   const handleModalClose = () => {
     setIsModalOpen(false)
   }

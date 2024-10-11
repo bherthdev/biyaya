@@ -6,7 +6,7 @@ import Tbody from "../../components/Tbody";
 import { useCallback, useEffect, useState } from "react";
 import PageLoader from "../../components/PageLoader";
 import ReceiptModal from "../../components/ReceiptModal"
-import { MdErrorOutline, MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight, MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
+import { MdErrorOutline, MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { ImFilesEmpty } from "react-icons/im";
 
 
@@ -41,7 +41,7 @@ const OrdersList = () => {
     isError,
     error,
   } = useGetOrdersQuery("ordersList", {
-    pollingInterval: 10000, // refresh data every 15 seconds
+    pollingInterval: 10000, // refresh data every 10 seconds
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   });
