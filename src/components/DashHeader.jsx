@@ -31,6 +31,7 @@ const DashHeader = ({ headerName }) => {
     setIsModalOpen(true)
   }
 
+
   const handleModalClose = () => {
     setIsModalOpen(false)
   }
