@@ -208,7 +208,7 @@ const Login = () => {
                   </h3>
                   <p
                     className="text-black dark:text-gray-300 text-base font-thin text-left pt-5">
-                    Enter you login information to access the system.
+                    Enter your login information to access the system.
                   </p>
                 </div>
 
