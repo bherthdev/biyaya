@@ -79,10 +79,10 @@ const POS = () => {
 
                     </aside>
 
-                    <div className='z-20 sticky  top-[79px] sm:top-32  bg-white sm:bg-[#f1f1f1] border-b'>
+                    <div className='z-20 sticky  top-[79px] lg:top-32  bg-white sm:bg-[#f1f1f1] border-b'>
                         <div className='flex flex-col px-6 lg:px-12 pt-5 pb-2'>
                             <div className='flex justify-between gap-2 items-center'>
-                                <h1 className="text-md font-medium  text-gray-700 sm:text-2xl dark:text-gray-200">
+                                <h1 className="text-md font-medium  text-gray-700 md:text-xl lg:text-2xl dark:text-gray-200">
                                     {search ? search : 'All'} Menu
                                 </h1>
                                 <div className="relative block">
@@ -111,7 +111,7 @@ const POS = () => {
                                         </svg>
                                     </button>
                                     <input
-                                        className="h-10 w-32 border border-gray-100 dark:text-gray-300 rounded-full bg-[#f1f1f1]  sm:bg-white dark:bg-slate-800 pl-11 pr-2 text-sm  sm:w-56"
+                                        className="h-10 w-32 border border-gray-100 dark:text-gray-300 rounded-full bg-[#f1f1f1]  sm:bg-white dark:bg-slate-800 pl-11 pr-2 text-sm md:w-48 lg:w-56"
                                         id="search"
                                         type="search"
                                         placeholder="Search..."
@@ -123,7 +123,7 @@ const POS = () => {
                             </div>
 
                             <div className='grid grid-cols-1 min-w-full'>
-                                <div className='flex whitespace-nowrap overflow-y-auto py-3 gap-3 text-xs sm:text-lg'>
+                                <div className='flex whitespace-nowrap overflow-y-auto py-3 gap-3 text-xs lg:text-lg'>
                                     {itemCategories.map((category, idx) => (
                                         <div
                                             key={idx}
@@ -138,8 +138,8 @@ const POS = () => {
                         </div>
                     </div>
 
-                    <div className="mx-auto max-w-screen-xl mt-4 sm:mt-6 px-8 sm:px-10">
-                        <div className="font-normal grid grid-cols-2 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 xl:gap-6 2xl:grid-cols-4 2xl:gap-8 ">
+                    <div className="mx-auto max-w-screen-xl mt-4 lg:mt-6 px-8 lg:px-10">
+                        <div className="font-normal grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-4  ">
                             {menuContent}
                         </div>
                     </div>
