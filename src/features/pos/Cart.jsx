@@ -244,7 +244,7 @@ export const Cart = () => {
 
     const content = (
         <>
-            <div className={`${classToggleCart} flex shadow-2xl sm:shadow-transparent h-full fixed w-80   ease-in-out duration-300 z-40 px-5 top-0 bottom-0 flex-col justify-between border-e bg-white `}>
+            <div className={`${classToggleCart} flex shadow-2xl sm:shadow-transparent h-full fixed w-80 ease-in-out duration-300 z-40 px-5 top-0 bottom-0 flex-col justify-between border-e bg-white `}>
                 <div className={`py-5 flex flex-col relative gap-5`}>
 
                     <div
@@ -255,7 +255,7 @@ export const Cart = () => {
                     </div>
 
                     <div className="flex items-center  gap-4">
-                        <h1 className={`text-3xl text-gray-700`}
+                        <h1 className={`text-2xl lg:text-3xl text-gray-700`}
 
                         >
                             Cart
@@ -337,7 +337,7 @@ export const Cart = () => {
                         ))
                         : <>
                             <div className="flex flex-col justify-center items-center gap-2 mt-10">
-                                <h1 className="text-2xl font-semibold text-gray-300">No Items</h1>
+                                <h1 className="text-xl lg:text-2xl font-semibold text-gray-300">No Items</h1>
                                 <p className="text-xs text-gray-300">Add items to cart to compute the total. </p>
                             </div>
 
@@ -350,15 +350,15 @@ export const Cart = () => {
                 </div>
 
                 <div className={`py-4 bg-white  font-sans sticky bottom-0`}>
-                    <div className={`flex flex-col gap-5`}>
-                        <div className="flex justify-between text-2xl font-medium">
+                    <div className={`flex flex-col gap-2 lg:gap-5`}>
+                        <div className="flex justify-between text-xl lg:text-2xl font-medium">
                             <h1 className="text-gray-500">Total</h1>
                             <p className="text-green-800">₱ {orderTransac.total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
                         </div>
                         {placeOrder
                             ?
                             <>
-                                <div className="flex items-center justify-between text-2xl font-medium">
+                                <div className="flex items-center justify-between text-xl lg:text-2xl font-medium">
                                     <h1 className="text-gray-500">Cash</h1>
                                     <input
                                         className={`w-2/3 mt-1 px-3 py-1 text-right font-semibold text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-300 dark:border-gray-800  dark:focus:border-gray-700  dark:bg-slate-900 outline-none focus:border-gray-300  focus:shadow-sm rounded-md`}
@@ -379,7 +379,7 @@ export const Cart = () => {
                                     onClick={saveOrder}
                                     title="Save Order"
                                     disabled={enableSaveOrder}
-                                    className={`${enableSaveOrder ? 'bg-green-900 hover:bg-green-700 ' : 'bg-gray-300'}  cursor-pointer flex font-medium text-xl justify-center  text-gray-100 w-full py-3 border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
+                                    className={`${enableSaveOrder ? 'bg-green-900 hover:bg-green-700 ' : 'bg-gray-300'}  cursor-pointer flex font-medium text-lg lg:text-xl justify-center  text-gray-100 w-full py-2 lg:py-3 border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
 
                                     {isLoading
                                         ?
@@ -398,7 +398,7 @@ export const Cart = () => {
                                 <div
                                     onClick={computeTotal}
                                     title="Place an order"
-                                    className={`${orderTransac.items.length ? `bg-gray-900 hover:bg-black text-white ` : `bg-gray-300 text-white`} cursor-pointer flex  font-medium text-xl justify-center   w-full py-3 border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
+                                    className={`${orderTransac.items.length ? `bg-gray-900 hover:bg-black text-white ` : `bg-gray-300 text-white`} cursor-pointer flex  font-medium text-lg lg:text-xl justify-center w-full py-2 lg:py-3 border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
                                     Place an order
 
                                 </div>

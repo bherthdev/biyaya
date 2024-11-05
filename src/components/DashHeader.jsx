@@ -247,11 +247,11 @@ const DashHeader = ({ headerName }) => {
       <>
         <ReceiptModal isOpen={isModalOpen} onClose={handleModalClose} orderId={orderId} />
 
-        <div className={`bg-white dark:bg-slate-900 no-print sm:px-8 border flex z-30 sticky top-0 w-full ease-in-out duration-300 h-20 sm:h-32 items-center justify-between px-4 `}>
+        <div className={`bg-white dark:bg-slate-900 no-print sm:px-8 border flex z-30 sticky top-0 w-full ease-in-out duration-300 h-20 lg:h-32 items-center justify-between px-4 `}>
           <div className="flex items-center">
             <p className="flex">
               <span className="sr-only">Logo</span>
-              <span className="inline-block text-gray-700 dark:text-gray-200 text-2xl sm:text-3xl font-semibold">
+              <span className="inline-block text-gray-700 dark:text-gray-200 text-2xl lg:text-3xl font-semibold">
                 {getHeaderName()}
               </span>
             </p>

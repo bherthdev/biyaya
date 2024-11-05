@@ -80,7 +80,7 @@ const MenuItem = ({ itemId, search }) => {
         if (search !== 'All' && item.category === search) {
 
             return (
-                <div className="gap-3 flex flex-col justify-between bg-white dark:bg-slate-800 rounded-3xl shadow-sm border-gray-200 dark:border-gray-800 p-2 sm:p-4 text-center text-gray-800 dark:text-gray-200 hover:text-gray-500 dark:hover:text-gray-400">
+                <div className="gap-3 flex flex-col justify-between bg-white dark:bg-slate-800 rounded-3xl shadow-sm border-gray-200 dark:border-gray-800 p-2 lg:p-4 text-center text-gray-800 dark:text-gray-200 hover:text-gray-500 dark:hover:text-gray-400">
                     <div className="text-4xl font-bold md:text-5xl flex flex-col">
                         <div className='h-20 w-full lg:h-36 lg:w-full object-cover border rounded-3xl'>
                             <img
@@ -90,14 +90,14 @@ const MenuItem = ({ itemId, search }) => {
                             />
                         </div>
                         <div className="w-full text-sm font-normal mt-3 gap-4 flex flex-col items-start justify-between text-gray-500 dark:text-gray-400">
-                            <div className='w-full text-black text-sm sm:text-lg text-center'>
+                            <div className='w-full text-black text-sm lg:text-lg text-center'>
                                 <h1 className='font-bold'>{item.name}</h1>
                              
-                                <div className={`${item.stock_mgt ? 'sm:flex-row' : ''} flex flex-col justify-between my-1 text-xs sm:text-base`}>
+                                <div className={`${item.stock_mgt && 'sm:flex-row' } flex flex-col justify-between my-1 text-xs lg:text-base`}>
                                     <p className='text-gray-500 font-semibold'>₱ {item.price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
                                     {item.stock_mgt && <p className='text-green-700 text-xs font-medium'>{item.qty} in stock</p>}
                                 </div>
-                                <p className='hidden sm:block text-left text-xs text-gray-400' title={item.description}>
+                                <p className='hidden lg:block text-left text-xs text-gray-400' title={item.description}>
                                     {item.description.length > 50 ? `${item.description.slice(0, 50)}...` : item.description}
                                 </p>
                             </div>
@@ -107,7 +107,7 @@ const MenuItem = ({ itemId, search }) => {
                         <span
                             title="Add to cart"
                             onClick={addItemToCart}
-                            className="cursor-pointer w-full bg-[#363636] active:bg-white active:text-black hover:bg-gray-700 text-[11px] sm:text-base flex justify-center items-center gap-2 px-4 py-2 sm:py-3 text-white border border-gray-300 rounded-full"
+                            className="cursor-pointer w-full bg-[#363636] active:bg-white active:text-black hover:bg-gray-700 text-[11px] lg:text-base flex justify-center items-center gap-2 px-4 py-2 lg:py-3 text-white border border-gray-300 rounded-full"
                         >
                             <FaPlus size={10} />
                             Add to cart
@@ -121,7 +121,7 @@ const MenuItem = ({ itemId, search }) => {
             if (search === 'All' && item.name.toLowerCase().indexOf(headSearch.toLowerCase()) > -1)
 
                 return (
-                    <div className="gap-3 flex flex-col justify-between bg-white dark:bg-slate-800 rounded-3xl shadow-sm border-gray-200 dark:border-gray-800 p-2 sm:p-4 text-center text-gray-800 dark:text-gray-200 hover:text-gray-500 dark:hover:text-gray-400">
+                    <div className="gap-3 flex flex-col justify-between bg-white dark:bg-slate-800 rounded-3xl shadow-sm border-gray-200 dark:border-gray-800 p-2 lg:p-4 text-center text-gray-800 dark:text-gray-200 hover:text-gray-500 dark:hover:text-gray-400">
                         <div className="text-4xl font-bold md:text-5xl flex flex-col">
                             <div className='h-20 w-full lg:h-36 lg:w-full object-cover border rounded-3xl'>
                                 <img
@@ -131,13 +131,13 @@ const MenuItem = ({ itemId, search }) => {
                                 />
                             </div>
                             <div className="w-full text-sm font-normal mt-3 gap-4 flex flex-col items-start justify-between text-gray-500 dark:text-gray-400">
-                                <div className='w-full text-black text-sm sm:text-lg text-center'>
+                                <div className='w-full text-black text-sm lg:text-lg text-center'>
                                     <h1 className='font-bold'>{item.name}</h1>
-                                    <div className={`${item.stock_mgt ? 'sm:flex-row' : ''} flex flex-col justify-between my-1 text-xs sm:text-base`}>
+                                    <div className={`${item.stock_mgt && 'sm:flex-row' } flex flex-col justify-between my-1 text-xs lg:text-base`}>
                                         <p className='text-gray-500 font-semibold'>₱ {Number(item.price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
                                         {item.stock_mgt && <p className='text-green-700 text-xs font-medium'>{item.qty} in stock</p>}
                                     </div>
-                                    <p className='hidden sm:block text-left text-xs text-gray-400' title={item.description}>
+                                    <p className='hidden lg:block text-left text-xs text-gray-400' title={item.description}>
                                         {item.description.length > 50 ? `${item.description.slice(0, 50)}...` : item.description}
                                     </p>
                                 </div>
@@ -147,7 +147,7 @@ const MenuItem = ({ itemId, search }) => {
                             <span
                                 title="Add to cart"
                                 onClick={addItemToCart}
-                                className="cursor-pointer w-full bg-[#363636] active:bg-white active:text-black hover:bg-gray-900 text-[11px] sm:text-base flex justify-center items-center gap-2 px-4 py-2 sm:py-3 text-white border border-gray-300 rounded-full"
+                                className="cursor-pointer w-full bg-[#363636] active:bg-white active:text-black hover:bg-gray-900 text-[11px] lg:text-base flex justify-center items-center gap-2 px-4 py-2 lg:py-3 text-white border border-gray-300 rounded-full"
                             >
                                 <FaPlus size={10} />
                                 Add to cart
