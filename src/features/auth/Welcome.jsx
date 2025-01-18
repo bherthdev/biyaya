@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import useAuth from "../../hooks/useAuth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PiMoneyLight, PiReceiptLight } from "react-icons/pi";
 import { useGetOrdersQuery } from "../orders/ordersApiSlice";
 import { useGetItemsQuery } from "../items/itemsApiSlice";
@@ -22,9 +22,11 @@ import TablePagination from "../../components/TablePagination";
 
 const Welcome = () => {
 
-  
+
   const columnsOrders = ["Order#/Type", "Date/Time", "ITEMS", "Total", "Barista"];
   const columnsItems = ["Item Name", "Stock"];
+  const [filter, setFilter] = useState(new Date().getFullYear());
+
 
   const [orderId, setOderID] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -403,6 +405,25 @@ const Welcome = () => {
     // Sort orders by recent or current date
     const orders = Object.values(ordersEntities).sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime))
 
+
+    const yearOrders = [...new Set(orders.map(order => new Date(order.dateTime).getFullYear()))];
+
+    const filterOrdersByYear = (year) => {
+      return orders.filter(order => new Date(order.dateTime).getFullYear() === year);
+    };
+  
+    const filteredOrders = filter === 'all'
+      ? orders
+      : filterOrdersByYear(parseInt(filter));
+  
+    const totalSales = filteredOrders.reduce((total, order) => total + Number(order.total), 0);
+  
+    const handleFilterChange = (event) => {
+      setFilter(event.target.value);
+    };
+
+
+
     // Step 1: Function to format date as "Sep 5, 2024"
     const formatDate = (dateStr) => {
       const options = { timeZone: 'Asia/Manila', year: 'numeric', month: 'short', day: 'numeric' };
@@ -410,7 +431,7 @@ const Welcome = () => {
     };
 
     // Step 2-4: Group by date and sum the total
-    const groupedSalesOrders = orders.reduce((acc, order) => {
+    const groupedSalesOrders = filteredOrders.reduce((acc, order) => {
       const date = formatDate(order.dateTime); // Format the date
 
       // Check if date already exists in the accumulator
@@ -428,7 +449,7 @@ const Welcome = () => {
     }, []);
 
     // Step 2-4: Group by date and sum the total
-    const groupedOrders = orders.reduce((acc, order) => {
+    const groupedOrders = filteredOrders.reduce((acc, order) => {
       const date = formatDate(order.dateTime); // Format the date
 
       // Check if date already exists in the accumulator
@@ -444,8 +465,6 @@ const Welcome = () => {
 
       return acc;
     }, []);
-
-    // console.log(groupedOrders)
 
 
     const salesToday = () => {
@@ -473,19 +492,16 @@ const Welcome = () => {
       return totalSalesToday.length;
     }
 
+
     // const totalQty = orders.reduce((total, order) => {
     //   const orderQty = order.items.reduce((sum, item) => sum + Number(item.qty), 0);
     //   return total + orderQty;
     // }, 0);
 
-    const totalSales = orders.reduce((total, order) => total + Number(order.total), 0);
-    const data = [
-      { id: 1, name: "John Doe", email: "john@example.com" },
-      { id: 2, name: "Jane Doe", email: "jane@example.com" },
-      { id: 3, name: "Alice", email: "alice@example.com" },
-      { id: 4, name: "Bob", email: "bob@example.com" },
-      // Add more data...
-    ];
+    // const totalSales = orders.reduce((total, order) => total + Number(order.total), 0);
+
+
+
 
     content = (
       <div aria-label="Page Header">
@@ -513,9 +529,22 @@ const Welcome = () => {
                       <p className="text-2xl font-medium text-gray-900">₱ {Number(totalSales).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
                     </div>
 
-                    <span className="rounded-xl bg-green-100 p-3 text-green-600">
+                    {/* <span className="rounded-xl bg-green-100 p-3 text-green-600">
                       <PiMoneyLight size={25} className="text-green-600 dark:text-gray-500" />
-                    </span>
+                    </span> */}
+                    <div className="mb-auto" title="Filter by Year">
+                      <select
+                        className="border rounded p-1"
+                        value={filter}
+                        onChange={handleFilterChange}
+                      >
+                        
+                        {yearOrders.map((year, index) => (
+                          <option key={index} value={year}>{year}</option>
+                        ))}
+                        <option value="all">All</option>
+                      </select>
+                    </div>
                   </div>
 
                   <div className="flex h-14">
@@ -561,7 +590,7 @@ const Welcome = () => {
                   <div className="flex items-center justify-between px-5 pt-4 pb-3 ">
                     <div className="flex flex-col">
                       <p className="text-[11px] font-semibold text-gray-500 tracking-widest">  TOTAL ORDERS </p>
-                      <p className="text-2xl font-medium text-gray-900">{orders.length}</p>
+                      <p className="text-2xl font-medium text-gray-900">{filteredOrders.length}</p>
                     </div>
 
                     <span className="rounded-xl bg-gray-100 p-3 text-green-600">
@@ -644,12 +673,12 @@ const Welcome = () => {
                 </article>
 
               </dl>
-                {/* <TablePagination data={orders} rowsPerPage={2} /> */}
+              {/* <TablePagination data={orders} rowsPerPage={2} /> */}
             </div>
 
             {/* Orders Table */}
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8">
-              <RecentOrders orders={orders} handleModalOpen={handleModalOpen} columnsOrders={columnsOrders}  />
+              <RecentOrders orders={filteredOrders} handleModalOpen={handleModalOpen} columnsOrders={columnsOrders} />
 
               <div className="h-96 mt-20 lg:mt-0 min-w-full rounded bg-white">
                 <h1 className="py-4 px-6 text-sm font-medium text-gray-700 ">Item Status</h1>

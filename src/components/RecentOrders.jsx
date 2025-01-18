@@ -46,7 +46,7 @@ const RecentOrders = ({ orders, handleModalOpen, columnsOrders }) => {
 
   return (
     <div className=" h-96 min-w-full rounded bg-white col-span-1 lg:col-span-2">
-      <h1 className="py-4 px-6 text-sm font-medium text-gray-700 ">Recent Orders</h1>
+      <h1 className="py-4 px-6 text-sm font-medium text-gray-700 ">Orders</h1>
       <div ref={containerRef} className="overflow-x-auto h-full bg-white min-w-full shadow-sm ">
 
         <table className="min-w-full  divide-y divide-gray-200 dark:divide-gray-700 text-sm leading-normal">
@@ -83,7 +83,7 @@ const RecentOrders = ({ orders, handleModalOpen, columnsOrders }) => {
                     <p className="">{order.items.reduce((totalItem, item) => totalItem + Number(item.qty), 0)} </p>
                   </td>
                   <td className={`whitespace-nowrap px-6 py-3 font-semibold  text-gray-900 dark:text-gray-300`}>
-                    <p className="">₱ {Number(order.total).toFixed(2)} </p>
+                    <p className="">₱ {Number(order.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')} </p>
                   </td>
 
                   <td className={`whitespace-nowrap px-6 py-3 text-gray-900 dark:text-gray-300 `}>
