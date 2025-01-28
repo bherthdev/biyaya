@@ -101,6 +101,8 @@ const DashHeader = ({ headerName }) => {
         return 'Orders';
       case '/pos':
         return 'POS';
+      case '/reports':
+        return 'Reports';
       default:
         return 'Settings';
     }
