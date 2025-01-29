@@ -118,11 +118,12 @@ const Reports = () => {
 
         // Map filtered orders into a format for Excel
         const ordersForExcel = filteredOrders.map(order => ({
-            OrderNo: order.orderNo,
-            DateTime: order.dateTime,
-            OrderType: order.orderType,
+            Order_No: order.orderNo,
+            Date_Time: order.dateTime,
+            Order_Type: order.orderType,
             Barista: order.barista,
             Items: order.items.map(item => `${item.name} (x${item.qty})`).join(", "),
+            No_Of_Items: order.items.reduce((total, item) => total + Number(item.qty), 0),
             Total: order.total,
             Cash: order.cash,
             Change: order.change,
@@ -134,7 +135,7 @@ const Reports = () => {
         XLSX.utils.book_append_sheet(workbook, worksheet, "Orders");
 
         // Download Excel file
-        XLSX.writeFile(workbook, `Orders_Report_${yearFilter}.xlsx`);
+        XLSX.writeFile(workbook, `Sales_Summary_Report_${yearFilter}.xlsx`);
     };
 
 

@@ -46,14 +46,29 @@ const OrdersList = () => {
     refetchOnMountOrArgChange: true,
   });
 
-  
+    // Reset to the first page when searching
+    useEffect(() => {
+      setCurrentPage(1);
+    }, [search]);
 
  // Define updateVisiblePages using useCallback
  const updateVisiblePages = useCallback(() => {
   if (!isSuccess) return; // Only update if data is successfully fetched
 
-  const { ids } = orders;
-  const totalPages = Math.ceil(ids.length / 7);
+  const { ids,  entities: ordersEntities } = orders;
+
+     // **Filtering Orders Based on Search**
+     const filteredOrders = ids.filter((id) => {
+      const order = ordersEntities[id];
+      return (
+        order?.orderNo.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
+        order?.type?.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
+        order?.dateTime?.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
+        order?.barista?.toLowerCase().indexOf(search.toLowerCase()) > -1
+      );
+    });
+
+  const totalPages = Math.ceil(filteredOrders.length / 7);
   let pages = [];
 
   if (totalPages <= 5) {
@@ -68,7 +83,7 @@ const OrdersList = () => {
     }
   }
   setVisiblePages(pages);
-}, [currentPage, orders, isSuccess]);
+}, [search, orders, isSuccess]);
 
 // Use useEffect to update visible pages whenever dependencies change
 useEffect(() => {
@@ -157,10 +172,22 @@ useEffect(() => {
   } else if (isSuccess) {
     const { ids, entities: ordersEntities } = orders;
 
+      // **Filtering Orders Based on Search**
+      const filteredOrders = ids.filter((id) => {
+        const order = ordersEntities[id];
+        return (
+          order?.orderNo.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
+          order?.type?.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
+          order?.dateTime?.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
+          order?.barista?.toLowerCase().indexOf(search.toLowerCase()) > -1
+        );
+      });
+  
+    
    
-    const totalPages = Math.ceil(ids.length / 7);
+    const totalPages = Math.ceil(filteredOrders.length / 7);
  
-    const currentData = ids.slice(
+    const currentData = filteredOrders.slice(
       (currentPage - 1) * 7,
       currentPage * 7
     );
@@ -272,8 +299,8 @@ useEffect(() => {
               <div className="flex flex-col sm:flex-row gap-5 sm:gap-0 justify-between items-center text-sm p-4 border-t bg-gray-50 rounded-b">
                 {/* Showing X to Y of Z entries */}
                 <div className=" text-gray-500">
-                  Showing {Math.min((currentPage - 1) * 7 + 1, ids.length)} to{" "}
-                  {Math.min(currentPage * 7, ids.length)} of {ids.length} entries
+                  Showing {Math.min((currentPage - 1) * 7 + 1, filteredOrders.length)} to{" "}
+                  {Math.min(currentPage * 7, filteredOrders.length)} of {filteredOrders.length} entries
                 </div>
 
 
