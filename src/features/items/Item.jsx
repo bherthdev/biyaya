@@ -3,11 +3,12 @@ import useAuth from "../../hooks/useAuth";
 import { useSelector } from "react-redux";
 import { selectItemById } from "./itemsApiSlice";
 import iconPicture from "../../assets/icon-item.svg"
+import useGenerateORDATE from "../../hooks/useGenerateORDATE";
 
 const Item = ({ itemId, search }) => {
 
   const { username } = useAuth();
-
+  const { formatCurrency } = useGenerateORDATE()
   const item = useSelector((state) => selectItemById(state, itemId));
 
   const navigate = useNavigate();
@@ -75,7 +76,7 @@ const Item = ({ itemId, search }) => {
 
           <td className={`whitespace-nowrap px-8 py-2  text-sm text-gray-900 dark:text-gray-300`}>
             <div className="flex-nowrap">
-              <p className="capitalize">₱ {Number(item.price).toFixed(2)} </p>
+              <p className="capitalize">{formatCurrency(item.price)} </p>
 
             </div>
           </td>

@@ -22,8 +22,11 @@ const useGenerateORDATE = () => {
   
   // OR number: YEAR-MONTH/DAY/HOUR/MINUTES/SECONDS
   
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(value);
+};
   
-    return { formatDate, generateOR, generateDate }
+    return { formatDate, generateOR, generateDate, formatCurrency }
   }
   
   export default useGenerateORDATE

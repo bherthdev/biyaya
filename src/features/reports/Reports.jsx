@@ -1,14 +1,9 @@
-
 import { useState } from "react";
+import * as XLSX from "xlsx";
 import { useGetOrdersQuery } from "../orders/ordersApiSlice";
-
 import {
-    AreaChart,
-    Area,
     XAxis,
     Tooltip,
-    BarChart,
-    Bar,
     ResponsiveContainer,
     LineChart,
     Line,
@@ -17,10 +12,15 @@ import {
 } from "recharts";
 import PageLoader from "../../components/PageLoader";
 import PageError from "../../components/PageError";
+import useGenerateORDATE from "../../hooks/useGenerateORDATE";
 
 const Reports = () => {
+    const { formatCurrency } = useGenerateORDATE();
 
-    const [filter, setFilter] = useState(new Date().getFullYear());
+    const [yearFilter, setYearFilter] = useState(new Date().getFullYear());
+    const [dateFilter, setDateFilter] = useState("all");
+    const [customFromDate, setCustomFromDate] = useState("");
+    const [customToDate, setCustomToDate] = useState("");
 
     const {
         data: ordersData,
@@ -29,189 +29,220 @@ const Reports = () => {
         isError: isOrdersError,
         error: ordersError,
     } = useGetOrdersQuery("ordersList", {
-        pollingInterval: 10000, // refresh data every 10 seconds
+        pollingInterval: 10000,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true,
     });
 
-    // Combined loading state
-    const isLoading = isLoadingOrders;
+    if (isLoadingOrders) return <PageLoader />;
+    if (isOrdersError) return <PageError error={ordersError?.data?.message} />;
 
-    // Combined success state
-    const isSuccess = isOrdersSuccess;
+    const { entities: ordersEntities } = ordersData;
+    const orders = Object.values(ordersEntities).sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime));
 
-    // Combined error state
-    const isError = isOrdersError;
-    const error = ordersError;
+    // console.log(orders)
+    // Get list of years from orders
+    const yearOrders = [...new Set(orders.map(order => new Date(order.dateTime).getFullYear()))];
+
+    // Helper function to get date ranges
+    const getDateRange = (type) => {
+        const now = new Date();
+        const startOfToday = new Date(now.setHours(0, 0, 0, 0));
+        const startOfYesterday = new Date(startOfToday);
+        startOfYesterday.setDate(startOfYesterday.getDate() - 1);
+        const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay())); // Start of this week
+        const startOfLastWeek = new Date(startOfWeek);
+        startOfLastWeek.setDate(startOfLastWeek.getDate() - 7);
+        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+        const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+        const endOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+
+        switch (type) {
+            case "today":
+                return [startOfToday, new Date()];
+            case "yesterday":
+                return [startOfYesterday, startOfToday];
+            case "thisWeek":
+                return [startOfWeek, new Date()];
+            case "lastWeek":
+                return [startOfLastWeek, startOfWeek];
+            case "thisMonth":
+                return [startOfMonth, new Date()];
+            case "lastMonth":
+                return [startOfLastMonth, endOfLastMonth];
+            case "custom":
+                return [new Date(customFromDate), new Date(customToDate)];
+            default:
+                return [new Date(0), new Date()];
+        }
+    };
+
+    // Filter orders by selected year
+    const filteredByYear = yearFilter === "all"
+        ? orders
+        : orders.filter(order => new Date(order.dateTime).getFullYear() === parseInt(yearFilter));
+
+    // Get date range based on selected filter
+    const [startDate, endDate] = getDateRange(dateFilter);
+
+    // Filter orders by selected date range
+    const filteredOrders = filteredByYear.filter(order => {
+        const orderDate = new Date(order.dateTime);
+        return orderDate >= startDate && orderDate <= endDate;
+    });
+
+    const totalSales = filteredOrders.reduce((total, order) => total + Number(order.total), 0);
+
+    // Group orders by date
+    const groupedSalesOrders = filteredOrders.reduce((acc, order) => {
+        const date = new Date(order.dateTime).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+        const existingOrder = acc.find(item => item.date === date);
+        if (existingOrder) {
+            existingOrder.Total += order.total;
+        } else {
+            acc.push({ date, Total: order.total });
+        }
+        return acc;
+    }, []);
+
+    const totalQty = filteredOrders.reduce((total, order) => {
+        return total + order.items.reduce((sum, item) => sum + Number(item.qty), 0);
+    }, 0);
 
 
-    let content;
+    const exportToExcel = () => {
+        if (filteredOrders.length === 0) {
+            alert("No orders to export.");
+            return;
+        }
 
-    if (isLoading) {
-        content = <PageLoader />
-    }
+        // Map filtered orders into a format for Excel
+        const ordersForExcel = filteredOrders.map(order => ({
+            OrderNo: order.orderNo,
+            DateTime: order.dateTime,
+            OrderType: order.orderType,
+            Barista: order.barista,
+            Items: order.items.map(item => `${item.name} (x${item.qty})`).join(", "),
+            Total: order.total,
+            Cash: order.cash,
+            Change: order.change,
+        }));
 
-    if (isError) {
-        content = <PageError error={error?.data?.message} />
-    }
+        // Convert JSON data to a worksheet
+        const worksheet = XLSX.utils.json_to_sheet(ordersForExcel);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Orders");
 
-    if (isSuccess) {
-
-        const { entities: ordersEntities } = ordersData;
-
-
-
-        // Sort orders by recent or current date
-        const orders = Object.values(ordersEntities).sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime))
-
-
-        const yearOrders = [...new Set(orders.map(order => new Date(order.dateTime).getFullYear()))];
-
-        const filterOrdersByYear = (year) => {
-            return orders.filter(order => new Date(order.dateTime).getFullYear() === year);
-        };
-
-        const filteredOrders = filter === 'all'
-            ? orders
-            : filterOrdersByYear(parseInt(filter));
-
-        const totalSales = filteredOrders.reduce((total, order) => total + Number(order.total), 0);
-
-        const handleFilterChange = (event) => {
-            setFilter(event.target.value);
-        };
+        // Download Excel file
+        XLSX.writeFile(workbook, `Orders_Report_${yearFilter}.xlsx`);
+    };
 
 
+    return (
+        <div aria-label="Page Header">
+            <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8 no-print">
+                <div className="mt-2">
+                    <div className="flex flex-col sm:flex-row gap-2">
+                        <p className="text-xl font-bold text-gray-700 sm:text-2xl dark:text-gray-200">
+                            Sales Summary
+                        </p>
 
-        // Step 1: Function to format date as "Sep 5, 2024"
-        const formatDate = (dateStr) => {
-            const options = { timeZone: 'Asia/Manila', year: 'numeric', month: 'short', day: 'numeric' };
-            return new Date(dateStr).toLocaleDateString('en-US', options);
-        };
-
-        // Step 2-4: Group by date and sum the total
-        const groupedSalesOrders = filteredOrders.reduce((acc, order) => {
-            const date = formatDate(order.dateTime); // Format the date
-
-            // Check if date already exists in the accumulator
-            const existingOrder = acc.find(item => item.date === date);
-
-            if (existingOrder) {
-                // If date exists, sum the totals
-                existingOrder.Total += order.total
-
-            } else {
-                // If date doesn't exist, create a new entry
-                acc.push({ date, Total: order.total });
-            }
-            return acc;
-        }, []);
-
-        const formatCurrency = (value) => {
-            return new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(value);
-        };
-
-        content = (
-            <div aria-label="Page Header">
-                {/* <ReceiptModal isOpen={isModalOpen} onClose={handleModalClose} orderId={orderId} /> */}
-
-                <div className={`mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8 no-print`}>
-                    <div className="mt-2">
-                        <div className="flex justify-between">
-                            <div>
-                                <p className="text-xl font-bold text-gray-700 sm:text-2xl dark:text-gray-200">
-                                    Sales Summary
-                                </p>
+                        <div className="flex flex-col space-y-2">
+                            {/* <label className="text-xs font-semibold text-gray-500">Filter by Year</label> */}
+                            <select className="border rounded p-1" value={yearFilter} onChange={e => setYearFilter(e.target.value)}>
+                                {yearOrders.map((year, index) => (
+                                    <option key={index} value={year}>{year}</option>
+                                ))}
+                                <option value="all">All</option>
+                            </select>
+                        </div>
+                        <div className="flex flex-col space-y-2">
+                            {/* <label className="text-xs font-semibold text-gray-500">Filter by Date</label> */}
+                            <select className="border rounded p-1" value={dateFilter} onChange={e => setDateFilter(e.target.value)}>
+                                <option value="today">Today</option>
+                                <option value="yesterday">Yesterday</option>
+                                <option value="thisWeek">This Week</option>
+                                <option value="lastWeek">Last Week</option>
+                                <option value="thisMonth">This Month</option>
+                                <option value="lastMonth">Last Month</option>
+                                <option value="custom">Custom</option>
+                                <option value="all">All</option>
+                            </select>
+                        </div>
+                        {dateFilter === "custom" && (
+                            <div className="flex space-x-2">
+                                <input type="date" className="border rounded p-1" value={customFromDate} onChange={e => setCustomFromDate(e.target.value)} />
+                                <input type="date" className="border rounded p-1" value={customToDate} onChange={e => setCustomToDate(e.target.value)} />
                             </div>
-                        </div>
-                        <div className="mx-auto max-w-screen-xl  py-3  md:py-5">
-                            <dl className="font-normal grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                        )}
+                    </div>
 
-                                <article className="rounded-lg border border-gray-100 bg-white ">
-                                    <div className="flex items-center justify-between px-5 pt-4 pb-3 ">
-                                        <div className="flex flex-col">
-                                            <p className="text-[11px] font-semibold text-gray-500 tracking-widest">TOTAL SALES</p>
-                                            <p className="text-2xl font-medium text-gray-900">₱ {Number(totalSales).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
-                                        </div>
 
-                                        {/* <span className="rounded-xl bg-green-100 p-3 text-green-600">
-                          <PiMoneyLight size={25} className="text-green-600 dark:text-gray-500" />
-                        </span> */}
-                                        <div className="mb-auto" title="Filter by Year">
-                                            <select
-                                                className="border rounded p-1"
-                                                value={filter}
-                                                onChange={handleFilterChange}
-                                            >
-
-                                                {yearOrders.map((year, index) => (
-                                                    <option key={index} value={year}>{year}</option>
-                                                ))}
-                                                <option value="all">All</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </article>
-
-                            </dl>
-                            {/* <TablePagination data={orders} rowsPerPage={2} /> */}
-                        </div>
-
-                        {/* Orders Table */}
-                        <div className="grid grid-cols-1 gap-4 ">
-
-                            <div className=" h-96 min-w-full rounded bg-white col-span-1 lg:col-span-2">
-                                <div className="flex w-[100%] h-[100%] ">
-                                    <ResponsiveContainer width={"100%"} height={"100%"}>
-                                        <LineChart data={groupedSalesOrders} margin={{
-                                            top: 35,
-                                            right: 30,
-                                            left: 35,
-                                            bottom: 20,
-                                        }}>
-                                            <CartesianGrid strokeDasharray="3 3" />
-                                            <XAxis dataKey="date" />
-                                            <YAxis tickFormatter={formatCurrency} />
-                                            <Tooltip content={(props) => (
-                                                <div>
-                                                    {props.payload?.map((item, idx) => {
-                                                        return (
-                                                            <div className="flex flex-col gap-2 bg-slate-800 border text-xs  font-medium py-3 px-5 rounded-md shadow-lg "
-                                                                key={idx}
-                                                            >
-                                                                <div className="flex gap-1 items-center">
-                                                                    <div className="h-2 w-2 rounded-full bg-orange-500"></div>
-                                                                    <p className="text-gray-50 font-medium">
-                                                                        {` ${(item.payload.date)}`}
-                                                                    </p>
-                                                                </div>
-                                                                <p className="text-gray-400 text-[11px]">TOTAL:
-                                                                    <span className="font-medium text-xs text-gray-50 ">
-                                                                        {`  ₱ ${(item.payload.Total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`}
-                                                                    </span>
+                    <div className="grid grid-cols-1 gap-4 mt-5">
+                        <div className="h-96 min-w-full rounded bg-white col-span-1 lg:col-span-2">
+                            <button
+                                onClick={exportToExcel}
+                                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+                            >
+                                Export to Excel
+                            </button>
+                            <div className="flex w-full h-full">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <LineChart data={groupedSalesOrders} margin={{ top: 35, right: 30, left: 35, bottom: 20 }}>
+                                        <CartesianGrid strokeDasharray="3 3" />
+                                        <XAxis dataKey="date" />
+                                        <YAxis tickFormatter={formatCurrency} />
+                                        <Tooltip content={(props) => (
+                                            <div>
+                                                {props.payload?.map((item, idx) => {
+                                                    return (
+                                                        <div className="flex flex-col gap-2 bg-slate-800 border text-xs  font-medium py-3 px-5 rounded-md shadow-lg "
+                                                            key={idx}
+                                                        >
+                                                            <div className="flex gap-1 items-center">
+                                                                <div className="h-2 w-2 rounded-full bg-green-500"></div>
+                                                                <p className="text-gray-50 font-medium">
+                                                                    {` ${(item.payload.date)}`}
                                                                 </p>
-
                                                             </div>
-                                                        )
-                                                    })}
-                                                </div>
-                                            )} />
-                                            <Line type="monotone" dataKey="Total" stroke="orange" strokeWidth={1.5} fill="orange" />
-                                        </LineChart>
-                                    </ResponsiveContainer>
+                                                            <p className="text-gray-400 text-[11px]">TOTAL:
+                                                                <span className="font-medium text-xs text-gray-50 ">
+                                                                    {formatCurrency(item.payload.Total)}
+                                                                </span>
+                                                            </p>
 
-
-                                </div>
+                                                        </div>
+                                                    )
+                                                })}
+                                            </div>
+                                        )} />
+                                        <Line type="monotone" dataKey="Total" stroke="orange" strokeWidth={1.5} />
+                                    </LineChart>
+                                </ResponsiveContainer>
                             </div>
-
                         </div>
                     </div>
+                    <div className="flow-root bg-white mx-auto max-w-screen-xl py-3 md:py-5 border-t-2">
+                        <dl className="mx-5 divide-y divide-gray-100 text-medium">
+                            <div className="gap-1 py-3 flex justify-between">
+                                <dt className="font-medium text-gray-700">Gross Sales</dt>
+                                <dd className="font-medium text-gray-900 ">{formatCurrency(totalSales)}</dd>
+                            </div>
+                            <div className="gap-1 py-3 flex justify-between">
+                                <dt className=" text-gray-700 ml-10">Orders</dt>
+                                <dd className=" text-gray-900 ">{filteredOrders.length}</dd>
+                            </div>
+                            <div className="gap-1 py-3 flex justify-between">
+                                <dt className=" text-gray-700 ml-10">Items</dt>
+                                <dd className="text-gray-900 ">{totalQty}</dd>
+                            </div>
+                        </dl>
+                    </div>
+
                 </div>
             </div>
-        );
-    }
+        </div>
+    );
+};
 
-    return content;
-}
-
-export default Reports
+export default Reports;

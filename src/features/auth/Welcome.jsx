@@ -19,6 +19,7 @@ import {
 } from "recharts";
 import RecentOrders from "../../components/RecentOrders";
 import TablePagination from "../../components/TablePagination";
+import useGenerateORDATE from "../../hooks/useGenerateORDATE";
 
 const Welcome = () => {
 
@@ -26,7 +27,7 @@ const Welcome = () => {
   const columnsOrders = ["Order#/Type", "Date/Time", "ITEMS", "Total", "Barista"];
   const columnsItems = ["Item Name", "Stock"];
   const [filter, setFilter] = useState(new Date().getFullYear());
-
+  const { formatCurrency } = useGenerateORDATE()
 
   const [orderId, setOderID] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -526,7 +527,7 @@ const Welcome = () => {
                   <div className="flex items-center justify-between px-5 pt-4 pb-3 ">
                     <div className="flex flex-col">
                       <p className="text-[11px] font-semibold text-gray-500 tracking-widest">TOTAL SALES</p>
-                      <p className="text-2xl font-medium text-gray-900">₱ {Number(totalSales).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
+                      <p className="text-2xl font-medium text-gray-900"> {formatCurrency(totalSales)}</p>
                     </div>
 
                     {/* <span className="rounded-xl bg-green-100 p-3 text-green-600">
@@ -571,7 +572,7 @@ const Welcome = () => {
                                   </div>
                                   <p className="text-gray-400 text-[11px]">TOTAL:
                                     <span className="font-medium text-xs text-gray-50 ">
-                                      {`  ₱ ${(item.payload.Total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`}
+                                      { formatCurrency(item.payload.Total)}
                                     </span>
                                   </p>
 
@@ -643,7 +644,7 @@ const Welcome = () => {
                     <div className="flex flex-col">
                       <p className="text-[11px] font-semibold text-gray-500 tracking-widest">SALES TODAY</p>
 
-                      <p className="text-2xl font-medium text-gray-900">₱ {Number(salesToday()).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
+                      <p className="text-2xl font-medium text-gray-900">{formatCurrency(salesToday())}</p>
                     </div>
 
                     <span className="rounded-xl bg-orange-100 p-3 text-orange-600">

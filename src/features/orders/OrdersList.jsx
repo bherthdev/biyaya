@@ -10,8 +10,8 @@ import { MdErrorOutline, MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight
 import { ImFilesEmpty } from "react-icons/im";
 
 
-
 const OrdersList = () => {
+
 
   const [search, setsearch] = useState("");
   const columnsArray = ["ORDER#/TYPE", "DATE/TIME", "NO. OF ITEMS", "TOTAL", "BARISTA"];

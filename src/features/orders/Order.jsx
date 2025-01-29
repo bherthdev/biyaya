@@ -4,10 +4,12 @@ import { selectOrderById } from "./ordersApiSlice";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useEffect, useRef, useState } from "react";
 import useAuth from "../../hooks/useAuth";
+import useGenerateORDATE from "../../hooks/useGenerateORDATE";
 
 const Order = ({ orderId, search, handleModalOpen }) => {
 
- const { isAdmin } =useAuth()
+  const { formatCurrency } = useGenerateORDATE()
+  const { isAdmin } = useAuth()
   const order = useSelector((state) => selectOrderById(state, orderId));
   const [viewReceipt, setViewReceipt] = useState(false);
   const optionRef = useRef(null);
@@ -60,13 +62,13 @@ const Order = ({ orderId, search, handleModalOpen }) => {
                         View Receipt
                       </div>
                       {isAdmin &&
-                      <div
-                        className="cursor-pointer block text-left px-4 py-2 text-sm text-red-700 dark:text-gray-500 hover:bg-red-100 dark:hover:bg-slate-700 hover:text-gray-900 dark:hover:text-gray-400"
-                        onClick={() => handleModalOpen(order.id, true)}
-                      >
+                        <div
+                          className="cursor-pointer block text-left px-4 py-2 text-sm text-red-700 dark:text-gray-500 hover:bg-red-100 dark:hover:bg-slate-700 hover:text-gray-900 dark:hover:text-gray-400"
+                          onClick={() => handleModalOpen(order.id, true)}
+                        >
 
-                        Back Date Order
-                      </div>
+                          Back Date Order
+                        </div>
                       }
                     </div>
 
@@ -90,7 +92,7 @@ const Order = ({ orderId, search, handleModalOpen }) => {
               <p className="">{order.items.reduce((totalItem, item) => totalItem + Number(item.qty), 0)} </p>
             </td>
             <td className={`whitespace-nowrap px-8 py-2 font-semibold  text-gray-900 dark:text-gray-300`}>
-              <p className="">₱ {Number(order.total).toFixed(2)} </p>
+              <p className="">{formatCurrency(order.total)} </p>
             </td>
 
             <td className={`whitespace-nowrap px-8 py-2 text-sm  text-gray-900 dark:text-gray-300 `}>
