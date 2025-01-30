@@ -25,8 +25,28 @@ const useGenerateORDATE = () => {
   const formatCurrency = (value) => {
     return new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(value);
 };
+
+const formatCurrencyNotation = (value) => {
+  if (value >= 1000) {
+      const thousands = value / 1000;
+      if (Number.isInteger(thousands)) {
+          return `₱${thousands}k`; // Whole number (e.g., 1000 → ₱1k)
+      } else {
+          const formatted = thousands.toFixed(1); // Round to 1 decimal
+          // Remove ".0" if decimal is zero (e.g., 2000.0 → ₱2k instead of ₱2.0k)
+          return formatted.endsWith('.0') 
+              ? `₱${parseInt(thousands)}k`
+              : `₱${formatted}k`;
+      }
+  }
+  // Default currency format for values < 1000
+  return new Intl.NumberFormat('en-PH', { 
+      style: 'currency', 
+      currency: 'PHP' 
+  }).format(value);
+};
   
-    return { formatDate, generateOR, generateDate, formatCurrency }
+    return { formatDate, generateOR, generateDate, formatCurrency, formatCurrencyNotation }
   }
   
   export default useGenerateORDATE

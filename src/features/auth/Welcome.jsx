@@ -28,6 +28,9 @@ const Welcome = () => {
   const columnsItems = ["Item Name", "Stock"];
   const [filter, setFilter] = useState(new Date().getFullYear());
   const { formatCurrency } = useGenerateORDATE()
+  const [dateFilter, setDateFilter] = useState("all");
+  const currentYear = new Date().getFullYear();
+
 
   const [orderId, setOderID] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -409,20 +412,64 @@ const Welcome = () => {
 
     const yearOrders = [...new Set(orders.map(order => new Date(order.dateTime).getFullYear()))];
 
+
+
+    // Helper function to get date ranges
+    const getDateRange = (type) => {
+      const now = new Date();
+      const startOfToday = new Date(now.setHours(0, 0, 0, 0));
+      const startOfYesterday = new Date(startOfToday);
+      startOfYesterday.setDate(startOfYesterday.getDate() - 1);
+      const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay())); // Start of this week
+      const startOfLastWeek = new Date(startOfWeek);
+      startOfLastWeek.setDate(startOfLastWeek.getDate() - 7);
+      const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+      const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+      const endOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+
+      switch (type) {
+        case "yesterday":
+          return [startOfYesterday, startOfToday];
+        case "thisWeek":
+          return [startOfWeek, new Date()];
+        case "lastWeek":
+          return [startOfLastWeek, startOfWeek];
+        case "thisMonth":
+          return [startOfMonth, new Date()];
+        case "lastMonth":
+          return [startOfLastMonth, endOfLastMonth];
+        default:
+          return [new Date(0), new Date()];
+      }
+    };
+
     const filterOrdersByYear = (year) => {
       return orders.filter(order => new Date(order.dateTime).getFullYear() === year);
     };
-  
-    const filteredOrders = filter === 'all'
-      ? orders
-      : filterOrdersByYear(parseInt(filter));
-  
-    const totalSales = filteredOrders.reduce((total, order) => total + Number(order.total), 0);
-  
-    const handleFilterChange = (event) => {
-      setFilter(event.target.value);
-    };
 
+    // Filter orders by selected year
+    const filteredByYear = orders.filter(order => new Date(order.dateTime).getFullYear() === currentYear);
+
+
+    const [startDate, endDate] = getDateRange(dateFilter);
+
+    // Filter orders by selected date range
+    const filteredOrders = filteredByYear
+      .filter(order => {
+        const orderDate = new Date(order.dateTime);
+        return orderDate >= startDate && orderDate <= endDate;
+      })
+
+
+
+    // const filteredOrders = filter === 'all'
+    //   ? orders
+    //   : filterOrdersByYear(new Date().getFullYear());
+
+    // Get date range based on selected filter
+
+
+    const totalSales = filteredOrders.reduce((total, order) => total + Number(order.total), 0);
 
 
     // Step 1: Function to format date as "Sep 5, 2024"
@@ -494,15 +541,6 @@ const Welcome = () => {
     }
 
 
-    // const totalQty = orders.reduce((total, order) => {
-    //   const orderQty = order.items.reduce((sum, item) => sum + Number(item.qty), 0);
-    //   return total + orderQty;
-    // }, 0);
-
-    // const totalSales = orders.reduce((total, order) => total + Number(order.total), 0);
-
-
-
 
     content = (
       <div aria-label="Page Header">
@@ -521,31 +559,24 @@ const Welcome = () => {
               </div>
             </div>
             <div className="mx-auto max-w-screen-xl  py-3  md:py-5">
-              <dl className="font-normal grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              <div className="font-normal grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
 
-                <article className="rounded-lg border border-gray-100 bg-white ">
-                  <div className="flex items-center justify-between px-5 pt-4 pb-3 ">
-                    <div className="flex flex-col">
-                      <p className="text-[11px] font-semibold text-gray-500 tracking-widest">TOTAL SALES</p>
-                      <p className="text-2xl font-medium text-gray-900"> {formatCurrency(totalSales)}</p>
-                    </div>
+                <div className="rounded-lg border border-gray-100 bg-white ">
+                  <div className="flex flex-col mt-4 mx-4 mb-1">
+                    <div className="flex justify-between text-[11px] font-semibold ">
 
-                    {/* <span className="rounded-xl bg-green-100 p-3 text-green-600">
-                      <PiMoneyLight size={25} className="text-green-600 dark:text-gray-500" />
-                    </span> */}
-                    <div className="mb-auto" title="Filter by Year">
+                      <div className="flex items-center tracking-widest text-gray-500">TOTAL SALES</div>
                       <select
-                        className="border rounded p-1"
-                        value={filter}
-                        onChange={handleFilterChange}
-                      >
-                        
-                        {yearOrders.map((year, index) => (
-                          <option key={index} value={year}>{year}</option>
-                        ))}
-                        <option value="all">All</option>
+                        title="Filter total sales"
+                        className="text-gray-600 tracking-wide border p-1 rounded hover:bg-slate-100 cursor-pointer" value={dateFilter} onChange={e => setDateFilter(e.target.value)}>
+                        <option value="thisMonth">This Month</option>
+                        <option value="yesterday">Yesterday</option>
+                        <option value="thisWeek">This Week</option>
+                        <option value="lastWeek">Last Week</option>
+                        <option value="lastMonth">Last Month</option>
                       </select>
                     </div>
+                    <div className="text-2xl font-medium text-gray-900"> {formatCurrency(totalSales)}</div>
                   </div>
 
                   <div className="flex h-14">
@@ -572,7 +603,7 @@ const Welcome = () => {
                                   </div>
                                   <p className="text-gray-400 text-[11px]">TOTAL:
                                     <span className="font-medium text-xs text-gray-50 ">
-                                      { formatCurrency(item.payload.Total)}
+                                      {formatCurrency(item.payload.Total)}
                                     </span>
                                   </p>
 
@@ -585,9 +616,9 @@ const Welcome = () => {
                       </AreaChart>
                     </ResponsiveContainer>
                   </div>
-                </article>
+                </div>
 
-                <article className="rounded-lg border border-gray-100 bg-white">
+                <div className="rounded-lg border border-gray-100 bg-white">
                   <div className="flex items-center justify-between px-5 pt-4 pb-3 ">
                     <div className="flex flex-col">
                       <p className="text-[11px] font-semibold text-gray-500 tracking-widest">  TOTAL ORDERS </p>
@@ -637,9 +668,9 @@ const Welcome = () => {
 
                     </ResponsiveContainer>
                   </div>
-                </article>
+                </div>
 
-                <article className="rounded-lg border border-gray-100 bg-white p-6">
+                <div className="rounded-lg border border-gray-100 bg-white p-6">
                   <div className="flex items-center justify-between">
                     <div className="flex flex-col">
                       <p className="text-[11px] font-semibold text-gray-500 tracking-widest">SALES TODAY</p>
@@ -657,9 +688,9 @@ const Welcome = () => {
                       <span className="text-gray-500">  *Updated every order success </span>
                     </p>
                   </div>
-                </article>
+                </div>
 
-                <article className=" rounded-lg border border-gray-100 bg-white p-6">
+                <div className=" rounded-lg border border-gray-100 bg-white p-6">
                   <div className="flex items-center justify-between">
                     <div className="flex flex-col">
                       <p className="text-[11px] font-semibold text-gray-500 tracking-widest"> ORDERS TODAY </p>
@@ -671,9 +702,9 @@ const Welcome = () => {
                       <PiReceiptLight size={25} className="text-gray-500 dark:text-gray-500" />
                     </span>
                   </div>
-                </article>
+                </div>
 
-              </dl>
+              </div>
               {/* <TablePagination data={orders} rowsPerPage={2} /> */}
             </div>
 

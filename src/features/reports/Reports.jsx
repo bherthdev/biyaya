@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import * as XLSX from "xlsx";
 import { useGetOrdersQuery } from "../orders/ordersApiSlice";
 import {
@@ -16,14 +16,21 @@ import useGenerateORDATE from "../../hooks/useGenerateORDATE";
 import { IoMdAdd } from "react-icons/io";
 
 const Reports = () => {
-    const { formatCurrency } = useGenerateORDATE();
+    const { formatCurrency, formatCurrencyNotation } = useGenerateORDATE();
 
-    const [yearFilter, setYearFilter] = useState(new Date().getFullYear());
+    const currentYear = new Date().getFullYear();
+    const [yearFilter, setYearFilter] = useState(currentYear.toString());
     const [dateFilter, setDateFilter] = useState("all");
     const [customFromDate, setCustomFromDate] = useState("");
     const [customToDate, setCustomToDate] = useState("");
     const [monthFilter, setMonthFilter] = useState("all");
-    const currentYear = new Date().getFullYear();
+
+    useEffect(() => {
+        yearFilter === "all" && (setMonthFilter("all"), setDateFilter("all"));
+
+        yearFilter !== 'all' && (setMonthFilter("all"), setDateFilter("all"));
+
+    }, [yearFilter])
 
     const {
         data: ordersData,
@@ -82,10 +89,12 @@ const Reports = () => {
         }
     };
 
+
     // Filter orders by selected year
     const filteredByYear = yearFilter === "all"
         ? orders
         : orders.filter(order => new Date(order.dateTime).getFullYear() === parseInt(yearFilter));
+
 
     // Get date range based on selected filter
     const [startDate, endDate] = getDateRange(dateFilter);
@@ -104,6 +113,7 @@ const Reports = () => {
             return true;
         });
 
+
     const totalSales = filteredOrders.reduce((total, order) => total + Number(order.total), 0);
 
 
@@ -116,18 +126,37 @@ const Reports = () => {
             : [];
 
 
+    // Helper function to format date
+    const formatDate = (date, yearFilter) => {
+        const options = yearFilter === "all"
+            ? { year: "numeric", month: "short" }
+            : { year: "numeric", month: "short", day: "numeric" };
+        return new Date(date).toLocaleDateString("en-US", options);
+    };
 
     // Group orders by date
-    const groupedSalesOrders = filteredOrders.reduce((acc, order) => {
-        const date = new Date(order.dateTime).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
-        const existingOrder = acc.find(item => item.date === date);
-        if (existingOrder) {
-            existingOrder.Total += order.total;
-        } else {
-            acc.push({ date, Total: order.total });
-        }
-        return acc;
-    }, []);
+    const groupedSalesOrders = Array.from(
+        filteredOrders.reduce((acc, order) => {
+            const date = formatDate(order.dateTime, yearFilter);
+            if (acc.has(date)) {
+                const existingOrder = acc.get(date);
+                existingOrder.Total += order.total;
+                existingOrder.Items += order.items.reduce((sum, item) => sum + Number(item.qty), 0);
+                existingOrder.Orders += 1;
+            } else {
+                acc.set(date, {
+                    date,
+                    Total: order.total,
+                    Items: order.items.reduce((sum, item) => sum + Number(item.qty), 0),
+                    Orders: 1
+                });
+            }
+            return acc;
+        }, new Map()).values()
+    );
+
+    // console.log(groupedSalesOrders)
+
 
     const totalQty = filteredOrders.reduce((total, order) => {
         return total + order.items.reduce((sum, item) => sum + Number(item.qty), 0);
@@ -162,7 +191,6 @@ const Reports = () => {
         XLSX.writeFile(workbook, `Sales_Summary_Report_${yearFilter}.xlsx`);
     };
 
-    console.log(yearFilter,  currentYear.toString(), typeof yearFilter, typeof  currentYear.toString());
 
     return (
         <div aria-label="Page Header">
@@ -236,46 +264,103 @@ const Reports = () => {
                                 </div>
                             </div>
 
-                            <ResponsiveContainer width="100%" height="100%">
-                                <LineChart data={groupedSalesOrders} margin={{ top: 25, right: 30, left: 35, bottom: 35 }}>
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis dataKey="date" />
-                                    <YAxis tickFormatter={formatCurrency} />
-                                    <Tooltip content={(props) => (
-                                        <div>
-                                            {props.payload?.map((item, idx) => {
-                                                return (
-                                                    <div className="flex flex-col gap-2 bg-slate-800 border text-xs  font-medium py-3 px-5 rounded-md shadow-lg "
-                                                        key={idx}
-                                                    >
-                                                        <div className="flex gap-1 items-center">
-                                                            <div className="h-2 w-2 rounded-full bg-green-500"></div>
-                                                            <p className="text-gray-50 font-medium">
-                                                                {` ${(item.payload.date)}`}
-                                                            </p>
-                                                        </div>
-                                                        <p className="text-gray-400 text-[11px]">TOTAL:
-                                                            <span className="font-medium text-xs text-gray-50 ">
-                                                                {formatCurrency(item.payload.Total)}
-                                                            </span>
-                                                        </p>
+                            <div className="h-[26rem] min-w-full flex">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <LineChart data={groupedSalesOrders} margin={{ top: 25, right: 30, left: 45, bottom: 45 }}>
+                                        <CartesianGrid strokeDasharray="3 3" />
+                                        <YAxis tickFormatter={formatCurrencyNotation}
+                                            type="number"
+                                            axisLine={false} // Hide axis line
+                                            tickLine={{ stroke: "" }} // Tailwind's gray-400
+                                            className="text-xs font-medium text-gray-600" // Tailwind font styling
+                                            domain={[0, 'auto']} // Auto-adjust min/max
+                                            label={{
+                                                value: "Amount (PHP)",
+                                                angle: -90,
+                                                position: "left",
+                                                offset: 15, // Increase this value to move label further left
+                                                className: "text-gray-700 font-bold",
+                                                dy: -70 // Optional: Adjust vertical alignment
+                                            }}
+                                            tickCount={5}
+                                        />
+                                        <XAxis
+                                            dataKey="date"
+                                            tickLine={false} // Hide the default tick lines if needed
+                                            axisLine={{ stroke: "" }} // Keep axis line visible
+                                            tick={({ x, y, payload }) => (
+                                                <text
+                                                    x={x}
+                                                    y={y}
+                                                    dy={10} // Adjust vertical position (prevents text cutoff)
+                                                    textAnchor="end" // Align text after rotation
+                                                    transform={yearFilter === "all"  ? `rotate(-45 ${x} ${y})` : null} // Rotate text around (x,y)
+                                                    fill="#6e6e6e" // Direct hex equivalent of Tailwind's text-gray-700
+                                                    className="text-xs font-medium" // Tailwind classes
+                                                >
+                                                    {payload.value}
+                                                </text>
+                                            )}
+                                            label={{
+                                                value: "DATE",
+                                                angle: 0,
+                                                position: "bottom",
+                                                offset: 15, // Increase this value to move label further left
+                                                className: "text-gray-700 font-bold",
+                                                dy: 5 // Optional: Adjust vertical alignment
+                                            }}
+                                            className="text-xs font-medium text-gray-600" // Tailwind font styling
+                                        />
 
-                                                    </div>
-                                                )
-                                            })}
-                                        </div>
-                                    )} />
-                                    <Line type="monotone" dataKey="Total" stroke="orange" strokeWidth={1.5} />
-                                </LineChart>
-                            </ResponsiveContainer>
+                                        <Tooltip content={(props) => (
+                                            <div>
+                                                {props.payload?.map((item, idx) => {
+                                                    return (
+                                                        <div className="flex flex-col gap-2 bg-slate-800 border text-xs  font-medium py-3 px-5 rounded-md shadow-lg "
+                                                            key={idx}
+                                                        >
+                                                            <div className="flex gap-1 items-center">
+                                                                <div className="h-2 w-2 rounded-full bg-green-500"></div>
+                                                                <p className="text-gray-50 font-medium">
+                                                                    {` ${(item.payload.date)}`}
+                                                                </p>
+                                                            </div>
+                                                            <div className="text-gray-400 text-[11px]">Orders:
+                                                                <span className="font-medium text-xs text-gray-50 pl-2">
+                                                                    {item.payload.Orders}
+                                                                </span>
+                                                            </div>
+                                                            <div className="text-gray-400 text-[11px]">Items:
+                                                                <span className="font-medium text-xs text-gray-50 pl-2">
+                                                                    {item.payload.Items}
+                                                                </span>
+                                                            </div>
+                                                            <div className="text-gray-400 text-[11px]">TOTAL:
+                                                                <span className="font-medium text-xs text-gray-50 pl-2">
+                                                                    {formatCurrency(item.payload.Total)}
+                                                                </span>
+                                                            </div>
+
+                                                        </div>
+                                                    )
+                                                })}
+                                            </div>
+                                        )} />
+                                        <Line type="monotone" dataKey="Total" stroke="#5eba00" strokeWidth={1.8} />
+                                    </LineChart>
+                                </ResponsiveContainer>
+
+                            </div>
+
+
                         </div>
                     </div>
                 </div>
                 <div className="flow-root bg-white mx-auto max-w-screen-xl  border-t-2 rounded">
-                    <dl className="mx-5 divide-y divide-gray-200 text-medium">
-                        <div className="gap-1 py-3 flex justify-between">
-                            <dt className="font-medium text-gray-700">Gross Sales</dt>
-                            <dd className="font-medium text-gray-900 ">{formatCurrency(totalSales)}</dd>
+                    <dl className="mx-5 divide-y divide-gray-200">
+                        <div className="gap-1 py-3 flex justify-between text-lg">
+                            <dt className="font-medium text-green-700">Gross Sales</dt>
+                            <dd className=" font-medium text-green-700 ">{formatCurrency(totalSales)}</dd>
                         </div>
                         <div className="gap-1 py-3 flex justify-between">
                             <dt className=" text-gray-700 ml-10">Orders</dt>
