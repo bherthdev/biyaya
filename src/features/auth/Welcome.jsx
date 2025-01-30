@@ -448,26 +448,21 @@ const Welcome = () => {
     };
 
     // Filter orders by selected year
-    const filteredByYear = orders.filter(order => new Date(order.dateTime).getFullYear() === currentYear);
-
+    const filteredByYear = orders.filter(order => {
+      const cleanedDateTime = order.dateTime.replace(' at ', ' ');
+      return new Date(cleanedDateTime).getFullYear() === currentYear;
+    });
 
     const [startDate, endDate] = getDateRange(dateFilter);
 
     // Filter orders by selected date range
-    const filteredOrders = filteredByYear
-      .filter(order => {
-        const orderDate = new Date(order.dateTime);
-        return orderDate >= startDate && orderDate <= endDate;
-      })
+    const filteredOrders = filteredByYear.filter(order => {
+      const cleanedDateTime = order.dateTime.replace(' at ', ' ');
+      const orderDate = new Date(cleanedDateTime);
+      return orderDate >= startDate && orderDate <= endDate;
+    });
 
-
-
-    // const filteredOrders = filter === 'all'
-    //   ? orders
-    //   : filterOrdersByYear(new Date().getFullYear());
-
-    // Get date range based on selected filter
-
+    // console.log(filteredOrders)
 
     const totalSales = filteredOrders.reduce((total, order) => total + Number(order.total), 0);
 
