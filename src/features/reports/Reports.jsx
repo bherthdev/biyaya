@@ -292,7 +292,7 @@ const Reports = () => {
                                 <ResponsiveContainer width="100%" height="100%">
                                     <LineChart
                                         data={groupedSalesOrders}
-                                        margin={{ top: 25, right: 30, left: 20, bottom: 50 }}
+                                        margin={{ top: 25, right: 10, left: 10, bottom: 40 }}
                                     >
                                         <CartesianGrid strokeDasharray="3 3" />
                                         <YAxis
@@ -314,7 +314,7 @@ const Reports = () => {
                                                     y={y}
                                                     dy={10}
                                                     textAnchor="end"
-                                                    transform={yearFilter === "all" ? `rotate(-45 ${x} ${y})` : null}
+                                                    transform={`rotate(-45 ${x} ${y})`}
                                                     fill="#6e6e6e"
                                                     className="text-xs font-medium"
                                                 >
