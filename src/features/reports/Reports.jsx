@@ -209,7 +209,7 @@ const Reports = () => {
                         <div className="flex flex-col w-full h-full">
                             {/* Header Section */}
 
-                            <div className="flex flex-col sm:flex-row p-5 justify-between gap-2">
+                            <div className="flex sm:flex-row p-5 justify-between gap-2">
                                 <div className="flex flex-col sm:flex-row gap-2">
 
                                     <p className="text-lg font-bold text-gray-700 sm:text-2xl dark:text-gray-200">
@@ -261,13 +261,13 @@ const Reports = () => {
                                             <div className="flex flex-col sm:flex-row gap-2 text-sm">
                                                 <input
                                                     type="date"
-                                                    className="border rounded p-1 cursor-pointer hover:bg-slate-100"
+                                                    className="border rounded p-1 text-black cursor-pointer hover:bg-slate-100"
                                                     value={customFromDate}
                                                     onChange={(e) => setCustomFromDate(e.target.value)}
                                                 />
                                                 <input
                                                     type="date"
-                                                    className="border rounded p-1 cursor-pointer hover:bg-slate-100"
+                                                    className="border rounded p-1 text-black cursor-pointer hover:bg-slate-100"
                                                     value={customToDate}
                                                     onChange={(e) => setCustomToDate(e.target.value)}
                                                 />
@@ -275,7 +275,7 @@ const Reports = () => {
                                         )}
                                     </div>
                                 </div>
-                                <div className="flex">
+                                <div>
 
                                     <div
                                         onClick={exportToExcel}
@@ -292,7 +292,7 @@ const Reports = () => {
                                 <ResponsiveContainer width="100%" height="100%">
                                     <LineChart
                                         data={groupedSalesOrders}
-                                        margin={{ top: 25, right: 30, left: 20, bottom: 60 }}
+                                        margin={{ top: 25, right: 30, left: 20, bottom: 50 }}
                                     >
                                         <CartesianGrid strokeDasharray="3 3" />
                                         <YAxis
