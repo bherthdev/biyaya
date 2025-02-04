@@ -7,7 +7,6 @@ import { useGetItemsQuery } from "../items/itemsApiSlice";
 import Spenner from "../../components/Spinner";
 import { MdErrorOutline } from "react-icons/md";
 import ReceiptModal from "../../components/ReceiptModal"
-import { ImFilesEmpty } from "react-icons/im";
 import {
   AreaChart,
   Area,
@@ -18,7 +17,6 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import RecentOrders from "../../components/RecentOrders";
-import TablePagination from "../../components/TablePagination";
 import useGenerateORDATE from "../../hooks/useGenerateORDATE";
 
 const Welcome = () => {
@@ -26,9 +24,8 @@ const Welcome = () => {
 
   const columnsOrders = ["Order#/Type", "Date/Time", "ITEMS", "Total", "Barista"];
   const columnsItems = ["Item Name", "Stock"];
-  const [filter, setFilter] = useState(new Date().getFullYear());
   const { formatCurrency } = useGenerateORDATE()
-  const [dateFilter, setDateFilter] = useState("all");
+  const [dateFilter, setDateFilter] = useState("thisMonth");
   const currentYear = new Date().getFullYear();
 
 
