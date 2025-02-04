@@ -205,7 +205,7 @@ const Reports = () => {
         <div aria-label="Page Header">
             <div className="mx-auto max-w-screen-xl px-4 py-2 sm:py-8 sm:px-6 lg:px-8 no-print">
                 <div className="mt-2 sm:mt-5">
-                    <div className="h-[30rem] min-w-full rounded bg-white col-span-1 lg:col-span-2">
+                    <div className="h-[100%] min-w-full rounded bg-white col-span-1 lg:col-span-2">
                         <div className="flex flex-col w-full h-full">
                             {/* Header Section */}
 
