@@ -47,7 +47,7 @@ const Reports = () => {
     if (isLoadingOrders) return <PageLoader />;
     if (isOrdersError) return <PageError error={ordersError?.data?.message} />;
 
-    
+
     // Function to clean the dateTime string
     const cleanDateTime = (dateTime) => {
         return dateTime.replace(' at ', ', ');
@@ -203,8 +203,8 @@ const Reports = () => {
 
     return (
         <div aria-label="Page Header">
-            <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8 no-print">
-                <div className="grid grid-cols-1 mt-5">
+            <div className="mx-auto max-w-screen-xl px-4 py-2 sm:py-8 sm:px-6 lg:px-8 no-print">
+                <div className=" mt-2 sm:mt-5">
                     <div className="h-[26rem] min-w-full rounded bg-white col-span-1 lg:col-span-2">
 
                         <div className="flex flex-col w-full h-full">
@@ -257,20 +257,22 @@ const Reports = () => {
 
                                     }
                                     {dateFilter === "custom" && (
-                                        <div className="flex space-x-2 text-sm">
+                                        <div className="flex flex-col gap-2 text-sm">
                                             <input type="date" className="border rounded p-1 cursor-pointer hover:bg-slate-100" value={customFromDate} onChange={e => setCustomFromDate(e.target.value)} />
                                             <input type="date" className="border rounded p-1 cursor-pointer hover:bg-slate-100" value={customToDate} onChange={e => setCustomToDate(e.target.value)} />
                                         </div>
                                     )}
                                 </div>
-
-                                <div
-                                    onClick={exportToExcel}
-                                    title='Export'
-                                    className="flex items-center cursor-pointer text-sm px-2 sm:px-4 sm:py-2 text-black border dark:text-gray-300 font-medium border-gray-300 dark:border-slate-600  hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md duration-150"
-                                >
-                                    Export
+                                <div>
+                                    <div
+                                        onClick={exportToExcel}
+                                        title='Export'
+                                        className="flex items-center cursor-pointer text-sm px-2 sm:px-4 py-2 text-black border dark:text-gray-300 font-medium border-gray-300 dark:border-slate-600  hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md duration-150"
+                                    >
+                                        Export
+                                    </div>
                                 </div>
+
                             </div>
 
                             <div className="h-[26rem] min-w-full flex">
@@ -365,7 +367,8 @@ const Reports = () => {
                         </div>
                     </div>
                 </div>
-                <div className="flow-root bg-white mx-auto max-w-screen-xl  border-t-2 rounded">
+
+                <div className="mt-2 flow-root bg-white mx-auto max-w-screen-xl rounded">
                     <dl className="mx-5 divide-y divide-gray-200">
                         <div className="gap-1 py-3 flex justify-between text-lg">
                             <dt className="font-medium text-green-700">Gross Sales</dt>
