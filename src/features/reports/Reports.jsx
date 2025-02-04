@@ -47,13 +47,19 @@ const Reports = () => {
     if (isLoadingOrders) return <PageLoader />;
     if (isOrdersError) return <PageError error={ordersError?.data?.message} />;
 
+    
+    // Function to clean the dateTime string
+    const cleanDateTime = (dateTime) => {
+        return dateTime.replace(' at ', ', ');
+    };
+
     const { entities: ordersEntities } = ordersData;
     const orders = Object.values(ordersEntities).sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime));
 
-    // console.log(orders)
+
     // Get list of years from orders
     const yearOrders = [...new Set(orders.map(order => {
-        const cleanedDateTime = order.dateTime.replace(' at ', ' ');
+        const cleanedDateTime = cleanDateTime(order.dateTime);
         return new Date(cleanedDateTime).getFullYear();
     }))];
 
@@ -91,12 +97,15 @@ const Reports = () => {
         }
     };
 
-
-    // Filter orders by selected year
     const filteredByYear = yearFilter === "all"
-        ? orders
-        : orders.filter(order => new Date(order.dateTime).getFullYear() === parseInt(yearFilter));
-
+        ? orders.map(order => {
+            const cleanedDateTime = cleanDateTime(order.dateTime);
+            return { ...order, dateTime: cleanedDateTime };
+        })
+        : orders.filter(order => {
+            const cleanedDateTime = cleanDateTime(order.dateTime);
+            return new Date(cleanedDateTime).getFullYear() === parseInt(yearFilter);
+        });
 
     // Get date range based on selected filter
     const [startDate, endDate] = getDateRange(dateFilter);
@@ -104,17 +113,16 @@ const Reports = () => {
     // Filter orders by selected date range
     const filteredOrders = filteredByYear
         .filter(order => {
-            const orderDate = new Date(order.dateTime);
+            const orderDate = new Date(cleanDateTime(order.dateTime));
             return orderDate >= startDate && orderDate <= endDate;
         })
         .filter(order => {
             if (yearFilter !== currentYear.toString() && monthFilter !== "all") {
-                const orderMonth = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date(order.dateTime));
+                const orderMonth = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date(cleanDateTime(order.dateTime)));
                 return orderMonth === monthFilter;
             }
             return true;
         });
-
 
     const totalSales = filteredOrders.reduce((total, order) => total + Number(order.total), 0);
 
@@ -123,7 +131,7 @@ const Reports = () => {
     const monthsOrders =
         yearFilter !== currentYear.toString()
             ? [...new Set(filteredByYear.map(order => {
-                const cleanedDateTime = order.dateTime.replace(' at ', ' ');
+                const cleanedDateTime = cleanDateTime(order.dateTime);
                 return new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date(cleanedDateTime));
             }))]
             : [];
@@ -139,7 +147,7 @@ const Reports = () => {
     // Group orders by date
     const groupedSalesOrders = Array.from(
         filteredOrders.reduce((acc, order) => {
-            const date = formatDate(order.dateTime, yearFilter);
+            const date = formatDate(cleanDateTime(order.dateTime), yearFilter);
             if (acc.has(date)) {
                 const existingOrder = acc.get(date);
                 existingOrder.Total += order.total;
@@ -157,7 +165,6 @@ const Reports = () => {
         }, new Map()).values()
     );
 
-    // console.log(groupedSalesOrders)
 
 
     const totalQty = filteredOrders.reduce((total, order) => {
@@ -268,7 +275,7 @@ const Reports = () => {
 
                             <div className="h-[26rem] min-w-full flex">
                                 <ResponsiveContainer width="100%" height="100%">
-                                    <LineChart data={groupedSalesOrders} margin={{ top: 25, right: 30, left: 40, bottom: 45 }}>
+                                    <LineChart data={groupedSalesOrders} margin={{ top: 25, right: 30, left: 20, bottom: 45 }}>
                                         <CartesianGrid strokeDasharray="3 3" />
                                         <YAxis tickFormatter={formatCurrencyNotation}
                                             type="number"
@@ -276,14 +283,14 @@ const Reports = () => {
                                             tickLine={{ stroke: "" }} // Tailwind's gray-400
                                             className="text-xs font-medium text-gray-600" // Tailwind font styling
                                             domain={[0, 'auto']} // Auto-adjust min/max
-                                            label={{
-                                                value: "Amount (PHP)",
-                                                angle: -90,
-                                                position: "left",
-                                                offset: 15, // Increase this value to move label further left
-                                                className: "text-gray-700 font-bold",
-                                                dy: -70 // Optional: Adjust vertical alignment
-                                            }}
+                                            // label={{
+                                            //     value: "Amount (PHP)",
+                                            //     angle: -90,
+                                            //     position: "left",
+                                            //     offset: 15, // Increase this value to move label further left
+                                            //     className: "text-gray-700 font-bold",
+                                            //     dy: -70 // Optional: Adjust vertical alignment
+                                            // }}
                                             tickCount={5}
                                         />
                                         <XAxis

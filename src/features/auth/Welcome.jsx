@@ -396,6 +396,11 @@ const Welcome = () => {
     const { entities: ordersEntities } = ordersData;
     const { entities: itemsEntities } = itemsData;
 
+       // Function to clean the dateTime string
+       const cleanDateTime = (dateTime) => {
+        return dateTime.replace(' at ', ', ');
+    };
+
     // Sort items by status
     const items = Object.values(itemsEntities).sort((a, b) => {
       const statusOrder = {
@@ -407,11 +412,7 @@ const Welcome = () => {
     )
 
     // Sort orders by recent or current date
-    const orders = Object.values(ordersEntities).sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime))
-
-
-    const yearOrders = [...new Set(orders.map(order => new Date(order.dateTime).getFullYear()))];
-
+    const orders = Object.values(ordersEntities).sort((a, b) => new Date(cleanDateTime(b.dateTime)) - new Date(cleanDateTime(a.dateTime)))
 
 
     // Helper function to get date ranges
@@ -443,13 +444,9 @@ const Welcome = () => {
       }
     };
 
-    const filterOrdersByYear = (year) => {
-      return orders.filter(order => new Date(order.dateTime).getFullYear() === year);
-    };
-
     // Filter orders by selected year
     const filteredByYear = orders.filter(order => {
-      const cleanedDateTime = order.dateTime.replace(' at ', ' ');
+      const cleanedDateTime = cleanDateTime(order.dateTime);
       return new Date(cleanedDateTime).getFullYear() === currentYear;
     });
 
@@ -457,7 +454,7 @@ const Welcome = () => {
 
     // Filter orders by selected date range
     const filteredOrders = filteredByYear.filter(order => {
-      const cleanedDateTime = order.dateTime.replace(' at ', ' ');
+      const cleanedDateTime = cleanDateTime(order.dateTime);
       const orderDate = new Date(cleanedDateTime);
       return orderDate >= startDate && orderDate <= endDate;
     });
@@ -475,7 +472,7 @@ const Welcome = () => {
 
     // Step 2-4: Group by date and sum the total
     const groupedSalesOrders = filteredOrders.reduce((acc, order) => {
-      const date = formatDate(order.dateTime); // Format the date
+      const date = formatDate(cleanDateTime(order.dateTime)); // Format the date
 
       // Check if date already exists in the accumulator
       const existingOrder = acc.find(item => item.date === date);
@@ -493,7 +490,7 @@ const Welcome = () => {
 
     // Step 2-4: Group by date and sum the total
     const groupedOrders = filteredOrders.reduce((acc, order) => {
-      const date = formatDate(order.dateTime); // Format the date
+      const date = formatDate(cleanDateTime(order.dateTime)); // Format the date
 
       // Check if date already exists in the accumulator
       const existingOrder = acc.find(item => item.date === date);
@@ -515,7 +512,7 @@ const Welcome = () => {
       const currentDate = `${today.getFullYear()}${today.getMonth()}${today.getDate()}`;
       const totalSalesToday = orders
         .filter(order => {
-          const orderDate = new Date(order.dateTime);
+          const orderDate = new Date(cleanDateTime(order.dateTime));
           const orderDateString = `${orderDate.getFullYear()}${orderDate.getMonth()}${orderDate.getDate()}`;
           return orderDateString === currentDate;
         })
@@ -528,7 +525,7 @@ const Welcome = () => {
       const currentDate = `${today.getFullYear()}${today.getMonth()}${today.getDate()}`;
       const totalSalesToday = orders
         .filter(order => {
-          const orderDate = new Date(order.dateTime);
+          const orderDate = new Date(cleanDateTime(order.dateTime));
           const orderDateString = `${orderDate.getFullYear()}${orderDate.getMonth()}${orderDate.getDate()}`;
           return orderDateString === currentDate;
         })

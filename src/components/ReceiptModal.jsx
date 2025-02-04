@@ -37,6 +37,7 @@ function Modal({ isOpen, onClose, orderId, backDateOrder }) {
     hour12: false,
   };
 
+
   const formatter = new Intl.DateTimeFormat('en-GB', options);
 
   const formatDateToParts = (date) => {
@@ -54,7 +55,7 @@ function Modal({ isOpen, onClose, orderId, backDateOrder }) {
 
     // Format the order date if it exists
     if (order) {
-      const orderDate = new Date(order?.dateTime); // Ensure it's a Date object
+      const orderDate = new Date(order?.dateTime.replace(' at ', ', ')); // Ensure it's a Date object
       const formattedOrderDate = formatDateToParts(orderDate);
       setCurrentDate(formattedOrderDate);
     }
