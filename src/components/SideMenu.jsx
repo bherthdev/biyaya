@@ -12,6 +12,7 @@ import { POSContext } from "../context/POSContext";
 import { useContext } from "react";
 import { BsFillMenuButtonWideFill } from "react-icons/bs";
 import { RxDashboard } from "react-icons/rx";
+import { VscGraph } from "react-icons/vsc";
 
 export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName }) => {
 
@@ -96,6 +97,14 @@ export const SideMenu = ({ toggleSideMenu, setToggleSideMenu, setHeaderName }) =
                 toggleSideMenu={toggleSideMenu}
                 isActive={location.pathname.startsWith("/orders") || location.pathname === "/orders/new"}
                 onClick={() => onMenuClick("/orders")}
+              />
+              <MenuItem
+                icon={VscGraph}
+                label="Reports"
+                path="/reports"
+                toggleSideMenu={toggleSideMenu}
+                isActive={location.pathname.startsWith("/reports") || location.pathname === "/reports/new"}
+                onClick={() => onMenuClick("/reports")}
               />
               <MenuItem
                 icon={IoSettingsOutline}

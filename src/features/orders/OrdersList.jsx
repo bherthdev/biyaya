@@ -10,8 +10,8 @@ import { MdErrorOutline, MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight
 import { ImFilesEmpty } from "react-icons/im";
 
 
-
 const OrdersList = () => {
+
 
   const [search, setsearch] = useState("");
   const columnsArray = ["ORDER#/TYPE", "DATE/TIME", "NO. OF ITEMS", "TOTAL", "BARISTA"];
@@ -46,39 +46,55 @@ const OrdersList = () => {
     refetchOnMountOrArgChange: true,
   });
 
-  
+  // Reset to the first page when searching
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search]);
 
- // Define updateVisiblePages using useCallback
- const updateVisiblePages = useCallback(() => {
-  if (!isSuccess) return; // Only update if data is successfully fetched
+  const updateVisiblePages = useCallback(() => {
+    if (!isSuccess) return; // Only update if data is successfully fetched
 
-  const { ids } = orders;
-  const totalPages = Math.ceil(ids.length / 7);
-  let pages = [];
+    const { ids, entities: ordersEntities } = orders;
 
-  if (totalPages <= 5) {
-    pages = Array.from({ length: totalPages }, (_, i) => i + 1);
-  } else {
-    if (currentPage <= 3) {
-      pages = [1, 2, 3, 4, "...", totalPages];
-    } else if (currentPage >= totalPages - 2) {
-      pages = [1, "...", totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+    // **Filtering Orders Based on Search**
+    const filteredOrders = ids.filter((id) => {
+      const order = ordersEntities[id];
+      return (
+        order?.orderNo.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
+        order?.type?.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
+        order?.dateTime?.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
+        order?.barista?.toLowerCase().indexOf(search.toLowerCase()) > -1
+      );
+    });
+
+    const totalPages = Math.ceil(filteredOrders.length / 7);
+    let pages = [];
+
+    if (totalPages <= 5) {
+      pages = Array.from({ length: totalPages }, (_, i) => i + 1);
     } else {
-      pages = [1, "...", currentPage - 1, currentPage, currentPage + 1, "...", totalPages];
+      if (currentPage <= 3) {
+        pages = [1, 2, 3, 4, "...", totalPages];
+      } else if (currentPage >= totalPages - 2) {
+        pages = [1, "...", totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+      } else {
+        pages = [1, "...", currentPage - 1, currentPage, currentPage + 1, "...", totalPages];
+      }
     }
-  }
-  setVisiblePages(pages);
-}, [currentPage, orders, isSuccess]);
 
-// Use useEffect to update visible pages whenever dependencies change
-useEffect(() => {
-  updateVisiblePages();
-}, [updateVisiblePages]);
+    setVisiblePages(pages);
+  }, [search, orders, isSuccess, currentPage]); // Add currentPage as a dependency
+
+
+  // Use useEffect to update visible pages whenever dependencies change
+  useEffect(() => {
+    updateVisiblePages();
+  }, [updateVisiblePages]);
 
   let content;
 
 
-  if (isLoading){
+  if (isLoading) {
     content = <PageLoader />
   } else if (isError) {
     content = (
@@ -157,10 +173,22 @@ useEffect(() => {
   } else if (isSuccess) {
     const { ids, entities: ordersEntities } = orders;
 
-   
-    const totalPages = Math.ceil(ids.length / 7);
- 
-    const currentData = ids.slice(
+    // **Filtering Orders Based on Search**
+    const filteredOrders = ids.filter((id) => {
+      const order = ordersEntities[id];
+      return (
+        order?.orderNo.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
+        order?.type?.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
+        order?.dateTime?.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
+        order?.barista?.toLowerCase().indexOf(search.toLowerCase()) > -1
+      );
+    });
+
+
+
+    const totalPages = Math.ceil(filteredOrders.length / 7);
+
+    const currentData = filteredOrders.slice(
       (currentPage - 1) * 7,
       currentPage * 7
     );
@@ -169,7 +197,7 @@ useEffect(() => {
     const checkOrders = Object.values(ordersEntities).sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime))
 
 
- 
+
     const handlePrevPage = () => {
       if (currentPage > 1) setCurrentPage(currentPage - 1);
     };
@@ -194,9 +222,9 @@ useEffect(() => {
         <div className="no-print mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="sm:flex justify-between">
             <div className="flex justify-between items-center">
-                <h1 className="text-xl font-semibold  text-gray-500  dark:text-gray-400">
-                  Order List
-                </h1>
+              <h1 className="text-xl font-semibold  text-gray-500  dark:text-gray-400">
+                Order List
+              </h1>
               {/* <span
                 onClick={() => navigate("/dashboard/items/new")}
                 title='Add Item'
@@ -272,8 +300,8 @@ useEffect(() => {
               <div className="flex flex-col sm:flex-row gap-5 sm:gap-0 justify-between items-center text-sm p-4 border-t bg-gray-50 rounded-b">
                 {/* Showing X to Y of Z entries */}
                 <div className=" text-gray-500">
-                  Showing {Math.min((currentPage - 1) * 7 + 1, ids.length)} to{" "}
-                  {Math.min(currentPage * 7, ids.length)} of {ids.length} entries
+                  Showing {Math.min((currentPage - 1) * 7 + 1, filteredOrders.length)} to{" "}
+                  {Math.min(currentPage * 7, filteredOrders.length)} of {filteredOrders.length} entries
                 </div>
 
 
@@ -296,8 +324,8 @@ useEffect(() => {
                       <button
                         key={idx}
                         className={`px-2 py-1 rounded ${currentPage === page
-                            ? "bg-gray-700 text-white"
-                            : " hover:bg-gray-200 text-gray-700 "
+                          ? "bg-gray-700 text-white"
+                          : " hover:bg-gray-200 text-gray-700 "
                           } ${page === "..." ? "cursor-default" : ""}`}
                         onClick={() => handlePageClick(page)}
                       >
@@ -314,11 +342,11 @@ useEffect(() => {
                     disabled={currentPage === totalPages}
                     title="Next Page"
                   >
-                  
-                  <p className="hidden sm:flex">next</p> <MdOutlineKeyboardArrowRight size={20}/>
+
+                    <p className="hidden sm:flex">next</p> <MdOutlineKeyboardArrowRight size={20} />
                   </button>
                 </div>
-                
+
               </div>
             </div>
           </div>

@@ -1,12 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Spinner from './Spinner';
 import { ImFilesEmpty } from 'react-icons/im';
+import useGenerateORDATE from "../hooks/useGenerateORDATE";
+
 
 const RecentOrders = ({ orders, handleModalOpen, columnsOrders }) => {
 
   const [visibleOrders, setVisibleOrders] = useState(6);
   const [loading, setLoading] = useState(false);
   const containerRef = useRef(null);
+  const { formatCurrency } = useGenerateORDATE()
+
 
   const loadMoreOrders = () => {
     if (loading) return;
@@ -83,7 +87,7 @@ const RecentOrders = ({ orders, handleModalOpen, columnsOrders }) => {
                     <p className="">{order.items.reduce((totalItem, item) => totalItem + Number(item.qty), 0)} </p>
                   </td>
                   <td className={`whitespace-nowrap px-6 py-3 font-semibold  text-gray-900 dark:text-gray-300`}>
-                    <p className="">₱ {Number(order.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')} </p>
+                    <p className="">{formatCurrency(order.total)} </p>
                   </td>
 
                   <td className={`whitespace-nowrap px-6 py-3 text-gray-900 dark:text-gray-300 `}>

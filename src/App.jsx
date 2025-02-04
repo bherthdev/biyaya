@@ -20,6 +20,7 @@ import { Analytics } from "@vercel/analytics/react"
 import POS from "./features/pos/POS";
 import AccessDenied from "./components/AccessDenied";
 import { POSProvider } from "./context/POSContext";
+import Reports from "./features/reports/Reports";
 
 
 function App() {
@@ -88,6 +89,10 @@ function App() {
 
                   <Route path="orders" element={<DashLayout />}>
                     <Route index element={ <OrdersList />} />
+                  </Route>{/* End orders */}
+                 
+                  <Route path="reports" element={<DashLayout />}>
+                    <Route index element={ <Reports />} />
                   </Route>{/* End orders */}
 
                   <Route path="settings" element={<DashLayout />}>

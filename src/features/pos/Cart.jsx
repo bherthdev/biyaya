@@ -23,7 +23,7 @@ export const Cart = () => {
     const { log } = useActivityLogger();
 
     const cashRef = useRef(null);
-    const { generateDate, generateOR } = useGenerateORDATE()
+    const { generateDate, generateOR, formatCurrency } = useGenerateORDATE()
 
     const { id, name } = useAuth(); //current user id
     const [itemToBeUpdate, setItemToBeUpdate] = useState([]);
@@ -82,6 +82,7 @@ export const Cart = () => {
     const computeTotal = () => {
         if (orderTransac.items.length) {
             setPlaceOrder(prev => !prev)
+            setEnableSaveOrder(prev => !prev)   // Enable save order button
         }
     }
 
@@ -228,7 +229,7 @@ export const Cart = () => {
             ...orderTransac,
             items: tempRows,
             total: newTotal,
-            cash: 0,
+            cash: newTotal,
             change: 0
         });
 
@@ -301,7 +302,7 @@ export const Cart = () => {
                                     <div className='text-gray-800 text-base text-left'>
                                         <h1 className='font-semibold'>{item.name}
                                         </h1>
-                                        <h1 className='text-gray-500 text-sm font-semibold'>₱ {Number(item.price).toFixed(2)}</h1>
+                                        <h1 className='text-gray-500 text-sm font-semibold'> {formatCurrency(item.price)}</h1>
                                         {item.stock && <h1 className='text-green-700 text-xs mt-1'> {Number(item.currentStock)} in stock</h1>}
                                     </div>
                                     <div className="flex justify-center items-center">
@@ -353,7 +354,7 @@ export const Cart = () => {
                     <div className={`flex flex-col gap-2 lg:gap-5`}>
                         <div className="flex justify-between text-xl lg:text-2xl font-medium">
                             <h1 className="text-gray-500">Total</h1>
-                            <p className="text-green-800">₱ {orderTransac.total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
+                            <p className="text-green-800"> {formatCurrency(orderTransac.total)}</p>
                         </div>
                         {placeOrder
                             ?
@@ -373,7 +374,7 @@ export const Cart = () => {
                                 </div>
                                 <div className="flex justify-between text-lg">
                                     <h1 className="text-gray-500">Change</h1>
-                                    <p className="text-red-800 font-medium">₱ {orderTransac.change.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
+                                    <p className="text-red-800 font-medium"> {formatCurrency(orderTransac.change)}</p>
                                 </div>
                                 <span
                                     onClick={saveOrder}
@@ -400,7 +401,6 @@ export const Cart = () => {
                                     title="Place an order"
                                     className={`${orderTransac.items.length ? `bg-gray-900 hover:bg-black text-white ` : `bg-gray-300 text-white`} cursor-pointer flex  font-medium text-lg lg:text-xl justify-center w-full py-2 lg:py-3 border dark:text-slate-600 border-gray-300 dark:border-slate-700  dark:bg-gray-800 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full`} >
                                     Place an order
-
                                 </div>
 
                             </>

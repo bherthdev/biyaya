@@ -4,8 +4,12 @@ import { FaPlus } from 'react-icons/fa';
 import iconItem from "../../assets/icon-item.svg";
 import { useContext } from 'react';
 import { POSContext } from '../../context/POSContext';
+import useGenerateORDATE from "../../hooks/useGenerateORDATE";
+
 
 const MenuItem = ({ itemId, search }) => {
+
+    const { formatCurrency } = useGenerateORDATE()
 
     const { orderTransac, setOrderTransac,
         headSearch, setPlaceOrder,
@@ -23,7 +27,7 @@ const MenuItem = ({ itemId, search }) => {
         tempObj.total = tempObj.qty * tempObj.price;
         tempRows[index] = tempObj;
         setOrderTransac({ ...orderTransac, items: [...orderTransac.items, tempRows] });
-        setOrderTransac({ ...orderTransac, total: calculateTotal(tempRows), cash: 0, change: 0 });
+        setOrderTransac({ ...orderTransac, total: calculateTotal(tempRows), cash: calculateTotal(tempRows), change: 0 });
     };
 
 
@@ -64,7 +68,7 @@ const MenuItem = ({ itemId, search }) => {
                     ...prevState,
                     items: updatedItems,
                     total: prevState.total + newItem.price,
-                    cash: 0,
+                    cash: prevState.total + newItem.price,
                     change: 0
                 };
             });
@@ -94,7 +98,7 @@ const MenuItem = ({ itemId, search }) => {
                                 <h1 className='font-bold'>{item.name}</h1>
                              
                                 <div className={`${item.stock_mgt && 'sm:flex-row' } flex flex-col justify-between my-1 text-xs lg:text-base`}>
-                                    <p className='text-gray-500 font-semibold'>₱ {item.price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
+                                    <p className='text-gray-500 font-semibold'>{formatCurrency(item.price)}</p>
                                     {item.stock_mgt && <p className='text-green-700 text-xs font-medium'>{item.qty} in stock</p>}
                                 </div>
                                 <p className='hidden lg:block text-left text-xs text-gray-400' title={item.description}>
@@ -134,7 +138,7 @@ const MenuItem = ({ itemId, search }) => {
                                 <div className='w-full text-black text-sm lg:text-lg text-center'>
                                     <h1 className='font-bold'>{item.name}</h1>
                                     <div className={`${item.stock_mgt && 'sm:flex-row' } flex flex-col justify-between my-1 text-xs lg:text-base`}>
-                                        <p className='text-gray-500 font-semibold'>₱ {Number(item.price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</p>
+                                        <p className='text-gray-500 font-semibold'> {formatCurrency(item.price)}</p>
                                         {item.stock_mgt && <p className='text-green-700 text-xs font-medium'>{item.qty} in stock</p>}
                                     </div>
                                     <p className='hidden lg:block text-left text-xs text-gray-400' title={item.description}>

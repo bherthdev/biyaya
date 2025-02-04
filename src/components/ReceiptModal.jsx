@@ -7,9 +7,11 @@ import biyayaLogo from "../assets/biyaya_logo.png";
 import html2pdf from "html2pdf.js";
 import { toast } from "react-toastify";
 import useActivityLogger from "../hooks/useActivityLogger";
+import useGenerateORDATE from "../hooks/useGenerateORDATE";
 
 function Modal({ isOpen, onClose, orderId, backDateOrder }) {
 
+  const { formatCurrency } = useGenerateORDATE()
   const { log } = useActivityLogger();
   const [printNav, setPrintNav] = useState(false);
   const [showItems, setShowItems] = useState(false);
@@ -35,6 +37,7 @@ function Modal({ isOpen, onClose, orderId, backDateOrder }) {
     hour12: false,
   };
 
+
   const formatter = new Intl.DateTimeFormat('en-GB', options);
 
   const formatDateToParts = (date) => {
@@ -52,7 +55,7 @@ function Modal({ isOpen, onClose, orderId, backDateOrder }) {
 
     // Format the order date if it exists
     if (order) {
-      const orderDate = new Date(order?.dateTime); // Ensure it's a Date object
+      const orderDate = new Date(order?.dateTime.replace(' at ', ', ')); // Ensure it's a Date object
       const formattedOrderDate = formatDateToParts(orderDate);
       setCurrentDate(formattedOrderDate);
     }
@@ -297,8 +300,8 @@ function Modal({ isOpen, onClose, orderId, backDateOrder }) {
                       <div className="grid gap-1 grid-cols-4 text-right sm:gap-4 text-gray-700">
                         <dt className="font-medium text-gray-900 text-left">{item.name}</dt>
                         <dd>{item.qty}</dd>
-                        <dd> {Number(item.price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</dd>
-                        <dd className="font-medium "> {Number(item.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</dd>
+                        <dd> {formatCurrency(item.price)}</dd>
+                        <dd className="font-medium "> {formatCurrency(item.total)}</dd>
                       </div>
                     </dl>
                   )}
@@ -313,15 +316,15 @@ function Modal({ isOpen, onClose, orderId, backDateOrder }) {
                   </div>
                   <div className="flex justify-between">
                     <h1 className="font-bold text-lg text-gray-800">Grand Total</h1>
-                    <h1 className="font-bold text-lg text-gray-800 ">₱ {Number(order?.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
+                    <h1 className="font-bold text-lg text-gray-800 ">{formatCurrency(order?.total)}</h1>
                   </div>
                   <div className="flex justify-between font-semibold">
                     <h1 className=" text-gray-500 ">Cash</h1>
-                    <h1 className=" text-gray-600 "> {Number(order?.cash).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
+                    <h1 className=" text-gray-600 "> {formatCurrency(order?.cash)}</h1>
                   </div>
                   <div className="flex justify-between font-semibold">
                     <h1 className=" text-gray-500 ">Change</h1>
-                    <h1 className=" text-gray-600 "> {Number(order?.change).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h1>
+                    <h1 className=" text-gray-600 "> {formatCurrency(order?.change)}</h1>
                   </div>
                 </div>
               </div>
