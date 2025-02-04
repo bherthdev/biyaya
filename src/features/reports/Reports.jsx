@@ -181,7 +181,7 @@ const Reports = () => {
         // Map filtered orders into a format for Excel
         const ordersForExcel = filteredOrders.map(order => ({
             Order_No: order.orderNo,
-            Date_Time: order.dateTime,
+            Date_Time: cleanDateTime(order.dateTime),
             Order_Type: order.orderType,
             Barista: order.barista,
             Items: order.items.map(item => `${item.name} (x${item.qty})`).join(", "),
@@ -205,75 +205,76 @@ const Reports = () => {
         <div aria-label="Page Header">
             <div className="mx-auto max-w-screen-xl px-4 py-2 sm:py-8 sm:px-6 lg:px-8 no-print">
                 <div className="mt-2 sm:mt-5">
-                    <div className="flex flex-col sm:flex-row gap-2">
-
-                        <p className="text-lg font-bold text-gray-700 sm:text-2xl dark:text-gray-200">
-                            Sales Summary
-                        </p>
-                        <div className="flex flex-col sm:flex-row gap-2">
-                            <select
-                                className="border rounded p-1 cursor-pointer hover:bg-slate-100 text-sm"
-                                value={yearFilter}
-                                onChange={(e) => setYearFilter(e.target.value)}
-                            >
-                                {yearOrders.map((year, index) => (
-                                    <option key={index} value={year}>
-                                        {year}
-                                    </option>
-                                ))}
-                                <option value="all">All</option>
-                            </select>
-                            {yearFilter !== "all" && yearFilter !== currentYear.toString() ? (
-                                <select
-                                    className="border rounded p-1 cursor-pointer hover:bg-slate-100 text-sm"
-                                    value={monthFilter}
-                                    onChange={(e) => setMonthFilter(e.target.value)}
-                                >
-                                    <option value="all">All Months</option>
-                                    {monthsOrders.map((month, index) => (
-                                        <option key={index} value={month}>
-                                            {month}
-                                        </option>
-                                    ))}
-                                </select>
-                            ) : (
-                                <select
-                                    className="border rounded p-1 cursor-pointer hover:bg-slate-100 text-sm"
-                                    value={dateFilter}
-                                    onChange={(e) => setDateFilter(e.target.value)}
-                                >
-                                    <option value="today">Today</option>
-                                    <option value="yesterday">Yesterday</option>
-                                    <option value="thisWeek">This Week</option>
-                                    <option value="lastWeek">Last Week</option>
-                                    <option value="thisMonth">This Month</option>
-                                    <option value="lastMonth">Last Month</option>
-                                    <option value="custom">Custom</option>
-                                    <option value="all">All</option>
-                                </select>
-                            )}
-                            {dateFilter === "custom" && (
-                                <div className="flex flex-col sm:flex-row gap-2 text-sm">
-                                    <input
-                                        type="date"
-                                        className="border rounded p-1 cursor-pointer hover:bg-slate-100"
-                                        value={customFromDate}
-                                        onChange={(e) => setCustomFromDate(e.target.value)}
-                                    />
-                                    <input
-                                        type="date"
-                                        className="border rounded p-1 cursor-pointer hover:bg-slate-100"
-                                        value={customToDate}
-                                        onChange={(e) => setCustomToDate(e.target.value)}
-                                    />
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                    <div className="h-[26rem] min-w-full mt-5 rounded bg-white col-span-1 lg:col-span-2">
+                    <div className="h-[30rem] min-w-full rounded bg-white col-span-1 lg:col-span-2">
                         <div className="flex flex-col w-full h-full">
                             {/* Header Section */}
-                            <div className="flex flex-col sm:flex-row  p-5 justify-end">
+
+                            <div className="flex flex-col sm:flex-row p-5 justify-between gap-2">
+                                <div className="flex flex-col sm:flex-row gap-2">
+
+                                    <p className="text-lg font-bold text-gray-700 sm:text-2xl dark:text-gray-200">
+                                        Sales Summary
+                                    </p>
+                                    <div className="flex flex-col sm:flex-row gap-2">
+                                        <select
+                                            className="border rounded p-1 cursor-pointer hover:bg-slate-100 text-sm"
+                                            value={yearFilter}
+                                            onChange={(e) => setYearFilter(e.target.value)}
+                                        >
+                                            {yearOrders.map((year, index) => (
+                                                <option key={index} value={year}>
+                                                    {year}
+                                                </option>
+                                            ))}
+                                            <option value="all">All</option>
+                                        </select>
+                                        {yearFilter !== "all" && yearFilter !== currentYear.toString() ? (
+                                            <select
+                                                className="border rounded p-1 cursor-pointer hover:bg-slate-100 text-sm"
+                                                value={monthFilter}
+                                                onChange={(e) => setMonthFilter(e.target.value)}
+                                            >
+                                                <option value="all">All Months</option>
+                                                {monthsOrders.map((month, index) => (
+                                                    <option key={index} value={month}>
+                                                        {month}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        ) : (
+                                            <select
+                                                className="border rounded p-1 cursor-pointer hover:bg-slate-100 text-sm"
+                                                value={dateFilter}
+                                                onChange={(e) => setDateFilter(e.target.value)}
+                                            >
+                                                <option value="today">Today</option>
+                                                <option value="yesterday">Yesterday</option>
+                                                <option value="thisWeek">This Week</option>
+                                                <option value="lastWeek">Last Week</option>
+                                                <option value="thisMonth">This Month</option>
+                                                <option value="lastMonth">Last Month</option>
+                                                <option value="custom">Custom</option>
+                                                <option value="all">All</option>
+                                            </select>
+                                        )}
+                                        {dateFilter === "custom" && (
+                                            <div className="flex flex-col sm:flex-row gap-2 text-sm">
+                                                <input
+                                                    type="date"
+                                                    className="border rounded p-1 cursor-pointer hover:bg-slate-100"
+                                                    value={customFromDate}
+                                                    onChange={(e) => setCustomFromDate(e.target.value)}
+                                                />
+                                                <input
+                                                    type="date"
+                                                    className="border rounded p-1 cursor-pointer hover:bg-slate-100"
+                                                    value={customToDate}
+                                                    onChange={(e) => setCustomToDate(e.target.value)}
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
                                 <div className="flex">
 
                                     <div
@@ -291,7 +292,7 @@ const Reports = () => {
                                 <ResponsiveContainer width="100%" height="100%">
                                     <LineChart
                                         data={groupedSalesOrders}
-                                        margin={{ top: 25, right: 30, left: 20, bottom: 45 }}
+                                        margin={{ top: 25, right: 30, left: 20, bottom: 60 }}
                                     >
                                         <CartesianGrid strokeDasharray="3 3" />
                                         <YAxis
