@@ -292,7 +292,7 @@ const Reports = () => {
                                 <ResponsiveContainer width="100%" height="100%">
                                     <LineChart
                                         data={groupedSalesOrders}
-                                        margin={{ top: 25, right: 10, left: 10, bottom: 40 }}
+                                        margin={{ top: 25, right: 20, left: 10, bottom: 50 }}
                                     >
                                         <CartesianGrid strokeDasharray="3 3" />
                                         <YAxis
