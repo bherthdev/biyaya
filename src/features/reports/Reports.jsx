@@ -204,183 +204,169 @@ const Reports = () => {
     return (
         <div aria-label="Page Header">
             <div className="mx-auto max-w-screen-xl px-4 py-2 sm:py-8 sm:px-6 lg:px-8 no-print">
-                <div className=" mt-2 sm:mt-5">
-                    <div className="h-[26rem] min-w-full rounded bg-white col-span-1 lg:col-span-2">
+                <div className="mt-2 sm:mt-5">
+                    <div className="flex flex-col sm:flex-row gap-2">
 
-                        <div className="flex flex-col w-full h-full">
-
-                            <div className="flex justify-between p-5">
-                                <div className="flex flex-col sm:flex-row gap-2">
-
-                                    <p className="text-lg font-bold text-gray-700 sm:text-xl dark:text-gray-200">
-                                        Sales Summary
-                                    </p>
-
-                                    <div className="flex space-y-2 ">
-                                        {/* <label className="text-xs font-semibold text-gray-500">Filter by Year</label> */}
-                                        <select className="border rounded p-1 cursor-pointer hover:bg-slate-100 text-sm" value={yearFilter} onChange={e => setYearFilter(e.target.value)}>
-                                            {yearOrders.map((year, index) => (
-                                                <option key={index} value={year}>{year}</option>
-                                            ))}
-                                            <option value="all">All</option>
-                                        </select>
-                                    </div>
-                                    {yearFilter !== "all"
-                                        && (yearFilter !== currentYear.toString()
-                                            ? (
-                                                <div className="flex space-y-2">
-                                                    <select className="border rounded p-1 cursor-pointer hover:bg-slate-100 text-sm" value={monthFilter} onChange={e => setMonthFilter(e.target.value)}>
-                                                        <option value="all">All Months</option>
-                                                        {monthsOrders.map((month, index) => (
-                                                            <option key={index} value={month}>{month}</option>
-                                                        ))}
-                                                    </select>
-                                                </div>
-                                            )
-                                            : <div className="flex space-y-2 text-sm">
-                                                {/* <label className="text-xs font-semibold text-gray-500">Filter by Date</label> */}
-                                                <select className="border rounded p-1 cursor-pointer hover:bg-slate-100" value={dateFilter} onChange={e => setDateFilter(e.target.value)}>
-                                                    <option value="today">Today</option>
-                                                    <option value="yesterday">Yesterday</option>
-                                                    <option value="thisWeek">This Week</option>
-                                                    <option value="lastWeek">Last Week</option>
-                                                    <option value="thisMonth">This Month</option>
-                                                    <option value="lastMonth">Last Month</option>
-                                                    <option value="custom">Custom</option>
-                                                    <option value="all">All</option>
-                                                </select>
-                                            </div>
-
-                                        )}
-
-                                    {
-
-                                    }
-                                    {dateFilter === "custom" && (
-                                        <div className="flex flex-col gap-2 text-sm">
-                                            <input type="date" className="border rounded p-1 cursor-pointer hover:bg-slate-100" value={customFromDate} onChange={e => setCustomFromDate(e.target.value)} />
-                                            <input type="date" className="border rounded p-1 cursor-pointer hover:bg-slate-100" value={customToDate} onChange={e => setCustomToDate(e.target.value)} />
-                                        </div>
-                                    )}
+                        <p className="text-lg font-bold text-gray-700 sm:text-2xl dark:text-gray-200">
+                            Sales Summary
+                        </p>
+                        <div className="flex flex-col sm:flex-row gap-2">
+                            <select
+                                className="border rounded p-1 cursor-pointer hover:bg-slate-100 text-sm"
+                                value={yearFilter}
+                                onChange={(e) => setYearFilter(e.target.value)}
+                            >
+                                {yearOrders.map((year, index) => (
+                                    <option key={index} value={year}>
+                                        {year}
+                                    </option>
+                                ))}
+                                <option value="all">All</option>
+                            </select>
+                            {yearFilter !== "all" && yearFilter !== currentYear.toString() ? (
+                                <select
+                                    className="border rounded p-1 cursor-pointer hover:bg-slate-100 text-sm"
+                                    value={monthFilter}
+                                    onChange={(e) => setMonthFilter(e.target.value)}
+                                >
+                                    <option value="all">All Months</option>
+                                    {monthsOrders.map((month, index) => (
+                                        <option key={index} value={month}>
+                                            {month}
+                                        </option>
+                                    ))}
+                                </select>
+                            ) : (
+                                <select
+                                    className="border rounded p-1 cursor-pointer hover:bg-slate-100 text-sm"
+                                    value={dateFilter}
+                                    onChange={(e) => setDateFilter(e.target.value)}
+                                >
+                                    <option value="today">Today</option>
+                                    <option value="yesterday">Yesterday</option>
+                                    <option value="thisWeek">This Week</option>
+                                    <option value="lastWeek">Last Week</option>
+                                    <option value="thisMonth">This Month</option>
+                                    <option value="lastMonth">Last Month</option>
+                                    <option value="custom">Custom</option>
+                                    <option value="all">All</option>
+                                </select>
+                            )}
+                            {dateFilter === "custom" && (
+                                <div className="flex flex-col sm:flex-row gap-2 text-sm">
+                                    <input
+                                        type="date"
+                                        className="border rounded p-1 cursor-pointer hover:bg-slate-100"
+                                        value={customFromDate}
+                                        onChange={(e) => setCustomFromDate(e.target.value)}
+                                    />
+                                    <input
+                                        type="date"
+                                        className="border rounded p-1 cursor-pointer hover:bg-slate-100"
+                                        value={customToDate}
+                                        onChange={(e) => setCustomToDate(e.target.value)}
+                                    />
                                 </div>
-                                <div>
+                            )}
+                        </div>
+                    </div>
+                    <div className="h-[26rem] min-w-full mt-5 rounded bg-white col-span-1 lg:col-span-2">
+                        <div className="flex flex-col w-full h-full">
+                            {/* Header Section */}
+                            <div className="flex flex-col sm:flex-row  p-5 justify-end">
+                                <div className="flex">
+
                                     <div
                                         onClick={exportToExcel}
-                                        title='Export'
-                                        className="flex items-center cursor-pointer text-sm px-2 sm:px-4 py-2 text-black border dark:text-gray-300 font-medium border-gray-300 dark:border-slate-600  hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md duration-150"
+                                        title="Export"
+                                        className=" cursor-pointer text-sm px-2 sm:px-4 py-2 text-black border dark:text-gray-300 font-medium border-gray-300 dark:border-slate-600 hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md duration-150"
                                     >
                                         Export
                                     </div>
                                 </div>
-
                             </div>
 
+                            {/* Graph Section */}
                             <div className="h-[26rem] min-w-full flex">
                                 <ResponsiveContainer width="100%" height="100%">
-                                    <LineChart data={groupedSalesOrders} margin={{ top: 25, right: 30, left: 20, bottom: 45 }}>
+                                    <LineChart
+                                        data={groupedSalesOrders}
+                                        margin={{ top: 25, right: 30, left: 20, bottom: 45 }}
+                                    >
                                         <CartesianGrid strokeDasharray="3 3" />
-                                        <YAxis tickFormatter={formatCurrencyNotation}
+                                        <YAxis
+                                            tickFormatter={formatCurrencyNotation}
                                             type="number"
-                                            axisLine={false} // Hide axis line
-                                            tickLine={{ stroke: "" }} // Tailwind's gray-400
-                                            className="text-xs font-medium text-gray-600" // Tailwind font styling
-                                            domain={[0, 'auto']} // Auto-adjust min/max
-                                            // label={{
-                                            //     value: "Amount (PHP)",
-                                            //     angle: -90,
-                                            //     position: "left",
-                                            //     offset: 15, // Increase this value to move label further left
-                                            //     className: "text-gray-700 font-bold",
-                                            //     dy: -70 // Optional: Adjust vertical alignment
-                                            // }}
+                                            axisLine={false}
+                                            tickLine={{ stroke: "" }}
+                                            className="text-xs font-medium text-gray-600"
+                                            domain={[0, 'auto']}
                                             tickCount={5}
                                         />
                                         <XAxis
                                             dataKey="date"
-                                            tickLine={false} // Hide the default tick lines if needed
-                                            axisLine={{ stroke: "" }} // Keep axis line visible
+                                            tickLine={false}
+                                            axisLine={{ stroke: "" }}
                                             tick={({ x, y, payload }) => (
                                                 <text
                                                     x={x}
                                                     y={y}
-                                                    dy={10} // Adjust vertical position (prevents text cutoff)
-                                                    textAnchor="end" // Align text after rotation
-                                                    transform={yearFilter === "all" ? `rotate(-45 ${x} ${y})` : null} // Rotate text around (x,y)
-                                                    fill="#6e6e6e" // Direct hex equivalent of Tailwind's text-gray-700
-                                                    className="text-xs font-medium" // Tailwind classes
+                                                    dy={10}
+                                                    textAnchor="end"
+                                                    transform={yearFilter === "all" ? `rotate(-45 ${x} ${y})` : null}
+                                                    fill="#6e6e6e"
+                                                    className="text-xs font-medium"
                                                 >
                                                     {payload.value}
                                                 </text>
                                             )}
-                                            // label={{
-                                            //     value: "DATE",
-                                            //     angle: 0,
-                                            //     position: "bottom",
-                                            //     offset: 15, // Increase this value to move label further left
-                                            //     className: "text-gray-700 font-bold",
-                                            //     dy: 5 // Optional: Adjust vertical alignment
-                                            // }}
-                                            className="text-xs font-medium text-gray-600" // Tailwind font styling
+                                            className="text-xs font-medium text-gray-600"
                                         />
-
-                                        <Tooltip content={(props) => (
-                                            <div>
-                                                {props.payload?.map((item, idx) => {
-                                                    return (
-                                                        <div className="flex flex-col gap-2 bg-slate-800 border text-xs  font-medium py-3 px-5 rounded-md shadow-lg "
-                                                            key={idx}
-                                                        >
+                                        <Tooltip
+                                            content={({ payload }) => (
+                                                <div className="flex flex-col gap-2 bg-slate-800 border text-xs font-medium py-3 px-5 rounded-md shadow-lg">
+                                                    {payload?.map((item, idx) => (
+                                                        <div key={idx}>
                                                             <div className="flex gap-1 items-center">
                                                                 <div className="h-2 w-2 rounded-full bg-green-500"></div>
-                                                                <p className="text-gray-50 font-medium">
-                                                                    {` ${(item.payload.date)}`}
-                                                                </p>
+                                                                <p className="text-gray-50 font-medium">{item.payload.date}</p>
                                                             </div>
-                                                            <div className="text-gray-400 text-[11px]">Orders:
-                                                                <span className="font-medium text-xs text-gray-50 pl-2">
-                                                                    {item.payload.Orders}
-                                                                </span>
+                                                            <div className="text-gray-400 text-[11px]">
+                                                                Orders: <span className="font-medium text-xs text-gray-50 pl-2">{item.payload.Orders}</span>
                                                             </div>
-                                                            <div className="text-gray-400 text-[11px]">Items:
-                                                                <span className="font-medium text-xs text-gray-50 pl-2">
-                                                                    {item.payload.Items}
-                                                                </span>
+                                                            <div className="text-gray-400 text-[11px]">
+                                                                Items: <span className="font-medium text-xs text-gray-50 pl-2">{item.payload.Items}</span>
                                                             </div>
-                                                            <div className="text-gray-400 text-[11px]">TOTAL:
-                                                                <span className="font-medium text-xs text-gray-50 pl-2">
-                                                                    {formatCurrency(item.payload.Total)}
-                                                                </span>
+                                                            <div className="text-gray-400 text-[11px]">
+                                                                TOTAL: <span className="font-medium text-xs text-gray-50 pl-2">{formatCurrency(item.payload.Total)}</span>
                                                             </div>
-
                                                         </div>
-                                                    )
-                                                })}
-                                            </div>
-                                        )} />
+                                                    ))}
+                                                </div>
+                                            )}
+                                        />
                                         <Line type="monotone" dataKey="Total" stroke="#5eba00" strokeWidth={1.8} />
                                     </LineChart>
                                 </ResponsiveContainer>
-
                             </div>
-
-
                         </div>
                     </div>
                 </div>
 
+                {/* Summary Section */}
                 <div className="mt-2 flow-root bg-white mx-auto max-w-screen-xl rounded">
                     <dl className="mx-5 divide-y divide-gray-200">
                         <div className="gap-1 py-3 flex justify-between text-lg">
                             <dt className="font-medium text-green-700">Gross Sales</dt>
-                            <dd className=" font-medium text-green-700 ">{formatCurrency(totalSales)}</dd>
+                            <dd className="font-medium text-green-700">{formatCurrency(totalSales)}</dd>
                         </div>
                         <div className="gap-1 py-3 flex justify-between">
-                            <dt className=" text-gray-700 ml-10">Orders</dt>
-                            <dd className=" text-gray-900 ">{filteredOrders.length}</dd>
+                            <dt className="text-gray-700 ml-10">Orders</dt>
+                            <dd className="text-gray-900">{filteredOrders.length}</dd>
                         </div>
                         <div className="gap-1 py-3 flex justify-between">
-                            <dt className=" text-gray-700 ml-10">Items</dt>
-                            <dd className="text-gray-900 ">{totalQty}</dd>
+                            <dt className="text-gray-700 ml-10">Items</dt>
+                            <dd className="text-gray-900">{totalQty}</dd>
                         </div>
                     </dl>
                 </div>
