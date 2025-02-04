@@ -241,7 +241,7 @@ const Reports = () => {
                                                     </option>
                                                 ))}
                                             </select>
-                                        ) : (
+                                        ) :yearFilter !== "all" ? (
                                             <select
                                                 className="border rounded p-1 cursor-pointer hover:bg-slate-100 text-sm"
                                                 value={dateFilter}
@@ -256,7 +256,8 @@ const Reports = () => {
                                                 <option value="custom">Custom</option>
                                                 <option value="all">All</option>
                                             </select>
-                                        )}
+                                        ): null
+                                        }
                                         {dateFilter === "custom" && (
                                             <div className="flex flex-col sm:flex-row gap-2 text-sm">
                                                 <input
