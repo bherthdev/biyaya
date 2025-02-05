@@ -1,18 +1,15 @@
 
 import { useGetUsersQuery } from "./usersApiSlice";
 import User from "./User";
-import Thead from "../../components/Thead";
-import Tbody from "../../components/Tbody";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import PageLoader from "../../components/PageLoader";
 import { AiOutlineUserAdd } from 'react-icons/ai';
+import PageError from "../../components/PageError";
 
 const UsersList = () => {
 
   const [search, setsearch] = useState("");
-  const columnsArray = ["NAME", "TITLE", "STATUS", "ROLES"];
-
 
 
   const navigate = useNavigate();
@@ -35,7 +32,7 @@ const UsersList = () => {
   if (isLoading) content = <PageLoader />
 
   if (isError) {
-    content = <p className="errmsg">{error?.data?.message}</p>;
+    content = <PageError error={error?.data?.message} />
   }
 
 
@@ -46,41 +43,38 @@ const UsersList = () => {
 
   if (isSuccess) {
     const { ids } = users;
-    const tableContent = ids?.length && ids.map((userId) => <User key={userId} userId={userId} search={search} />)
+    // const tableContent = ids?.length && ids.map((userId) => <User key={userId} userId={userId} search={search} />)
+    const userContent = ids?.length && ids.map((userId) => <User key={userId} userId={userId} search={search} />)
 
 
     content = (
       <>
-       
-        <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8">
+
+        <div className="mx-auto  max-w-screen-xl  px-4 py-8 sm:px-6 lg:px-8 no-print">
           <div className="sm:flex justify-between">
-            <div className="flex justify-between">
-              <h1 className="text-2xl font-bold text-gray-900  dark:text-gray-400">
-                Employee List
+            <div className="flex justify-between items-center">
+              <h1 className="text-xl font-semibold  text-gray-500  dark:text-gray-400">
+                Manage User
               </h1>
-
-
-
               <span
-                onClick={() => navigate("/dash/users/new")}
-                title='Add Employee'
-                className="ml-4 block sm:hidden cursor-pointer text-sm px-3 py-2 text-white border dark:text-gray-300 font-medium border-gray-200 dark:border-slate-600 bg-gray-600 dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md duration-150"
+                onClick={() => navigate("/settings/new")}
+                title='Add Item'
+                className="flex text-xs gap-2 sm:hidden items-center cursor-pointer  px-8 py-3 text-black border dark:text-gray-300 font-medium border-gray-300 dark:border-slate-600  hover:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150"
               >
                 <AiOutlineUserAdd size={20} />
               </span>
             </div>
 
             <div className="sm:flex  mt-6 sm:mt-0">
-              <div className="pr-0 sm:pr-4">
+              <div className="pr-0 sm:pr-5">
                 <label htmlFor="table-search" className="sr-only">
                   Search
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none shrink-0">
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none shrink-0">
                     <svg
                       className="w-4 h-4  text-gray-500 dark:text-gray-400"
                       xmlns="http://www.w3.org/2000/svg"
-                      // className="h-4 w-4"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -96,7 +90,7 @@ const UsersList = () => {
                   <input
                     type="text"
                     id="table-search"
-                    className="w-full pl-10 p-2 block py-2 px-3 text-sm font-normal bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700 outline-none focus:border-gray-300  focus:shadow-sm rounded-md"
+                    className="w-full pl-10 p-2 block py-4 px-6 text-sm font-normal bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100 border dark:focus:border border-gray-200 dark:border-gray-800  dark:focus:border-gray-700 outline-none focus:border-gray-300  focus:shadow-sm rounded-xl"
                     placeholder="Search..."
                     value={search}
                     onChange={(e) => handleSearch(e.target.value)}
@@ -106,30 +100,20 @@ const UsersList = () => {
 
               <div className="flex">
                 <span
-                  onClick={() => navigate("/dash/users/new")}
-                  title='Add Employee'
-                  className="hidden sm:flex cursor-pointer text-sm px-3 py-2 text-white border dark:text-gray-300 font-normal border-gray-200 dark:border-slate-600 bg-gray-600 dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-md duration-150"
+                  onClick={() => navigate("/settings/new")}
+                  title='Add New Item'
+                  className="hidden sm:flex gap-3 items-center cursor-pointer  px-8 py-3 text-black border dark:text-gray-300 font-medium border-gray-300 dark:border-slate-600  hover:bg-white dark:hover:bg-gray-800 dark:active:bg-slate-800 rounded-full duration-150"
                 >
-                  <AiOutlineUserAdd size={20} className='mr-2' />
-                  Add New
+                  <AiOutlineUserAdd size={19} />
+                  Add User
                 </span>
               </div>
             </div>
           </div>
-
-          <div className="overflow-x-auto border border-gray-200 mt-5 dark:border-gray-800 min-w-full shadow rounded-lg ">
-            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm leading-normal">
-              <thead className="bg-gray-50 dark:bg-gray-800 ">
-                <tr>
-                  {columnsArray.map((column, index) => (
-                    <Thead thName={column} key={index} />
-                  ))}
-                  <Thead thName="" />
-                </tr>
-              </thead>
-              <Tbody tbName={tableContent} />
-
-            </table>
+          <div className="grid grid-cols-1 mt-10">
+            <div className="font-normal px-6 sm:px-0 grid grid-cols-2 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 xl:gap-6 2xl:grid-cols-4 2xl:gap-6 ">
+              {userContent}
+            </div>
           </div>
         </div>
 

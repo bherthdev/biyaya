@@ -1,5 +1,6 @@
 import { useLocation, Navigate, Outlet } from "react-router-dom"
 import useAuth from "../../hooks/useAuth"
+import AccessDenied from "../../components/AccessDenied"
 
 const RequireAuth = ({ allowedRoles }) => {
     const location = useLocation()
@@ -7,7 +8,8 @@ const RequireAuth = ({ allowedRoles }) => {
     const content = (
         allowedRoles.includes(roles)
             ? <Outlet />
-            : <Navigate to="/" state={{ from: location }} replace />
+            :  <AccessDenied />
+              // <Navigate to="/access-denied" state={{ from: location }} replace />
     )
 
     return content

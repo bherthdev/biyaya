@@ -4,7 +4,10 @@ import {
 } from "@reduxjs/toolkit";
 import { apiSlice } from "../../app/api/apiSlice"
 
-const usersAdapter = createEntityAdapter({})
+const usersAdapter = createEntityAdapter({
+    sortComparer: (a, b) => (a.active === b.active) ? 0 : b.active ? 1 : -1
+
+})
 
 const initialState = usersAdapter.getInitialState()
 

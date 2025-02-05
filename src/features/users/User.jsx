@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { useSelector } from "react-redux";
 import { selectUserById } from "./usersApiSlice";
-import { MdEditNote } from 'react-icons/md';
+import iconItem from "../../assets/icon-item.svg";
 
 const User = ({ userId, search }) => {
 
@@ -10,93 +10,56 @@ const User = ({ userId, search }) => {
 
   const user = useSelector((state) => selectUserById(state, userId));
 
-
   const navigate = useNavigate();
 
 
 
-  if (user && user.username !== username) {
+  if (user && user.username !== username && !user?.dev) {
 
     if (user.name.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
-      user.email.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
-      user.position.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
-      user.department.toLowerCase().indexOf(search.toLowerCase()) > -1
+      user.position.toLowerCase().indexOf(search.toLowerCase()) > -1
     ) {
 
-      const handleEdit = () => navigate(`/dash/users/${userId}`);
+      const handleEdit = () => navigate(`/settings/${userId}`);
 
       return (
-        <tr onClick={handleEdit} className="hover:bg-slate-200 dark:hover:bg-[#151e30] cursor-pointer">
-          <td
-            className={`sm:flex gap-4 whitespace-nowrap px-4 py-4 font-medium text-gray-900 dark:text-gray-300`}
-          >
-            <div className="flex items-center">
-              <div className="flex-shrink-0 h-12 w-12">
-                <img
-                  alt="Man"
-                  src={
-                    user.avatar
-                      ? user.avatar
-                      : `https://images.unsplash.com/photo-1600486913747-55e5470d6f40?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80`
-                  }
-                  className="h-12 w-12 rounded-full border border-slate-300  dark:border-slate-600 object-cover"
-                />
+
+        <div title='Edit user' className="hover:shadow-lg gap-3   flex flex-col justify-between bg-white dark:bg-slate-800 rounded-lg shadow-sm border-gray-200 dark:border-gray-800  text-center text-gray-800 dark:text-gray-200 hover:text-gray-500 dark:hover:text-gray-400">
+          <div className="text-4xl font-bold md:text-5xl flex flex-col pt-5 sm:py-5">
+            <div className='mx-auto h-20 w-20 lg:h-28 lg:w-2/5 border rounded-full '>
+              <img
+                alt={user.name}
+                src={user.avatar || iconItem}
+                className="h-full w-full rounded-full object-cover"
+              />
+            </div>
+            <div className="w-full text-sm font-normal mt-3 gap-4 flex flex-col items-start justify-between text-gray-500 dark:text-gray-400">
+              <div className='mx-auto  flex flex-col gap-2 text-black text-base sm:text-lg text-center'>
+                <h1 className=''>{user.name}</h1>
+                <p className='text-gray-500 text-sm'>{user.position}</p>
+                <span
+                  className={` ${user.active
+                    ? "border-emerald-500 text-emerald-700"
+                    : "border-red-500 text-red-700"
+                    }  inline-flex items-center w-14 sm:w-20 mx-auto justify-center rounded-full border  px-2 py-0.5`}
+                >
+
+
+                  <p className="whitespace-nowrap text-xs">
+                    {user.active ? "Active" : "Inactive"}
+                  </p>
+                </span>
+
               </div>
-            <div className="ml-4">
-              <p className="capitalize">{user.name} </p>
-              <p className="font-normal text-gray-700 dark:text-gray-500">
-                {user.email}
-              </p>
             </div>
-            </div>
+          </div>
+          <div onClick={handleEdit} className="flex items-center cursor-pointer h-10 sm:h-14 min-w-full hover:bg-gray-100 text-gray-500 bg-gray-50 border-t border-gray-200 rounded-b-xl">
+            <h1 className="mx-auto text-xs sm:text-sm font-medium">
+              View full Profile
+            </h1>
 
-
-          </td>
-
-          <td
-            className={`whitespace-nowrap px-4 py-4 font-medium text-gray-900 dark:text-gray-300`}
-          >
-            <div className="flex-nowrap">
-              <p className="capitalize">{user.position} </p>
-              <p className="font-normal text-gray-700 dark:text-gray-500">
-                {user.department}
-              </p>
-            </div>
-          </td>
-
-          <td
-            className={`whitespace-nowrap px-4 py-4 font-medium text-gray-900 dark:text-gray-300 `}
-          >
-            <span
-              className={` ${user.active
-                ? "bg-green-200 text-green-900 font-semibold dark:bg-green-900 dark:text-green-200"
-                : "bg-red-200 text-red-900 font-semibold dark:bg-red-900 dark:text-red-200"
-                }  inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-normal leading-none  rounded-full`}
-            >
-              {user.active ? "Active" : "Inactive"}
-            </span>
-          </td>
-
-          <td
-            className={`whitespace-nowrap px-4 py-4 font-medium text-gray-600 dark:text-gray-500 `}
-          >
-            {user.roles}
-          </td>
-
-          <td
-            className={`whitespace-nowrap px-4 py-4 text-gray-700 dark:text-gray-300`}
-          >
-            <span
-              title="Edit User"
-              className="flex justify-end hover:text-slate-500 cursor-pointer"
-              onClick={handleEdit}
-            >
-              <MdEditNote size={30} />
-            </span>
-
-          </td>
-
-        </tr>
+          </div>
+        </div>
       );
     }
 
